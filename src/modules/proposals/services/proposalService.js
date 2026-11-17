@@ -124,10 +124,25 @@ export const proposalService = {
   async getProposals(params = {}) {
     try {
       const res = await api.get('/proposals', { params })
-      return res.data?.data || res.data
+      const raw = res.data
+      let list = []
+      if (Array.isArray(raw)) {
+        list = raw
+      } else if (Array.isArray(raw?.data)) {
+        list = raw.data
+      } else if (Array.isArray(raw?.proposals)) {
+        list = raw.proposals
+      } else if (Array.isArray(raw?.result)) {
+        list = raw.result
+      } else {
+        console.warn('API /api/proposals returned non-array payload, falling back to local store:', raw)
+        list = loadLocalProposals()
+      }
+      return list
     } catch (err) {
       console.warn('API /api/proposals unreachable, using local store:', err.message)
       let list = loadLocalProposals()
+      if (!Array.isArray(list)) list = []
       if (params.search) {
         const q = params.search.toLowerCase()
         list = list.filter(

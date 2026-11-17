@@ -30,9 +30,13 @@ export const useClientStore = create((set, get) => ({
     try {
       const params = { ...get().filters, ...customParams }
       const data = await clientService.getClients(params)
-      set({ clients: data, isLoading: false })
+      set({ clients: Array.isArray(data) ? data : [], isLoading: false })
     } catch (err) {
-      set({ error: err.message, isLoading: false })
+      set({
+        error: err.message,
+        clients: Array.isArray(get().clients) ? get().clients : [],
+        isLoading: false,
+      })
     }
   },
 

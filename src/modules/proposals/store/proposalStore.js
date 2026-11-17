@@ -42,9 +42,13 @@ export const useProposalStore = create((set, get) => ({
     try {
       const params = { ...get().filters, ...customParams }
       const data = await proposalService.getProposals(params)
-      set({ proposals: data, isLoading: false })
+      set({ proposals: Array.isArray(data) ? data : [], isLoading: false })
     } catch (err) {
-      set({ error: err.message, isLoading: false })
+      set({
+        error: err.message,
+        proposals: Array.isArray(get().proposals) ? get().proposals : [],
+        isLoading: false,
+      })
     }
   },
 

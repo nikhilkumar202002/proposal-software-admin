@@ -32,7 +32,21 @@ export const clientService = {
   async getClients(params = {}) {
     try {
       const res = await api.get('/clients', { params })
-      return res.data?.data || res.data
+      const raw = res.data
+      let list = []
+      if (Array.isArray(raw)) {
+        list = raw
+      } else if (Array.isArray(raw?.data)) {
+        list = raw.data
+      } else if (Array.isArray(raw?.clients)) {
+        list = raw.clients
+      } else if (Array.isArray(raw?.result)) {
+        list = raw.result
+      } else {
+        console.warn('API /api/clients returned non-array payload, using local store:', raw)
+        list = loadLocalClients()
+      }
+      return list
     } catch (err) {
       console.warn('API /api/clients unreachable, using local store:', err.message)
       let list = loadLocalClients()

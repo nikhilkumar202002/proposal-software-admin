@@ -46,6 +46,9 @@ export const ProposalList = () => {
     fetchProposals()
   }, [fetchProposals])
 
+  // Ensure proposals is safely an array
+  const safeProposals = Array.isArray(proposals) ? proposals : []
+
   // Aggregate stats across proposals
   const stats = (() => {
     let totalVal = 0
@@ -53,7 +56,8 @@ export const ProposalList = () => {
     let pendingCount = 0
     let acceptedCount = 0
 
-    proposals.forEach((p) => {
+    safeProposals.forEach((p) => {
+      if (!p || typeof p !== 'object') return
       const totals = calculateProposalTotals(p.pricing || {})
       totalVal += totals.grandTotal
       if (['accepted', 'signed'].includes(p.status)) {
@@ -65,12 +69,12 @@ export const ProposalList = () => {
     })
 
     const acceptanceRate =
-      proposals.length > 0
-        ? ((acceptedCount / proposals.length) * 100).toFixed(1)
+      safeProposals.length > 0
+        ? ((acceptedCount / safeProposals.length) * 100).toFixed(1)
         : '0.0'
 
     return {
-      totalCount: proposals.length,
+      totalCount: safeProposals.length,
       pipelineValue: totalVal,
       acceptedValue: acceptedVal,
       acceptanceRate: `${acceptanceRate}%`,
@@ -79,8 +83,9 @@ export const ProposalList = () => {
   })()
 
   // Filter proposals by search and status
-  const filteredProposals = proposals.filter((p) => {
-    const q = (filters.search || '').toLowerCase().trim()
+  const filteredProposals = safeProposals.filter((p) => {
+    if (!p || typeof p !== 'object') return false
+    const q = (filters?.search || '').toLowerCase().trim()
     const matchesSearch =
       !q ||
       p.title?.toLowerCase().includes(q) ||
@@ -89,7 +94,7 @@ export const ProposalList = () => {
       p.client?.companyName?.toLowerCase().includes(q)
 
     const matchesStatus =
-      !filters.status || filters.status === 'all' || p.status === filters.status
+      !filters?.status || filters.status === 'all' || p.status === filters.status
 
     return matchesSearch && matchesStatus
   })
