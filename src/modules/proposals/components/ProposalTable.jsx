@@ -42,9 +42,20 @@ export const ProposalTable = ({
         const r = row && typeof row === 'object' ? row : {}
         return (
           <div className="max-w-[280px]">
-            <span className="font-semibold text-gray-900 block truncate text-xs">
-              {r.title || 'Untitled Proposal'}
-            </span>
+            <div className="flex items-center gap-1.5">
+              <span className="font-semibold text-gray-900 truncate text-xs">
+                {r.title || 'Untitled Proposal'}
+              </span>
+              <span
+                className={`text-[9.5px] font-semibold px-1.5 py-0.5 rounded shrink-0 border ${
+                  r.proposalType === 'b2b' || r.showCompanyLogo === false
+                    ? 'bg-blue-50 text-[#0055FF] border-blue-200'
+                    : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                }`}
+              >
+                {r.proposalType === 'b2b' || r.showCompanyLogo === false ? 'B2B' : 'Direct'}
+              </span>
+            </div>
             {r.projectName && (
               <span className="text-[11px] text-gray-400 block truncate">
                 {r.projectName}

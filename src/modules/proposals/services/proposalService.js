@@ -16,6 +16,8 @@ function getInitialSeedProposals() {
   p1.title = 'Enterprise Cloud Infrastructure Modernization'
   p1.projectName = 'Cloud DevOps & High Availability'
   p1.status = 'signed'
+  p1.proposalType = 'direct'
+  p1.showCompanyLogo = true
   p1.currency = 'INR'
   p1.client = {
     name: 'Mark Henderson',
@@ -41,6 +43,8 @@ function getInitialSeedProposals() {
   p2.title = 'Enterprise Brand Identity & Design System'
   p2.projectName = 'UI/UX Redesign'
   p2.status = 'viewed'
+  p2.proposalType = 'b2b'
+  p2.showCompanyLogo = false
   p2.currency = 'INR'
   p2.client = {
     name: 'Rohan Mehta',
@@ -64,6 +68,8 @@ function getInitialSeedProposals() {
   p3.title = 'Custom AI Automation & Agent Pipeline'
   p3.projectName = 'Intelligent Processing'
   p3.status = 'under_review'
+  p3.proposalType = 'direct'
+  p3.showCompanyLogo = true
   p3.currency = 'INR'
   p3.client = {
     name: 'Sarah Jenkins',
@@ -80,6 +86,8 @@ function getInitialSeedProposals() {
   p4.title = 'Cybersecurity Audit & Compliance Review'
   p4.projectName = 'SOC 2 Type II Readiness'
   p4.status = 'draft'
+  p4.proposalType = 'b2b'
+  p4.showCompanyLogo = false
   p4.currency = 'INR'
   p4.client = {
     name: 'David Miller',

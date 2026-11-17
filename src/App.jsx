@@ -289,15 +289,6 @@ export function App() {
           <Route path="/clients/create" element={<CreateClient />} />
           <Route path="/clients/:id/edit" element={<EditClient />} />
           <Route
-            path="/templates"
-            element={
-              <PagePlaceholder
-                title="Proposal Templates"
-                description="Pre-built modular blocks and templates for fast proposal generation."
-              />
-            }
-          />
-          <Route
             path="/settings/documents"
             element={
               <PagePlaceholder
