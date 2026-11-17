@@ -54,6 +54,14 @@ export const ProposalSummary = ({
       {/* Meta Dates & Details */}
       <div className="space-y-2 text-xs text-gray-600 pt-1">
         <div className="flex items-center justify-between">
+          <span className="text-gray-500">Output Type:</span>
+          <span className="font-semibold text-gray-800 text-[11px] px-2 py-0.5 rounded-md bg-gray-100">
+            {proposal.proposalType === 'b2b' || proposal.showCompanyLogo === false
+              ? 'B2B (Without Logo)'
+              : 'Direct (With Logo)'}
+          </span>
+        </div>
+        <div className="flex items-center justify-between">
           <span className="flex items-center gap-1.5 text-gray-500">
             <Calendar className="w-3.5 h-3.5" />
             Issue Date:

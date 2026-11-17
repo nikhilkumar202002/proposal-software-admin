@@ -1,8 +1,3 @@
-/**
- * Proposal Management Helper Utilities
- * Financial calculations, currency formatting, status definitions,
- * default proposal content generators, and document adapters.
- */
 
 export const CURRENCY_CONFIG = {
   INR: { symbol: '₹', code: 'INR', name: 'Indian Rupee', locale: 'en-IN' },
@@ -451,6 +446,8 @@ export function createNewProposalModel(existingList = []) {
     date: today,
     validUntil: validUntil,
     status: 'draft',
+    proposalType: 'direct', // 'direct' (with logo) | 'b2b' (without logo)
+    showCompanyLogo: true,
     currency: 'INR',
     client: {
       name: '',
@@ -643,6 +640,8 @@ export function convertProposalToDocumentCanvasProps(proposal) {
       validUntil: proposal.validUntil,
       status: proposal.status,
       totalValue: formatCurrency(totals.grandTotal, currency),
+      proposalType: proposal.proposalType || (proposal.showCompanyLogo === false ? 'b2b' : 'direct'),
+      showCompanyLogo: proposal.proposalType === 'b2b' ? false : (proposal.showCompanyLogo !== false),
     },
   }
 }
