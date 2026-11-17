@@ -23,7 +23,8 @@ export const ClientTable = ({
       header: 'Company & Contact',
       sortable: true,
       render: (row) => {
-        const initials = getClientInitials(row.name, row.companyName)
+        const r = row && typeof row === 'object' ? row : {}
+        const initials = getClientInitials(r.name, r.companyName)
         return (
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center font-bold text-xs text-[#FB6C00] shrink-0">
@@ -31,10 +32,10 @@ export const ClientTable = ({
             </div>
             <div className="min-w-0">
               <span className="font-semibold text-xs text-gray-900 block truncate group-hover:text-[#FB6C00] transition-colors">
-                {row.companyName}
+                {r.companyName || '—'}
               </span>
               <span className="text-[11px] text-gray-500 block truncate">
-                {row.name}
+                {r.name || '—'}
               </span>
             </div>
           </div>
@@ -45,61 +46,74 @@ export const ClientTable = ({
       key: 'email',
       header: 'Contact Details',
       sortable: true,
-      render: (row) => (
-        <div className="min-w-0 max-w-[200px]">
-          <span className="text-xs text-gray-800 block truncate">
-            {row.email}
-          </span>
-          {row.phone && (
-            <span className="text-[11px] text-gray-400 block truncate">
-              {row.phone}
+      render: (row) => {
+        const r = row && typeof row === 'object' ? row : {}
+        return (
+          <div className="min-w-0 max-w-[200px]">
+            <span className="text-xs text-gray-800 block truncate">
+              {r.email || '—'}
             </span>
-          )}
-        </div>
-      ),
+            {r.phone && (
+              <span className="text-[11px] text-gray-400 block truncate">
+                {r.phone}
+              </span>
+            )}
+          </div>
+        )
+      },
     },
     {
       key: 'city',
       header: 'Location',
       sortable: true,
-      render: (row) => (
-        <div className="text-xs text-gray-600">
-          <span>{row.city || '—'}</span>
-          {row.country && (
-            <span className="text-gray-400 text-[11px] block">
-              {row.country}
-            </span>
-          )}
-        </div>
-      ),
+      render: (row) => {
+        const r = row && typeof row === 'object' ? row : {}
+        return (
+          <div className="text-xs text-gray-600">
+            <span>{r.city || '—'}</span>
+            {r.country && (
+              <span className="text-gray-400 text-[11px] block">
+                {r.country}
+              </span>
+            )}
+          </div>
+        )
+      },
     },
     {
       key: 'taxNumber',
       header: 'Tax ID / GSTIN',
       sortable: true,
-      render: (row) => (
-        <span className="font-mono text-xs text-gray-600">
-          {row.taxNumber || '—'}
-        </span>
-      ),
+      render: (row) => {
+        const r = row && typeof row === 'object' ? row : {}
+        return (
+          <span className="font-mono text-xs text-gray-600">
+            {r.taxNumber || '—'}
+          </span>
+        )
+      },
     },
     {
       key: 'proposalsCount',
       header: 'Proposals',
       sortable: true,
-      render: (row) => (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-800 border border-gray-200">
-          {row.proposalsCount || 0}
-        </span>
-      ),
+      render: (row) => {
+        const r = row && typeof row === 'object' ? row : {}
+        return (
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-800 border border-gray-200">
+            {r.proposalsCount || 0}
+          </span>
+        )
+      },
     },
     {
       key: 'status',
       header: 'Status',
       sortable: true,
       render: (row) => {
-        const isLead = row.status === 'lead'
-        const isInactive = row.status === 'inactive'
+        const r = row && typeof row === 'object' ? row : {}
+        const isLead = r.status === 'lead'
+        const isInactive = r.status === 'inactive'
         return (
           <Badge
             variant={isLead ? 'warning' : isInactive ? 'neutral' : 'success'}
@@ -115,27 +129,28 @@ export const ClientTable = ({
       header: 'Actions',
       align: 'right',
       render: (row) => {
+        const r = row && typeof row === 'object' ? row : {}
         const actions = [
           {
             label: 'View Profile',
             icon: Eye,
-            onClick: () => onView(row),
+            onClick: () => onView(r),
           },
           {
             label: 'Edit Client',
             icon: Edit3,
-            onClick: () => onEdit(row),
+            onClick: () => onEdit(r),
           },
           {
             label: 'Create Proposal',
             icon: FilePlus,
-            onClick: () => onCreateProposal(row),
+            onClick: () => onCreateProposal(r),
           },
           {
             label: 'Delete Client',
             icon: Trash2,
             danger: true,
-            onClick: () => onDelete(row),
+            onClick: () => onDelete(r),
           },
         ]
 
@@ -146,7 +161,7 @@ export const ClientTable = ({
           >
             <button
               type="button"
-              onClick={() => onView(row)}
+              onClick={() => onView(r)}
               className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
               title="View Client Profile"
             >
@@ -154,7 +169,7 @@ export const ClientTable = ({
             </button>
             <button
               type="button"
-              onClick={() => onEdit(row)}
+              onClick={() => onEdit(r)}
               className="p-1.5 text-gray-400 hover:text-[#FB6C00] hover:bg-orange-50 rounded-lg transition-colors cursor-pointer"
               title="Edit Client"
             >

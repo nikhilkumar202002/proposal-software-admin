@@ -58,10 +58,11 @@ export function round2(num) {
  * Calculate totals for a single pricing table row
  */
 export function calculateLineItemTotal(item) {
-  const qty = parseFloat(item.quantity) || 0
-  const unitPrice = parseFloat(item.unitPrice) || 0
-  const discountPercent = parseFloat(item.discount) || 0
-  const taxPercent = parseFloat(item.tax) || 0
+  const safe = item || {}
+  const qty = parseFloat(safe.quantity) || 0
+  const unitPrice = parseFloat(safe.unitPrice) || 0
+  const discountPercent = parseFloat(safe.discount) || 0
+  const taxPercent = parseFloat(safe.tax) || 0
 
   const subtotal = round2(qty * unitPrice)
   const discountAmount = round2(subtotal * (discountPercent / 100))
@@ -81,9 +82,10 @@ export function calculateLineItemTotal(item) {
 /**
  * Calculate overall proposal pricing totals
  */
-export function calculateProposalTotals(pricing = {}) {
-  const items = Array.isArray(pricing.items) ? pricing.items : []
-  const globalDiscountPercent = parseFloat(pricing.globalDiscount) || 0
+export function calculateProposalTotals(pricing) {
+  const safe = pricing || {}
+  const items = Array.isArray(safe.items) ? safe.items : []
+  const globalDiscountPercent = parseFloat(safe.globalDiscount) || 0
 
   let rawSubtotal = 0
   let totalLineDiscounts = 0

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import {
   Search,
   Bell,
@@ -24,25 +24,78 @@ const getRouteMeta = (pathname) => {
   if (pathname === '/' || pathname === '/dashboard') {
     return {
       title: 'Dashboard',
-      breadcrumbs: [{ label: 'Workspace' }, { label: 'Dashboard' }],
+      breadcrumbs: [{ label: 'Workspace', to: '/' }, { label: 'Dashboard' }],
+    }
+  }
+  if (pathname === '/proposals/new' || pathname === '/proposals/create') {
+    return {
+      title: 'Create Proposal',
+      breadcrumbs: [
+        { label: 'Workspace', to: '/' },
+        { label: 'Proposals', to: '/proposals' },
+        { label: 'New Proposal' },
+      ],
+    }
+  }
+  if (pathname.includes('/proposals/') && pathname.includes('/edit')) {
+    return {
+      title: 'Edit Proposal',
+      breadcrumbs: [
+        { label: 'Workspace', to: '/' },
+        { label: 'Proposals', to: '/proposals' },
+        { label: 'Edit' },
+      ],
+    }
+  }
+  if (
+    pathname.includes('/proposals/') &&
+    (pathname.includes('/preview') || pathname.match(/\/proposals\/[^/]+$/))
+  ) {
+    return {
+      title: 'Proposal Document Preview',
+      breadcrumbs: [
+        { label: 'Workspace', to: '/' },
+        { label: 'Proposals', to: '/proposals' },
+        { label: 'Preview' },
+      ],
     }
   }
   if (pathname.startsWith('/proposals')) {
     return {
       title: 'Proposals',
-      breadcrumbs: [{ label: 'Workspace' }, { label: 'Proposals' }],
+      breadcrumbs: [{ label: 'Workspace', to: '/' }, { label: 'Proposals' }],
+    }
+  }
+  if (pathname === '/clients/new' || pathname === '/clients/create') {
+    return {
+      title: 'Add New Client',
+      breadcrumbs: [
+        { label: 'Workspace', to: '/' },
+        { label: 'Clients', to: '/clients' },
+        { label: 'New Client' },
+      ],
+    }
+  }
+  if (pathname.includes('/clients/') && pathname.includes('/edit')) {
+    return {
+      title: 'Edit Client Profile',
+      breadcrumbs: [
+        { label: 'Workspace', to: '/' },
+        { label: 'Clients', to: '/clients' },
+        { label: 'Edit Profile' },
+      ],
     }
   }
   if (pathname.startsWith('/clients')) {
     return {
-      title: 'Clients',
-      breadcrumbs: [{ label: 'Workspace' }, { label: 'Clients' }],
+      title: 'Client Directory',
+      breadcrumbs: [{ label: 'Workspace', to: '/' }, { label: 'Clients' }],
     }
   }
   if (pathname.startsWith('/templates')) {
     return {
-      title: 'Templates',
-      breadcrumbs: [{ label: 'Workspace' }, { label: 'Templates' }],
+      title: 'Proposal Templates',
+      breadcrumbs: [{ label: 'Workspace', to: '/' }, { label: 'Templates' }],
     }
   }
   if (pathname.startsWith('/settings/documents')) {
@@ -72,7 +125,7 @@ const getRouteMeta = (pathname) => {
 
   return {
     title: formatted || 'Overview',
-    breadcrumbs: [{ label: 'Workspace' }, { label: formatted || 'Overview' }],
+    breadcrumbs: [{ label: 'Workspace', to: '/' }, { label: formatted || 'Overview' }],
   }
 }
 
@@ -80,6 +133,7 @@ export const Header = ({
   setIsMobileOpen = () => {},
 }) => {
   const location = useLocation()
+  const navigate = useNavigate()
   const { title, breadcrumbs } = getRouteMeta(location.pathname)
 
   // State
@@ -198,15 +252,24 @@ export const Header = ({
             {breadcrumbs.map((crumb, idx) => (
               <span key={crumb.label} className="flex items-center gap-1.5">
                 {idx > 0 && <ChevronRight className="w-3 h-3 text-gray-300 shrink-0" />}
-                <span
-                  className={
-                    idx === breadcrumbs.length - 1
-                      ? 'text-gray-600 font-medium truncate max-w-[150px]'
-                      : 'hover:text-gray-600 transition-colors'
-                  }
-                >
-                  {crumb.label}
-                </span>
+                {crumb.to ? (
+                  <Link
+                    to={crumb.to}
+                    className="hover:text-[#FB6C00] transition-colors"
+                  >
+                    {crumb.label}
+                  </Link>
+                ) : (
+                  <span
+                    className={
+                      idx === breadcrumbs.length - 1
+                        ? 'text-gray-700 font-semibold truncate max-w-[160px]'
+                        : 'hover:text-gray-600 transition-colors'
+                    }
+                  >
+                    {crumb.label}
+                  </span>
+                )}
               </span>
             ))}
           </nav>
@@ -229,6 +292,11 @@ export const Header = ({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && searchQuery.trim()) {
+                  navigate(`/proposals`)
+                }
+              }}
               placeholder="Search proposals, clients..."
               className="w-44 sm:w-60 md:w-72 pl-9 pr-14 py-1.5 text-xs sm:text-sm bg-[#F8F9FB] hover:bg-gray-100/80 focus:bg-white border border-gray-200/90 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#0055FF] focus:ring-2 focus:ring-[#0055FF]/15 transition-all"
             />
@@ -488,16 +556,22 @@ export const Header = ({
               <div className="py-1">
                 <button
                   type="button"
-                  onClick={() => setIsUserMenuOpen(false)}
-                  className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100/70 hover:text-[#0055FF] transition-colors text-left"
+                  onClick={() => {
+                    setIsUserMenuOpen(false)
+                    navigate('/settings/company')
+                  }}
+                  className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100/70 hover:text-[#FB6C00] transition-colors text-left cursor-pointer"
                 >
                   <User className="w-4 h-4 text-gray-400" />
                   My Profile
                 </button>
                 <button
                   type="button"
-                  onClick={() => setIsUserMenuOpen(false)}
-                  className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100/70 hover:text-[#0055FF] transition-colors text-left"
+                  onClick={() => {
+                    setIsUserMenuOpen(false)
+                    navigate('/settings/documents')
+                  }}
+                  className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100/70 hover:text-[#FB6C00] transition-colors text-left cursor-pointer"
                 >
                   <Settings className="w-4 h-4 text-gray-400" />
                   Account Settings

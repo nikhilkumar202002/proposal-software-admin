@@ -190,7 +190,7 @@ export const DataTable = ({
                         }`}
                       >
                         {col.render
-                          ? col.render(row[col.key], row, index)
+                          ? col.render(row, row[col.key], index)
                           : row[col.key] !== undefined && row[col.key] !== null
                           ? String(row[col.key])
                           : '—'}

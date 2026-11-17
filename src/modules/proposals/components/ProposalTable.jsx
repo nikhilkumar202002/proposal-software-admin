@@ -20,63 +20,73 @@ export const ProposalTable = ({
       key: 'number',
       header: 'Proposal #',
       sortable: true,
-      render: (row) => (
-        <div className="flex flex-col">
-          <span className="font-mono font-bold text-xs text-gray-900 group-hover:text-[#FB6C00] transition-colors">
-            {row.number}
-          </span>
-          <span className="text-[11px] text-gray-400">
-            {row.date || 'No Date'}
-          </span>
-        </div>
-      ),
+      render: (row) => {
+        const r = row && typeof row === 'object' ? row : {}
+        return (
+          <div className="flex flex-col">
+            <span className="font-mono font-bold text-xs text-gray-900 group-hover:text-[#FB6C00] transition-colors">
+              {r.number || '—'}
+            </span>
+            <span className="text-[11px] text-gray-400">
+              {r.date || 'No Date'}
+            </span>
+          </div>
+        )
+      },
     },
     {
       key: 'title',
       header: 'Proposal Title & Project',
       sortable: true,
-      render: (row) => (
-        <div className="max-w-[280px]">
-          <span className="font-semibold text-gray-900 block truncate text-xs">
-            {row.title}
-          </span>
-          {row.projectName && (
-            <span className="text-[11px] text-gray-400 block truncate">
-              {row.projectName}
+      render: (row) => {
+        const r = row && typeof row === 'object' ? row : {}
+        return (
+          <div className="max-w-[280px]">
+            <span className="font-semibold text-gray-900 block truncate text-xs">
+              {r.title || 'Untitled Proposal'}
             </span>
-          )}
-        </div>
-      ),
+            {r.projectName && (
+              <span className="text-[11px] text-gray-400 block truncate">
+                {r.projectName}
+              </span>
+            )}
+          </div>
+        )
+      },
     },
     {
       key: 'client',
       header: 'Client / Organization',
       sortable: true,
-      render: (row) => (
-        <div className="flex items-center gap-2 max-w-[200px]">
-          <div className="w-6 h-6 rounded-lg bg-blue-50 text-[#0055FF] flex items-center justify-center shrink-0">
-            <Building2 className="w-3.5 h-3.5" />
-          </div>
-          <div className="truncate">
-            <span className="text-xs font-semibold text-gray-800 block truncate">
-              {row.client?.companyName || row.client?.name || 'N/A'}
-            </span>
-            {row.client?.name && row.client?.companyName && (
-              <span className="text-[10px] text-gray-400 block truncate">
-                {row.client.name}
+      render: (row) => {
+        const r = row && typeof row === 'object' ? row : {}
+        return (
+          <div className="flex items-center gap-2 max-w-[200px]">
+            <div className="w-6 h-6 rounded-lg bg-blue-50 text-[#0055FF] flex items-center justify-center shrink-0">
+              <Building2 className="w-3.5 h-3.5" />
+            </div>
+            <div className="truncate">
+              <span className="text-xs font-semibold text-gray-800 block truncate">
+                {r.client?.companyName || r.client?.name || 'N/A'}
               </span>
-            )}
+              {r.client?.name && r.client?.companyName && (
+                <span className="text-[10px] text-gray-400 block truncate">
+                  {r.client.name}
+                </span>
+              )}
+            </div>
           </div>
-        </div>
-      ),
+        )
+      },
     },
     {
       key: 'total',
       header: 'Value / Grand Total',
       sortable: true,
       render: (row) => {
-        const totals = calculateProposalTotals(row.pricing || {})
-        const currency = row.pricing?.currency || row.currency || 'INR'
+        const r = row && typeof row === 'object' ? row : {}
+        const totals = calculateProposalTotals(r.pricing || {})
+        const currency = r.pricing?.currency || r.currency || 'INR'
         return (
           <span className="font-bold text-xs text-gray-900">
             {formatCurrency(totals.grandTotal, currency)}
@@ -88,49 +98,56 @@ export const ProposalTable = ({
       key: 'status',
       header: 'Status',
       sortable: true,
-      render: (row) => <StatusBadge status={row.status || 'draft'} />,
+      render: (row) => {
+        const r = row && typeof row === 'object' ? row : {}
+        return <StatusBadge status={r.status || 'draft'} />
+      },
     },
     {
       key: 'validUntil',
       header: 'Valid Until',
       sortable: true,
-      render: (row) => (
-        <span className="text-xs text-gray-600">
-          {row.validUntil || '—'}
-        </span>
-      ),
+      render: (row) => {
+        const r = row && typeof row === 'object' ? row : {}
+        return (
+          <span className="text-xs text-gray-600">
+            {r.validUntil || '—'}
+          </span>
+        )
+      },
     },
     {
       key: 'actions',
       header: 'Actions',
       align: 'right',
       render: (row) => {
+        const r = row && typeof row === 'object' ? row : {}
         const actions = [
           {
             label: 'View A4 Preview',
             icon: Eye,
-            onClick: () => onView(row),
+            onClick: () => onView(r),
           },
           {
             label: 'Edit Proposal',
             icon: Edit3,
-            onClick: () => onEdit(row),
+            onClick: () => onEdit(r),
           },
           {
             label: 'Export PDF',
             icon: FileDown,
-            onClick: () => onDownloadPdf(row),
+            onClick: () => onDownloadPdf(r),
           },
           {
             label: 'Duplicate',
             icon: Copy,
-            onClick: () => onDuplicate(row),
+            onClick: () => onDuplicate(r),
           },
           {
             label: 'Delete',
             icon: Trash2,
             danger: true,
-            onClick: () => onDelete(row),
+            onClick: () => onDelete(r),
           },
         ]
 
@@ -141,7 +158,7 @@ export const ProposalTable = ({
           >
             <button
               type="button"
-              onClick={() => onView(row)}
+              onClick={() => onView(r)}
               className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
               title="Preview Proposal"
             >
@@ -149,7 +166,7 @@ export const ProposalTable = ({
             </button>
             <button
               type="button"
-              onClick={() => onEdit(row)}
+              onClick={() => onEdit(r)}
               className="p-1.5 text-gray-400 hover:text-[#FB6C00] hover:bg-orange-50 rounded-lg transition-colors cursor-pointer"
               title="Edit Proposal"
             >
