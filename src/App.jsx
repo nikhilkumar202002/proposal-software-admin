@@ -30,7 +30,7 @@ const DashboardOverview = () => {
     },
     {
       label: 'Won Value',
-      value: '$148,500',
+      value: '₹14,85,000',
       change: '14 deals closed',
       trend: 'up',
       icon: CheckCircle2,
@@ -38,7 +38,7 @@ const DashboardOverview = () => {
     {
       label: 'Awaiting Signature',
       value: '6',
-      change: '$42,300 in pipeline',
+      change: '₹4,23,000 in pipeline',
       trend: 'neutral',
       icon: Clock,
     },
@@ -49,7 +49,7 @@ const DashboardOverview = () => {
       id: 'PR-2026-081',
       title: 'Cloud Infrastructure Migration & DevOps',
       client: 'Acme Technologies Inc.',
-      amount: '$34,000',
+      amount: '₹3,40,000',
       status: 'Signed',
       statusColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
       date: 'Today, 2:15 PM',
@@ -58,16 +58,16 @@ const DashboardOverview = () => {
       id: 'PR-2026-080',
       title: 'Enterprise Brand Identity & Design System',
       client: 'Apex Global Corp',
-      amount: '$18,500',
+      amount: '₹1,85,000',
       status: 'Viewed',
-      statusColor: 'bg-blue-50 text-blue-700 border-blue-200',
+      statusColor: 'bg-blue-50 text-[#0055FF] border-blue-200',
       date: 'Yesterday',
     },
     {
       id: 'PR-2026-079',
       title: 'Custom AI Automation Pipeline',
       client: 'NextEra Logistics',
-      amount: '$52,000',
+      amount: '₹5,20,000',
       status: 'Pending',
       statusColor: 'bg-amber-50 text-amber-700 border-amber-200',
       date: 'Nov 14, 2026',
@@ -76,7 +76,7 @@ const DashboardOverview = () => {
       id: 'PR-2026-078',
       title: 'Cybersecurity Audit & Compliance Review',
       client: 'Starlight Financial',
-      amount: '$24,000',
+      amount: '₹2,40,000',
       status: 'Draft',
       statusColor: 'bg-gray-100 text-gray-700 border-gray-200',
       date: 'Nov 12, 2026',
@@ -105,7 +105,7 @@ const DashboardOverview = () => {
           </button>
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-[#FB6C00] hover:bg-[#E06000] rounded-lg transition-colors shadow-xs"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-[#0055FF] hover:bg-[#0044CC] rounded-lg transition-colors shadow-xs"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             New Proposal
@@ -126,7 +126,7 @@ const DashboardOverview = () => {
                 <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {stat.label}
                 </span>
-                <div className="w-8 h-8 rounded-lg bg-orange-50 text-[#FB6C00] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0055FF] flex items-center justify-center">
                   <Icon className="w-4 h-4" />
                 </div>
               </div>
@@ -155,7 +155,7 @@ const DashboardOverview = () => {
           </div>
           <button
             type="button"
-            className="text-xs font-semibold text-[#FB6C00] hover:text-[#E06000] transition-colors"
+            className="text-xs font-semibold text-[#0055FF] hover:text-[#0044CC] transition-colors"
           >
             View all proposals →
           </button>
@@ -220,8 +220,8 @@ const PagePlaceholder = ({ title, description }) => (
     <div className="max-w-md">
       <h2 className="text-xl font-bold text-gray-900 tracking-tight">{title}</h2>
       <p className="text-sm text-gray-500 mt-1">{description}</p>
-      <div className="mt-6 p-4 rounded-xl bg-orange-50/50 border border-orange-100 text-xs text-gray-600 flex items-center gap-3">
-        <div className="w-8 h-8 rounded-lg bg-[#FB6C00] text-white flex items-center justify-center shrink-0">
+      <div className="mt-6 p-4 rounded-xl bg-blue-50/50 border border-blue-100 text-xs text-gray-600 flex items-center gap-3">
+        <div className="w-8 h-8 rounded-lg bg-[#0055FF] text-white flex items-center justify-center shrink-0">
           <FileText className="w-4 h-4" />
         </div>
         <div>

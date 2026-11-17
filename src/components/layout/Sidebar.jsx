@@ -11,8 +11,8 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   X,
-  FileCheck2,
 } from 'lucide-react'
+import logoBlack from '../../assets/Domine-Dude_black.png'
 
 const workspaceLinks = [
   {
@@ -93,19 +93,19 @@ export const Sidebar = ({
           isCollapsed ? 'justify-center h-11 w-11 mx-auto my-1' : 'h-10 px-3 my-0.5'
         } ${
           active
-            ? 'bg-[#FFF5EE] text-[#FB6C00]'
+            ? 'bg-[#EFF6FF] text-[#0055FF]'
             : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/70'
         }`}
       >
         {/* Left active indicator pill when expanded */}
         {!isCollapsed && active && (
-          <span className="absolute left-0 top-2 bottom-2 w-1 bg-[#FB6C00] rounded-r-full" />
+          <span className="absolute left-0 top-2 bottom-2 w-1 bg-[#0055FF] rounded-r-full" />
         )}
 
         <Icon
           className={`shrink-0 transition-colors ${
             isCollapsed ? 'w-5 h-5' : 'w-4 h-4 mr-3'
-          } ${active ? 'text-[#FB6C00]' : 'text-gray-500 group-hover:text-gray-800'}`}
+          } ${active ? 'text-[#0055FF]' : 'text-gray-500 group-hover:text-gray-800'}`}
         />
 
         {!isCollapsed && (
@@ -116,7 +116,7 @@ export const Sidebar = ({
           <span
             className={`text-xs px-2 py-0.5 rounded-full font-medium transition-colors ${
               active
-                ? 'bg-[#FB6C00]/15 text-[#FB6C00]'
+                ? 'bg-[#0055FF]/10 text-[#0055FF]'
                 : 'bg-gray-100 text-gray-600 group-hover:bg-gray-200/80'
             }`}
           >
@@ -129,7 +129,7 @@ export const Sidebar = ({
           <div className="absolute left-[calc(100%+12px)] top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-md shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 z-50 flex items-center gap-1.5">
             <span>{item.name}</span>
             {item.badge && (
-              <span className="px-1.5 py-0.2 bg-[#FB6C00] text-white text-[10px] rounded-full">
+              <span className="px-1.5 py-0.2 bg-[#0055FF] text-white text-[10px] rounded-full">
                 {item.badge}
               </span>
             )}
@@ -161,25 +161,30 @@ export const Sidebar = ({
             : '-translate-x-full lg:translate-x-0'
         }`}
       >
-        {/* Brand Header */}
+        {/* Brand Header with Logo from Assets */}
         <div className="h-16 flex items-center justify-between px-3.5 border-b border-gray-100/90 shrink-0">
-          <div className="flex items-center min-w-0 gap-2.5">
-            {/* Logo Icon with Orange Background */}
-            <div className="w-9 h-9 rounded-xl bg-[#FB6C00] flex items-center justify-center text-white shadow-sm shrink-0">
-              <FileCheck2 className="w-5 h-5 text-white stroke-[2.2]" />
-            </div>
-
-            {/* Application Name */}
-            {(!isCollapsed || isMobileOpen) && (
-              <div className="flex flex-col truncate">
-                <div className="flex items-center gap-1">
-                  <span className="font-bold text-[16px] text-gray-900 tracking-tight">
-                    Proposal<span className="text-[#FB6C00]">OS</span>
-                  </span>
-                </div>
-                <span className="text-[10px] font-medium text-gray-400 -mt-0.5 tracking-wider uppercase">
-                  Management
-                </span>
+          <div className="flex items-center min-w-0">
+            {(!isCollapsed || isMobileOpen) ? (
+              /* Expanded: Full logo from assets with subtle ProposalOS badge */
+              <div className="flex items-center gap-2">
+                <img
+                  src={logoBlack}
+                  alt="Domain Dude"
+                  className="h-8 max-h-8 w-auto object-contain"
+                />
+               
+              </div>
+            ) : (
+              /* Collapsed: Blue logo mark neatly cropped */
+              <div
+                className="w-9 h-9 rounded-xl flex items-center justify-start overflow-hidden mx-auto bg-blue-50/40 border border-blue-100/60 p-0.5"
+                title="Domain Dude - ProposalOS"
+              >
+                <img
+                  src={logoBlack}
+                  alt="Domain Dude Logo"
+                  className="h-7.5 max-w-none object-cover object-left"
+                />
               </div>
             )}
           </div>
@@ -188,7 +193,7 @@ export const Sidebar = ({
           <button
             type="button"
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="hidden lg:flex p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            className="hidden lg:flex p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors ml-1"
             title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
@@ -258,7 +263,7 @@ export const Sidebar = ({
                   : 'h-10 px-3'
               } ${
                 isRouteActive('/help')
-                  ? 'bg-[#FFF5EE] text-[#FB6C00]'
+                  ? 'bg-[#EFF6FF] text-[#0055FF]'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/70'
               }`}
             >
@@ -267,7 +272,7 @@ export const Sidebar = ({
                   isCollapsed && !isMobileOpen ? 'w-5 h-5' : 'w-4 h-4 mr-3'
                 } ${
                   isRouteActive('/help')
-                    ? 'text-[#FB6C00]'
+                    ? 'text-[#0055FF]'
                     : 'text-gray-500 group-hover:text-gray-800'
                 }`}
               />
@@ -290,7 +295,7 @@ export const Sidebar = ({
             >
               {/* User Avatar */}
               <div className="relative shrink-0">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#FB6C00] to-amber-400 text-white font-semibold text-xs flex items-center justify-center shadow-xs ring-2 ring-white">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#0055FF] to-[#00AAFF] text-white font-semibold text-xs flex items-center justify-center shadow-xs ring-2 ring-white">
                   AM
                 </div>
                 <span

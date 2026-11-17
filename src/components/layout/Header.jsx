@@ -230,7 +230,7 @@ export const Header = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search proposals, clients..."
-              className="w-44 sm:w-60 md:w-72 pl-9 pr-14 py-1.5 text-xs sm:text-sm bg-[#F8F9FB] hover:bg-gray-100/80 focus:bg-white border border-gray-200/90 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#FB6C00] focus:ring-2 focus:ring-[#FB6C00]/15 transition-all"
+              className="w-44 sm:w-60 md:w-72 pl-9 pr-14 py-1.5 text-xs sm:text-sm bg-[#F8F9FB] hover:bg-gray-100/80 focus:bg-white border border-gray-200/90 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#0055FF] focus:ring-2 focus:ring-[#0055FF]/15 transition-all"
             />
             {/* Keyboard Shortcut Visual or Clear Button */}
             {searchQuery ? (
@@ -263,7 +263,7 @@ export const Header = ({
             }}
             className={`relative p-2 rounded-lg transition-colors ${
               isNotificationOpen
-                ? 'bg-[#FFF5EE] text-[#FB6C00]'
+                ? 'bg-[#EFF6FF] text-[#0055FF]'
                 : 'text-gray-500 hover:text-gray-800 hover:bg-gray-100'
             }`}
             aria-label="Notifications"
@@ -272,8 +272,8 @@ export const Header = ({
             <Bell className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
             {unreadCount > 0 && (
               <span className="absolute top-1.5 right-1.5 flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FB6C00] opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FB6C00]" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0055FF] opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0055FF]" />
               </span>
             )}
           </button>
@@ -287,7 +287,7 @@ export const Header = ({
                     Notifications
                   </span>
                   {unreadCount > 0 && (
-                    <span className="px-2 py-0.5 text-[11px] font-semibold bg-[#FFF5EE] text-[#FB6C00] rounded-full">
+                    <span className="px-2 py-0.5 text-[11px] font-semibold bg-[#EFF6FF] text-[#0055FF] rounded-full">
                       {unreadCount} new
                     </span>
                   )}
@@ -296,7 +296,7 @@ export const Header = ({
                   <button
                     type="button"
                     onClick={markAllNotificationsRead}
-                    className="text-xs text-[#FB6C00] hover:text-[#E06000] font-medium"
+                    className="text-xs text-[#0055FF] hover:text-[#0044CC] font-medium"
                   >
                     Mark all read
                   </button>
@@ -309,7 +309,7 @@ export const Header = ({
                   <div
                     key={item.id}
                     className={`px-4 py-3 hover:bg-gray-50/80 transition-colors flex items-start gap-3 cursor-pointer ${
-                      item.unread ? 'bg-[#FFFBF7]/60' : ''
+                      item.unread ? 'bg-[#F4F8FF]/80' : ''
                     }`}
                   >
                     <div
@@ -317,7 +317,7 @@ export const Header = ({
                         item.type === 'success'
                           ? 'bg-emerald-50 text-emerald-600'
                           : item.type === 'info'
-                          ? 'bg-blue-50 text-blue-600'
+                          ? 'bg-blue-50 text-[#0055FF]'
                           : 'bg-gray-100 text-gray-600'
                       }`}
                     >
@@ -349,7 +349,7 @@ export const Header = ({
               <div className="px-4 py-2 border-t border-gray-100 text-center bg-gray-50/50">
                 <button
                   type="button"
-                  className="text-xs font-medium text-gray-600 hover:text-[#FB6C00] transition-colors"
+                  className="text-xs font-medium text-gray-600 hover:text-[#0055FF] transition-colors"
                   onClick={() => setIsNotificationOpen(false)}
                 >
                   View all activity & logs
@@ -370,7 +370,7 @@ export const Header = ({
             }}
             className={`p-2 rounded-lg transition-colors ${
               isHelpOpen
-                ? 'bg-[#FFF5EE] text-[#FB6C00]'
+                ? 'bg-[#EFF6FF] text-[#0055FF]'
                 : 'text-gray-500 hover:text-gray-800 hover:bg-gray-100'
             }`}
             aria-label="Help and resources"
@@ -394,7 +394,7 @@ export const Header = ({
                     e.preventDefault()
                     setIsHelpOpen(false)
                   }}
-                  className="flex items-center gap-2.5 px-3.5 py-2 text-xs text-gray-700 hover:bg-gray-100/70 hover:text-[#FB6C00] transition-colors"
+                  className="flex items-center gap-2.5 px-3.5 py-2 text-xs text-gray-700 hover:bg-gray-100/70 hover:text-[#0055FF] transition-colors"
                 >
                   <BookOpen className="w-4 h-4 text-gray-400" />
                   <span className="flex-1">Documentation & Guides</span>
@@ -406,7 +406,7 @@ export const Header = ({
                     e.preventDefault()
                     setIsHelpOpen(false)
                   }}
-                  className="flex items-center gap-2.5 px-3.5 py-2 text-xs text-gray-700 hover:bg-gray-100/70 hover:text-[#FB6C00] transition-colors"
+                  className="flex items-center gap-2.5 px-3.5 py-2 text-xs text-gray-700 hover:bg-gray-100/70 hover:text-[#0055FF] transition-colors"
                 >
                   <Keyboard className="w-4 h-4 text-gray-400" />
                   <span className="flex-1">Keyboard Shortcuts</span>
@@ -420,7 +420,7 @@ export const Header = ({
                     e.preventDefault()
                     setIsHelpOpen(false)
                   }}
-                  className="flex items-center gap-2.5 px-3.5 py-2 text-xs text-gray-700 hover:bg-gray-100/70 hover:text-[#FB6C00] transition-colors"
+                  className="flex items-center gap-2.5 px-3.5 py-2 text-xs text-gray-700 hover:bg-gray-100/70 hover:text-[#0055FF] transition-colors"
                 >
                   <LifeBuoy className="w-4 h-4 text-gray-400" />
                   <span className="flex-1">Contact Support</span>
@@ -452,7 +452,7 @@ export const Header = ({
             aria-expanded={isUserMenuOpen}
           >
             <div className="relative">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#FB6C00] to-amber-400 text-white font-semibold text-xs flex items-center justify-center shadow-xs">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#0055FF] to-[#00AAFF] text-white font-semibold text-xs flex items-center justify-center shadow-xs">
                 AM
               </div>
               <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 border-2 border-white" />
@@ -478,7 +478,7 @@ export const Header = ({
                   alex@proposalos.com
                 </p>
                 <div className="mt-1.5">
-                  <span className="inline-block px-1.5 py-0.5 text-[10px] font-medium bg-[#FFF5EE] text-[#FB6C00] rounded">
+                  <span className="inline-block px-1.5 py-0.5 text-[10px] font-medium bg-[#EFF6FF] text-[#0055FF] rounded">
                     Workspace Owner
                   </span>
                 </div>
@@ -489,7 +489,7 @@ export const Header = ({
                 <button
                   type="button"
                   onClick={() => setIsUserMenuOpen(false)}
-                  className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100/70 hover:text-[#FB6C00] transition-colors text-left"
+                  className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100/70 hover:text-[#0055FF] transition-colors text-left"
                 >
                   <User className="w-4 h-4 text-gray-400" />
                   My Profile
@@ -497,7 +497,7 @@ export const Header = ({
                 <button
                   type="button"
                   onClick={() => setIsUserMenuOpen(false)}
-                  className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100/70 hover:text-[#FB6C00] transition-colors text-left"
+                  className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100/70 hover:text-[#0055FF] transition-colors text-left"
                 >
                   <Settings className="w-4 h-4 text-gray-400" />
                   Account Settings
