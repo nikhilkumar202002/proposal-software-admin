@@ -172,7 +172,9 @@ export const Sidebar = ({
                   alt="Domain Dude"
                   className="h-8 max-h-8 w-auto object-contain"
                 />
-               
+                <span className="text-[10px] uppercase font-bold tracking-wider text-[#0055FF] bg-[#EFF6FF] px-1.5 py-0.5 rounded border border-[#0055FF]/15">
+                  Proposals
+                </span>
               </div>
             ) : (
               /* Collapsed: Blue logo mark neatly cropped */

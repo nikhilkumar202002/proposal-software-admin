@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import AdminLayout from './components/layout/AdminLayout'
+import { DocumentCanvas } from './components/document'
+import { SAMPLE_PROPOSAL_DATA } from './components/document/utils/documentHelpers'
 import {
   FileText,
   TrendingUp,
@@ -214,6 +216,50 @@ const DashboardOverview = () => {
   )
 }
 
+// A4 Document Preview & Proposal Engine Showcase Page
+const ProposalDocumentPage = () => {
+  return (
+    <div className="space-y-4">
+      {/* Top Banner with Document Info */}
+      <div className="no-print bg-white p-4 rounded-2xl border border-gray-200/80 shadow-2xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 text-[11px] font-bold rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+              A4 Engine Active
+            </span>
+            <span className="text-xs text-gray-400 font-mono">
+              PROP-2026-089
+            </span>
+          </div>
+          <h2 className="text-base font-bold text-gray-900 mt-1">
+            Enterprise Cloud Infrastructure Proposal
+          </h2>
+          <p className="text-xs text-gray-500">
+            Physical A4 pagination (210×297mm), fixed header/footer, pricing table overflow & watermark support.
+          </p>
+        </div>
+      </div>
+
+      {/* A4 Document Canvas */}
+      <div className="h-[calc(100vh-210px)] min-h-[650px] rounded-2xl border border-gray-200/80 overflow-hidden shadow-xs bg-[#EBF0F5]">
+        <DocumentCanvas
+          content={SAMPLE_PROPOSAL_DATA.blocks}
+          company={SAMPLE_PROPOSAL_DATA.company}
+          proposal={SAMPLE_PROPOSAL_DATA.metadata}
+          initialSettings={{
+            orientation: 'portrait',
+            watermark: {
+              enabled: false,
+              text: 'CONFIDENTIAL',
+              opacity: 0.08,
+            },
+          }}
+        />
+      </div>
+    </div>
+  )
+}
+
 // Simple Page Placeholder for other routes
 const PagePlaceholder = ({ title, description }) => (
   <div className="bg-white rounded-2xl border border-gray-200/80 p-8 shadow-2xs">
@@ -241,15 +287,7 @@ export function App() {
       <Routes>
         <Route element={<AdminLayout />}>
           <Route path="/" element={<DashboardOverview />} />
-          <Route
-            path="/proposals"
-            element={
-              <PagePlaceholder
-                title="Proposals Management"
-                description="Create, monitor, and track all your sales proposals and contracts."
-              />
-            }
-          />
+          <Route path="/proposals" element={<ProposalDocumentPage />} />
           <Route
             path="/clients"
             element={

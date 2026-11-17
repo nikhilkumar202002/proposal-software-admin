@@ -1,0 +1,87 @@
+/**
+ * Print & Browsershot (Chromium) PDF Output Styles
+ */
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@page landscape {
+  size: A4 landscape;
+  margin: 0;
+}
+
+@media print {
+  /* Reset document background for printing */
+  html,
+  body {
+    background-color: #FFFFFF !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Hide navigation, sidebar, editor headers and canvas controls */
+  .no-print,
+  nav,
+  aside,
+  header,
+  .document-canvas-toolbar,
+  .document-measurement-sandbox,
+  button:not(.allow-print) {
+    display: none !important;
+  }
+
+  /* Reset outer container */
+  .document-canvas-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    display: block !important;
+    width: 100% !important;
+  }
+
+  /* A4 Page print rules */
+  .document-page {
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    min-height: 297mm !important;
+    max-height: 297mm !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    break-inside: avoid !important;
+  }
+
+  .document-page.landscape {
+    width: 297mm !important;
+    height: 210mm !important;
+    min-height: 210mm !important;
+    max-height: 210mm !important;
+  }
+
+  /* Ensure the last page does not generate an empty trailing blank page */
+  .document-page:last-child {
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  /* Table print optimization */
+  .doc-table {
+    page-break-inside: auto;
+  }
+
+  .doc-table tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  .doc-table thead {
+    display: table-header-group;
+  }
+}
