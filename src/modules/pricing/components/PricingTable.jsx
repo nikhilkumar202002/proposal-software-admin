@@ -33,6 +33,7 @@ export const PricingTable = ({
   onUpdateItem: propOnUpdateItem,
   onRemoveItem: propOnRemoveItem,
   onDuplicateItem: propOnDuplicateItem,
+  onReorderItems: propOnReorderItems,
   onCurrencyChange: propOnCurrencyChange,
   onGlobalDiscountChange: propOnGlobalDiscountChange,
   onTaxModeChange: propOnTaxModeChange,
@@ -68,6 +69,16 @@ export const PricingTable = ({
   )
 
   const itemIds = useMemo(() => items.map((i) => i.id), [items])
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event
+    if (over && active.id !== over.id) {
+      if (propOnReorderItems) {
+        propOnReorderItems(active.id, over.id)
+      }
+      store.reorderItems(active.id, over.id)
+    }
+  }
 
   const handleAddItem = (custom) => {
     if (propOnAddItem) propOnAddItem(custom)
@@ -143,7 +154,7 @@ export const PricingTable = ({
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
-              onDragEnd={store.handleDragEnd}
+              onDragEnd={handleDragEnd}
             >
               <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
                 <tbody className="divide-y divide-gray-100 bg-white">

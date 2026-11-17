@@ -22,6 +22,8 @@ export const CreateProposal = () => {
     addPricingItem,
     updatePricingItem,
     removePricingItem,
+    duplicatePricingItem,
+    reorderPricingItems,
     setPricingCurrency,
     setGlobalDiscount,
     saveCurrentProposal,
@@ -105,6 +107,8 @@ export const CreateProposal = () => {
         onAddPricingItem={addPricingItem}
         onUpdatePricingItem={updatePricingItem}
         onRemovePricingItem={removePricingItem}
+        onDuplicatePricingItem={duplicatePricingItem}
+        onReorderPricingItems={reorderPricingItems}
         onCurrencyChange={setPricingCurrency}
         onGlobalDiscountChange={setGlobalDiscount}
         onSave={handleSave}

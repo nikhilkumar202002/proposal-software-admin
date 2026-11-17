@@ -41,6 +41,8 @@ export const ProposalForm = ({
   onAddPricingItem = () => {},
   onUpdatePricingItem = () => {},
   onRemovePricingItem = () => {},
+  onDuplicatePricingItem = () => {},
+  onReorderPricingItems = () => {},
   onCurrencyChange = () => {},
   onGlobalDiscountChange = () => {},
   onSave = () => {},
@@ -190,6 +192,8 @@ export const ProposalForm = ({
             onAddItem={onAddPricingItem}
             onUpdateItem={onUpdatePricingItem}
             onRemoveItem={onRemovePricingItem}
+            onDuplicateItem={onDuplicatePricingItem}
+            onReorderItems={onReorderPricingItems}
             onCurrencyChange={onCurrencyChange}
             onGlobalDiscountChange={onGlobalDiscountChange}
           />

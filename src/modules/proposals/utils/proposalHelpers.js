@@ -1,4 +1,10 @@
 
+import {
+  calculateRowTotal,
+  calculatePricingSummary,
+  round2 as pricingRound2,
+} from '../../pricing/utils/pricingCalculations'
+
 export const CURRENCY_CONFIG = {
   INR: { symbol: '₹', code: 'INR', name: 'Indian Rupee', locale: 'en-IN' },
   USD: { symbol: '$', code: 'USD', name: 'US Dollar', locale: 'en-US' },
@@ -46,31 +52,20 @@ export function formatCurrency(amount, currency = 'INR') {
  * Decimal-safe rounding to 2 places
  */
 export function round2(num) {
-  return Math.round((num + Number.EPSILON) * 100) / 100
+  return pricingRound2(num)
 }
 
 /**
  * Calculate totals for a single pricing table row
  */
 export function calculateLineItemTotal(item) {
-  const safe = item || {}
-  const qty = parseFloat(safe.quantity) || 0
-  const unitPrice = parseFloat(safe.unitPrice) || 0
-  const discountPercent = parseFloat(safe.discount) || 0
-  const taxPercent = parseFloat(safe.tax) || 0
-
-  const subtotal = round2(qty * unitPrice)
-  const discountAmount = round2(subtotal * (discountPercent / 100))
-  const taxableAmount = Math.max(0, round2(subtotal - discountAmount))
-  const taxAmount = round2(taxableAmount * (taxPercent / 100))
-  const total = round2(taxableAmount + taxAmount)
-
+  const calc = calculateRowTotal(item)
   return {
-    subtotal,
-    discountAmount,
-    taxableAmount,
-    taxAmount,
-    total,
+    subtotal: calc.baseSubtotal,
+    discountAmount: calc.discountAmount,
+    taxableAmount: calc.taxableAmount,
+    taxAmount: calc.taxAmount,
+    total: calc.total,
   }
 }
 
@@ -78,35 +73,16 @@ export function calculateLineItemTotal(item) {
  * Calculate overall proposal pricing totals
  */
 export function calculateProposalTotals(pricing) {
-  const safe = pricing || {}
-  const items = Array.isArray(safe.items) ? safe.items : []
-  const globalDiscountPercent = parseFloat(safe.globalDiscount) || 0
-
-  let rawSubtotal = 0
-  let totalLineDiscounts = 0
-  let totalTax = 0
-
-  items.forEach((item) => {
-    const row = calculateLineItemTotal(item)
-    rawSubtotal = round2(rawSubtotal + row.subtotal)
-    totalLineDiscounts = round2(totalLineDiscounts + row.discountAmount)
-    totalTax = round2(totalTax + row.taxAmount)
-  })
-
-  // Apply global discount if any on top
-  const afterLineDiscounts = Math.max(0, round2(rawSubtotal - totalLineDiscounts))
-  const globalDiscountAmount = round2(afterLineDiscounts * (globalDiscountPercent / 100))
-  const netTaxable = Math.max(0, round2(afterLineDiscounts - globalDiscountAmount))
-  const grandTotal = round2(netTaxable + totalTax)
-
+  const summary = calculatePricingSummary(pricing || {})
   return {
-    subtotal: rawSubtotal,
-    lineDiscounts: totalLineDiscounts,
-    globalDiscountAmount,
-    totalDiscount: round2(totalLineDiscounts + globalDiscountAmount),
-    totalTax,
-    grandTotal,
-    itemCount: items.length,
+    subtotal: summary.subtotal,
+    lineDiscounts: summary.totalLineDiscounts,
+    globalDiscountAmount: summary.globalDiscountAmount,
+    totalDiscount: summary.totalDiscount,
+    totalTax: summary.totalTax,
+    additionalChargesTotal: summary.additionalChargesTotal,
+    grandTotal: summary.grandTotal,
+    itemCount: summary.itemCount,
   }
 }
 
@@ -609,6 +585,39 @@ export function convertProposalToDocumentCanvasProps(proposal) {
         '',
         formatCurrency(totals.grandTotal, currency),
       ],
+    })
+  }
+
+  // Add Payment Milestones Schedule if present
+  const milestones = proposal.pricing?.paymentMilestones || []
+  if (milestones.length > 0) {
+    contentBlocks.push({
+      id: 'blk-milestones-title',
+      type: 'heading',
+      level: 3,
+      text: 'Billing & Payment Milestones',
+    })
+
+    const milestoneHeaders = ['#', 'Milestone Phase', 'Billing Term', 'Scheduled Amount']
+    const milestoneRows = milestones.map((ms, idx) => {
+      const calculatedAmt =
+        ms.type === 'percentage'
+          ? (totals.grandTotal * (ms.value || 0)) / 100
+          : ms.value || 0
+      return [
+        String(idx + 1),
+        ms.name || `Phase ${idx + 1}`,
+        ms.type === 'percentage' ? `${ms.value}% of Total` : 'Fixed Fee',
+        formatCurrency(calculatedAmt, currency),
+      ]
+    })
+
+    contentBlocks.push({
+      id: 'blk-milestones-table',
+      type: 'table',
+      caption: 'Payment Milestone Distribution',
+      headers: milestoneHeaders,
+      rows: milestoneRows,
     })
   }
 

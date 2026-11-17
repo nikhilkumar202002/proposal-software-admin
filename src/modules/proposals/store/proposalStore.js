@@ -173,13 +173,16 @@ export const useProposalStore = create((set, get) => ({
       if (!state.currentProposal) return state
       const currentItems = state.currentProposal.pricing?.items || []
       const newItem = {
-        id: `item-${Date.now()}-${currentItems.length + 1}`,
+        id: item?.id || `item-${Date.now()}-${currentItems.length + 1}`,
         description: item?.description || 'New Service Item',
         quantity: item?.quantity ?? 1,
-        unit: item?.unit || 'Unit',
+        unit: item?.unit || 'Milestone',
         unitPrice: item?.unitPrice ?? 0,
-        discount: item?.discount ?? 0,
-        tax: item?.tax ?? 18,
+        discountType: item?.discountType || 'percentage',
+        discountValue: item?.discountValue !== undefined ? item.discountValue : (item?.discount ?? 0),
+        taxRate: item?.taxRate !== undefined ? item.taxRate : (item?.tax ?? 18),
+        discount: item?.discountValue !== undefined ? item.discountValue : (item?.discount ?? 0),
+        tax: item?.taxRate !== undefined ? item.taxRate : (item?.tax ?? 18),
       }
       const updatedItems = [...currentItems, newItem]
       const updatedPricing = {
@@ -199,11 +202,15 @@ export const useProposalStore = create((set, get) => ({
     })
   },
 
-  updatePricingItem: (index, updates) => {
+  updatePricingItem: (idOrIndex, updates) => {
     set((state) => {
       if (!state.currentProposal) return state
       const currentItems = [...(state.currentProposal.pricing?.items || [])]
-      if (!currentItems[index]) return state
+      const index =
+        typeof idOrIndex === 'number'
+          ? idOrIndex
+          : currentItems.findIndex((it) => it.id === idOrIndex)
+      if (index === -1 || !currentItems[index]) return state
 
       currentItems[index] = {
         ...currentItems[index],
@@ -227,10 +234,16 @@ export const useProposalStore = create((set, get) => ({
     })
   },
 
-  removePricingItem: (index) => {
+  removePricingItem: (idOrIndex) => {
     set((state) => {
       if (!state.currentProposal) return state
       const currentItems = [...(state.currentProposal.pricing?.items || [])]
+      const index =
+        typeof idOrIndex === 'number'
+          ? idOrIndex
+          : currentItems.findIndex((it) => it.id === idOrIndex)
+      if (index === -1) return state
+
       currentItems.splice(index, 1)
 
       const updatedPricing = {
@@ -243,6 +256,89 @@ export const useProposalStore = create((set, get) => ({
         currentProposal: {
           ...state.currentProposal,
           pricing: updatedPricing,
+          updatedAt: new Date().toISOString(),
+        },
+        totals,
+      }
+    })
+  },
+
+  duplicatePricingItem: (idOrIndex) => {
+    set((state) => {
+      if (!state.currentProposal) return state
+      const currentItems = [...(state.currentProposal.pricing?.items || [])]
+      const target =
+        typeof idOrIndex === 'number'
+          ? currentItems[idOrIndex]
+          : currentItems.find((it) => it.id === idOrIndex)
+      if (!target) return state
+
+      const clone = {
+        ...target,
+        id: `item-${Date.now()}-${currentItems.length + 1}`,
+        description: `${target.description} (Copy)`,
+      }
+
+      const updatedItems = [...currentItems, clone]
+      const updatedPricing = {
+        ...state.currentProposal.pricing,
+        items: updatedItems,
+      }
+      const totals = calculateProposalTotals(updatedPricing)
+
+      return {
+        currentProposal: {
+          ...state.currentProposal,
+          pricing: updatedPricing,
+          updatedAt: new Date().toISOString(),
+        },
+        totals,
+      }
+    })
+  },
+
+  reorderPricingItems: (activeId, overId) => {
+    set((state) => {
+      if (!state.currentProposal) return state
+      const currentItems = [...(state.currentProposal.pricing?.items || [])]
+      const oldIndex = currentItems.findIndex((it) => it.id === activeId)
+      const newIndex = currentItems.findIndex((it) => it.id === overId)
+      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return state
+
+      const [removed] = currentItems.splice(oldIndex, 1)
+      currentItems.splice(newIndex, 0, removed)
+
+      const updatedPricing = {
+        ...state.currentProposal.pricing,
+        items: currentItems,
+      }
+      const totals = calculateProposalTotals(updatedPricing)
+
+      return {
+        currentProposal: {
+          ...state.currentProposal,
+          pricing: updatedPricing,
+          updatedAt: new Date().toISOString(),
+        },
+        totals,
+      }
+    })
+  },
+
+  updatePricingData: (pricingUpdates) => {
+    set((state) => {
+      if (!state.currentProposal) return state
+      const updatedPricing = {
+        ...state.currentProposal.pricing,
+        ...pricingUpdates,
+      }
+      const totals = calculateProposalTotals(updatedPricing)
+
+      return {
+        currentProposal: {
+          ...state.currentProposal,
+          pricing: updatedPricing,
+          currency: updatedPricing.currency || state.currentProposal.currency,
           updatedAt: new Date().toISOString(),
         },
         totals,
@@ -268,12 +364,22 @@ export const useProposalStore = create((set, get) => ({
     })
   },
 
-  setGlobalDiscount: (discountPercent) => {
+  setGlobalDiscount: (discountTypeOrPercent, discountValue) => {
     set((state) => {
       if (!state.currentProposal) return state
-      const updatedPricing = {
-        ...state.currentProposal.pricing,
-        globalDiscount: parseFloat(discountPercent) || 0,
+      let updatedPricing
+      if (discountValue !== undefined) {
+        updatedPricing = {
+          ...state.currentProposal.pricing,
+          globalDiscountType: discountTypeOrPercent,
+          globalDiscountValue: parseFloat(discountValue) || 0,
+        }
+      } else {
+        updatedPricing = {
+          ...state.currentProposal.pricing,
+          globalDiscount: parseFloat(discountTypeOrPercent) || 0,
+          globalDiscountValue: parseFloat(discountTypeOrPercent) || 0,
+        }
       }
       const totals = calculateProposalTotals(updatedPricing)
 
