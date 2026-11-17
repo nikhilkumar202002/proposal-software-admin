@@ -7,6 +7,11 @@ import {
   ProposalPreview,
 } from './modules/proposals'
 import {
+  ClientList,
+  CreateClient,
+  EditClient,
+} from './modules/clients'
+import {
   FileText,
   TrendingUp,
   CheckCircle2,
@@ -278,16 +283,11 @@ export function App() {
           <Route path="/proposals/:id/preview" element={<ProposalPreview />} />
           <Route path="/proposals/:id" element={<ProposalPreview />} />
 
-          {/* Other Navigation Items */}
-          <Route
-            path="/clients"
-            element={
-              <PagePlaceholder
-                title="Client Directory"
-                description="Manage client organizations, contacts, and signature records."
-              />
-            }
-          />
+          {/* Client Management Module Routes */}
+          <Route path="/clients" element={<ClientList />} />
+          <Route path="/clients/new" element={<CreateClient />} />
+          <Route path="/clients/create" element={<CreateClient />} />
+          <Route path="/clients/:id/edit" element={<EditClient />} />
           <Route
             path="/templates"
             element={

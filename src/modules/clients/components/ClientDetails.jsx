@@ -1,13 +1,9 @@
 import {
-  Building2,
   Users,
   Mail,
-  Phone,
-  Globe,
   MapPin,
   Receipt,
   FileText,
-  Calendar,
   Edit3,
   Trash2,
   ExternalLink,
@@ -21,7 +17,6 @@ export const ClientDetails = ({
   onEdit = () => {},
   onDelete = () => {},
   onCreateProposal = () => {},
-  onClose,
   className = '',
 }) => {
   if (!client) return null

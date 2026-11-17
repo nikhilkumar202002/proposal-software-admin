@@ -1,4 +1,4 @@
-import { Building2, Mail, Phone, Globe, MapPin, FileText, MoreVertical, Edit3, Eye, Trash2 } from 'lucide-react'
+import { Mail, Phone, MapPin, FileText, Edit3, Eye, Trash2 } from 'lucide-react'
 import { Badge, ActionMenu } from '../../../components/common'
 import { getClientInitials } from '../utils/clientHelpers'
 

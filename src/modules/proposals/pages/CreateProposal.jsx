@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
 import useProposalStore from '../store/proposalStore'
 import ProposalForm from '../components/ProposalForm'
@@ -7,6 +7,7 @@ import { Button } from '../../../components/common'
 
 export const CreateProposal = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const {
     currentProposal,
     totals,
@@ -31,7 +32,18 @@ export const CreateProposal = () => {
 
   useEffect(() => {
     initNewProposal()
-  }, [initNewProposal])
+    if (location.state?.prefilledClient) {
+      const c = location.state.prefilledClient
+      updateClient({
+        name: c.name,
+        companyName: c.companyName,
+        email: c.email,
+        phone: c.phone,
+        address: c.address,
+        taxNumber: c.taxNumber,
+      })
+    }
+  }, [initNewProposal, location.state, updateClient])
 
   const handleSave = async (status) => {
     const saved = await saveCurrentProposal(status)

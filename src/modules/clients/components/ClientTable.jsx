@@ -1,4 +1,4 @@
-import { Eye, Edit3, Trash2, FilePlus, Building2 } from 'lucide-react'
+import { Eye, Edit3, Trash2, FilePlus } from 'lucide-react'
 import { DataTable, Badge, ActionMenu } from '../../../components/common'
 import { getClientInitials } from '../utils/clientHelpers'
 

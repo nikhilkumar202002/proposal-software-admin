@@ -10,7 +10,6 @@ import {
   FileText,
   Save,
   Loader2,
-  X,
 } from 'lucide-react'
 import { Input, Textarea, Select, Button } from '../../../components/common'
 import {
