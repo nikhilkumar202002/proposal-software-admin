@@ -1,4 +1,10 @@
-import logoImg from '../../assets/Domine-Dude_black.png'
+import logoImg from '../../../assets/Domine-Dude_black.png'
+export {
+  CURRENCY_OPTIONS,
+  CURRENCY_MAP,
+  SUPPORTED_CURRENCIES,
+  formatCurrency,
+} from '../../pricing/utils/currencyHelpers'
 
 /**
  * Standard Default Company Profile

@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { Upload, Trash2, RotateCcw, Image, Info } from 'lucide-react'
-import logoDefault from '../../assets/Domine-Dude_black.png'
+import logoDefault from '../../../assets/Domine-Dude_black.png'
 
 export const CompanyLogoUpload = ({
   logoUrl = '',

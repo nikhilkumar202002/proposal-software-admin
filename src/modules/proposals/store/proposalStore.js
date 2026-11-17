@@ -2,12 +2,11 @@ import { create } from 'zustand'
 import proposalService from '../services/proposalService'
 import {
   createNewProposalModel,
-  DEFAULT_COMPANY_DETAILS,
+  getStoredCompanyDetails,
   calculateProposalTotals,
 } from '../utils/proposalHelpers'
 
 export const useProposalStore = create((set, get) => ({
-  // Collection state
   proposals: [],
   selectedProposalIds: [],
   filters: {
@@ -17,7 +16,6 @@ export const useProposalStore = create((set, get) => ({
     sortOrder: 'desc',
   },
 
-  // Active proposal under creation/editing
   currentProposal: null,
   totals: {
     subtotal: 0,
@@ -28,9 +26,8 @@ export const useProposalStore = create((set, get) => ({
     grandTotal: 0,
     itemCount: 0,
   },
-  activeStep: 1, // 1: Info, 2: Client, 3: Company, 4: Content, 5: Pricing, 6: Preview
+  activeStep: 1, 
 
-  // Status flags
   isLoading: false,
   isSaving: false,
   isGeneratingPdf: false,
@@ -96,7 +93,6 @@ export const useProposalStore = create((set, get) => ({
     set({ activeStep: step })
   },
 
-  // Update top-level proposal metadata (Title, dates, project, status)
   updateMetadata: (fields) => {
     set((state) => {
       if (!state.currentProposal) return state
@@ -144,9 +140,10 @@ export const useProposalStore = create((set, get) => ({
   resetCompanyToDefault: () => {
     set((state) => {
       if (!state.currentProposal) return state
+      const defaultCompany = getStoredCompanyDetails()
       const updated = {
         ...state.currentProposal,
-        company: { ...DEFAULT_COMPANY_DETAILS },
+        company: { ...defaultCompany },
         updatedAt: new Date().toISOString(),
       }
       return { currentProposal: updated }
