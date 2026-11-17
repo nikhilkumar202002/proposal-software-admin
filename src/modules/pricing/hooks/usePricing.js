@@ -33,21 +33,32 @@ export function usePricing() {
   const updatePaymentMilestone = usePricingStore((s) => s.updatePaymentMilestone)
   const removePaymentMilestone = usePricingStore((s) => s.removePaymentMilestone)
   const applyMilestonePreset = usePricingStore((s) => s.applyMilestonePreset)
-  const getSummary = usePricingStore((s) => s.getSummary)
   const getPricingSnapshot = usePricingStore((s) => s.getPricingSnapshot)
   const resetPricing = usePricingStore((s) => s.resetPricing)
 
-  const summary = useMemo(() => getSummary(), [
-    items,
-    currency,
-    globalDiscountType,
-    globalDiscountValue,
-    taxMode,
-    overallTaxRate,
-    additionalCharges,
-    paymentMilestones,
-    getSummary,
-  ])
+  const summary = useMemo(
+    () =>
+      calculatePricingSummary({
+        items,
+        currency,
+        globalDiscountType,
+        globalDiscountValue,
+        taxMode,
+        overallTaxRate,
+        additionalCharges,
+        paymentMilestones,
+      }),
+    [
+      items,
+      currency,
+      globalDiscountType,
+      globalDiscountValue,
+      taxMode,
+      overallTaxRate,
+      additionalCharges,
+      paymentMilestones,
+    ]
+  )
 
   const currencyConfig = useMemo(() => getCurrencyConfig(currency), [currency])
 
