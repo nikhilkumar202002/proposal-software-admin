@@ -1,6 +1,7 @@
 import { useMemo, useCallback } from 'react'
 import { usePricingStore } from '../store/pricingStore'
 import { getCurrencyConfig, formatCurrency } from '../utils/currencyHelpers'
+import { calculatePricingSummary } from '../utils/pricingCalculations'
 
 /**
  * Custom hook to interact with the pricing store with helper utilities

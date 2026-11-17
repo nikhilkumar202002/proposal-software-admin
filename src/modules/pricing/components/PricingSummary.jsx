@@ -130,12 +130,16 @@ export const PricingSummary = ({
         {/* 6. Additional Charges */}
         {additionalCharges.length > 0 && (
           <div className="space-y-1 pt-1 border-t border-gray-100">
+            <div className="flex items-center justify-between text-gray-500 font-medium text-[11px]">
+              <span>Additional Fees & Surcharges</span>
+              <span>{formatCurrency(additionalChargesTotal, currency)}</span>
+            </div>
             {additionalCharges.map((chg) => (
               <div
                 key={chg.id}
-                className="flex items-center justify-between text-gray-600 text-[11px]"
+                className="flex items-center justify-between text-gray-600 text-[11px] pl-2"
               >
-                <span>{chg.label}</span>
+                <span>• {chg.label}</span>
                 <span className="font-semibold text-gray-800">
                   {formatCurrency(chg.amount, currency)}
                 </span>

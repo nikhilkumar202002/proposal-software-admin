@@ -33,14 +33,10 @@ export function calculateRowTotal(item = {}) {
     parseFloat(item.discountValue !== undefined ? item.discountValue : item.discount) || 0
   )
 
-  let discountAmount = 0
-  if (discountType === 'percentage') {
-    const cappedPercent = Math.min(100, discountVal)
-    discountAmount = round2(baseSubtotal * (cappedPercent / 100))
-  } else {
-    // Fixed amount discount cannot exceed base subtotal
-    discountAmount = round2(Math.min(baseSubtotal, discountVal))
-  }
+  const discountAmount =
+    discountType === 'percentage'
+      ? round2(baseSubtotal * (Math.min(100, discountVal) / 100))
+      : round2(Math.min(baseSubtotal, discountVal))
 
   const taxableAmount = Math.max(0, round2(baseSubtotal - discountAmount))
 
@@ -85,10 +81,9 @@ export function calculatePricingSummary(pricing = {}) {
 
   let subtotal = 0
   let totalLineDiscounts = 0
-  let calculatedItems = []
 
   // 1. Calculate each item line
-  calculatedItems = rawItems.map((item) => {
+  const calculatedItems = rawItems.map((item) => {
     const row = calculateRowTotal(item)
     subtotal = round2(subtotal + row.baseSubtotal)
     totalLineDiscounts = round2(totalLineDiscounts + row.discountAmount)
@@ -112,19 +107,16 @@ export function calculatePricingSummary(pricing = {}) {
     ) || 0
   )
 
-  let globalDiscountAmount = 0
-  if (globalDiscountType === 'percentage') {
-    const pct = Math.min(100, globalDiscountValue)
-    globalDiscountAmount = round2(afterLineDiscounts * (pct / 100))
-  } else {
-    globalDiscountAmount = round2(Math.min(afterLineDiscounts, globalDiscountValue))
-  }
+  const globalDiscountAmount =
+    globalDiscountType === 'percentage'
+      ? round2(afterLineDiscounts * (Math.min(100, globalDiscountValue) / 100))
+      : round2(Math.min(afterLineDiscounts, globalDiscountValue))
 
   const totalDiscount = round2(totalLineDiscounts + globalDiscountAmount)
   const taxableAmount = Math.max(0, round2(afterLineDiscounts - globalDiscountAmount))
 
   // 4. Tax computation
-  let totalTax = 0
+  let totalTax
   if (taxMode === 'overall') {
     // Overall tax applied on the net taxable amount
     totalTax = round2(taxableAmount * (overallTaxRate / 100))
@@ -169,13 +161,10 @@ export function calculatePricingSummary(pricing = {}) {
   const calculatedMilestones = paymentMilestones.map((m) => {
     const mType = m.type || 'percentage'
     const mValue = parseFloat(m.value) || 0
-    let calculatedAmount = 0
-
-    if (mType === 'percentage') {
-      calculatedAmount = round2(grandTotal * (Math.min(100, mValue) / 100))
-    } else {
-      calculatedAmount = round2(Math.min(grandTotal, mValue))
-    }
+    const calculatedAmount =
+      mType === 'percentage'
+        ? round2(grandTotal * (Math.min(100, mValue) / 100))
+        : round2(Math.min(grandTotal, mValue))
 
     milestonesSum = round2(milestonesSum + calculatedAmount)
     return {
