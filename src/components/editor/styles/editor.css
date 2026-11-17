@@ -1,0 +1,191 @@
+/**
+ * TipTap Editor Visual Styling
+ */
+
+.tiptap-editor-wrapper {
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ProseMirror Core Container */
+.tiptap-prosemirror {
+  padding: 24px;
+  min-height: 400px;
+  color: #171717;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  outline: none;
+}
+
+.tiptap-prosemirror:focus {
+  outline: none;
+}
+
+/* Paragraphs & Headings */
+.tiptap-prosemirror p {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.tiptap-prosemirror h1 {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #111827;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.tiptap-prosemirror h2 {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #1F2937;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.tiptap-prosemirror h3 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #374151;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.tiptap-prosemirror h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4B5563;
+  margin-top: 14px;
+  margin-bottom: 6px;
+}
+
+/* Lists */
+.tiptap-prosemirror ul {
+  list-style-type: disc;
+  padding-left: 24px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.tiptap-prosemirror ol {
+  list-style-type: decimal;
+  padding-left: 24px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.tiptap-prosemirror li {
+  margin-bottom: 4px;
+}
+
+/* Blockquote */
+.tiptap-prosemirror blockquote {
+  border-left: 3px solid #FB6C00;
+  padding-left: 14px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  color: #4B5563;
+  font-style: italic;
+  background-color: #FFFBF7;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Code */
+.tiptap-prosemirror code {
+  background-color: #F3F4F6;
+  color: #E06000;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Horizontal Rule */
+.tiptap-prosemirror hr {
+  border: none;
+  border-top: 1px solid #E5E7EB;
+  margin: 20px 0;
+}
+
+/* Tables inside Editor */
+.tiptap-prosemirror table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+  table-layout: fixed;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tiptap-prosemirror th,
+.tiptap-prosemirror td {
+  border: 1px solid #E5E7EB;
+  padding: 8px 12px;
+  vertical-align: top;
+  box-sizing: border-box;
+  position: relative;
+  min-width: 80px;
+}
+
+.tiptap-prosemirror th {
+  background-color: #F8FAFC;
+  font-weight: 600;
+  color: #475569;
+  text-align: left;
+}
+
+.tiptap-prosemirror .selectedCell:after {
+  z-index: 2;
+  position: absolute;
+  content: "";
+  left: 0; right: 0; top: 0; bottom: 0;
+  background: rgba(251, 108, 0, 0.12);
+  pointer-events: none;
+}
+
+.tiptap-prosemirror .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: #FB6C00;
+  pointer-events: none;
+}
+
+/* Placeholder */
+.tiptap-prosemirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #9CA3AF;
+  pointer-events: none;
+  height: 0;
+}
+
+/* Page Break Node */
+.doc-page-break-node {
+  user-select: none;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.doc-page-break-node:hover {
+  background-color: #FFF3E6;
+  border-color: #FB6C00;
+}

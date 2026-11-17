@@ -1,7 +1,10 @@
+import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import AdminLayout from './components/layout/AdminLayout'
 import { DocumentCanvas } from './components/document'
 import { SAMPLE_PROPOSAL_DATA } from './components/document/utils/documentHelpers'
+import { TipTapEditor } from './components/editor'
+import { SAMPLE_PROPOSAL_DOC_JSON } from './components/editor/utils/sampleDocJson'
 import {
   FileText,
   TrendingUp,
@@ -11,6 +14,9 @@ import {
   ArrowUpRight,
   MoreVertical,
   Filter,
+  Edit3,
+  Eye,
+  Code2,
 } from 'lucide-react'
 
 // Demo Dashboard Overview Page
@@ -216,16 +222,20 @@ const DashboardOverview = () => {
   )
 }
 
-// A4 Document Preview & Proposal Engine Showcase Page
+// Integrated TipTap Editor & A4 Document Engine Showcase Page
 const ProposalDocumentPage = () => {
+  const [activeTab, setActiveTab] = useState('editor') // 'editor' | 'preview'
+  const [editorDoc, setEditorDoc] = useState(SAMPLE_PROPOSAL_DOC_JSON)
+  const [showJsonDrawer, setShowJsonDrawer] = useState(false)
+
   return (
     <div className="space-y-4">
-      {/* Top Banner with Document Info */}
+      {/* Top Banner with View Switcher */}
       <div className="no-print bg-white p-4 rounded-2xl border border-gray-200/80 shadow-2xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
             <span className="px-2 py-0.5 text-[11px] font-bold rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-              A4 Engine Active
+              TipTap + A4 Integrated
             </span>
             <span className="text-xs text-gray-400 font-mono">
               PROP-2026-089
@@ -235,27 +245,93 @@ const ProposalDocumentPage = () => {
             Enterprise Cloud Infrastructure Proposal
           </h2>
           <p className="text-xs text-gray-500">
-            Physical A4 pagination (210×297mm), fixed header/footer, pricing table overflow & watermark support.
+            Rich-text TipTap editing with dynamic tables, manual page breaks & physical A4 page rendering.
           </p>
+        </div>
+
+        {/* View Switcher Tabs */}
+        <div className="flex items-center gap-2 select-none self-start sm:self-auto">
+          <div className="flex rounded-lg bg-gray-100 p-1">
+            <button
+              type="button"
+              onClick={() => setActiveTab('editor')}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-colors cursor-pointer ${
+                activeTab === 'editor'
+                  ? 'bg-white text-gray-900 shadow-2xs'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              <Edit3 className="w-3.5 h-3.5" />
+              TipTap Editor
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('preview')}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-colors cursor-pointer ${
+                activeTab === 'preview'
+                  ? 'bg-white text-gray-900 shadow-2xs'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              <Eye className="w-3.5 h-3.5" />
+              A4 Print Preview
+            </button>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setShowJsonDrawer(!showJsonDrawer)}
+            className="p-2 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 transition-colors"
+            title="Export / View TipTap JSON"
+          >
+            <Code2 className="w-4 h-4" />
+          </button>
         </div>
       </div>
 
-      {/* A4 Document Canvas */}
-      <div className="h-[calc(100vh-210px)] min-h-[650px] rounded-2xl border border-gray-200/80 overflow-hidden shadow-xs bg-[#EBF0F5]">
-        <DocumentCanvas
-          content={SAMPLE_PROPOSAL_DATA.blocks}
-          company={SAMPLE_PROPOSAL_DATA.company}
-          proposal={SAMPLE_PROPOSAL_DATA.metadata}
-          initialSettings={{
-            orientation: 'portrait',
-            watermark: {
-              enabled: false,
-              text: 'CONFIDENTIAL',
-              opacity: 0.08,
-            },
-          }}
-        />
-      </div>
+      {/* JSON Viewer Drawer/Modal */}
+      {showJsonDrawer && (
+        <div className="no-print bg-gray-900 text-gray-100 p-4 rounded-xl border border-gray-800 text-xs font-mono max-h-56 overflow-auto">
+          <div className="flex justify-between items-center pb-2 mb-2 border-b border-gray-800 text-[11px] text-gray-400">
+            <span>TipTap Document JSON Output (Laravel API Ready)</span>
+            <button
+              type="button"
+              onClick={() => setShowJsonDrawer(false)}
+              className="text-gray-400 hover:text-white"
+            >
+              Close
+            </button>
+          </div>
+          <pre>{JSON.stringify(editorDoc, null, 2)}</pre>
+        </div>
+      )}
+
+      {/* Main View Area */}
+      {activeTab === 'editor' ? (
+        <div className="min-h-[600px]">
+          <TipTapEditor
+            content={editorDoc}
+            onChange={(json) => setEditorDoc(json)}
+            placeholder="Draft your proposal here..."
+          />
+        </div>
+      ) : (
+        <div className="h-[calc(100vh-210px)] min-h-[650px] rounded-2xl border border-gray-200/80 overflow-hidden shadow-xs bg-[#EBF0F5]">
+          <DocumentCanvas
+            content={SAMPLE_PROPOSAL_DATA.blocks}
+            company={SAMPLE_PROPOSAL_DATA.company}
+            proposal={SAMPLE_PROPOSAL_DATA.metadata}
+            initialSettings={{
+              orientation: 'portrait',
+              watermark: {
+                enabled: false,
+                text: 'CONFIDENTIAL',
+                opacity: 0.08,
+              },
+            }}
+          />
+        </div>
+      )}
     </div>
   )
 }
