@@ -112,6 +112,37 @@ export const DEFAULT_COMPANY_DETAILS = {
 }
 
 /**
+ * Retrieve centrally stored company profile or standard defaults
+ */
+export function getStoredCompanyDetails() {
+  try {
+    const stored = localStorage.getItem('proposalos_settings_company')
+    if (stored) {
+      const parsed = JSON.parse(stored)
+      return { ...DEFAULT_COMPANY_DETAILS, ...parsed }
+    }
+  } catch {
+    // fallback
+  }
+  return DEFAULT_COMPANY_DETAILS
+}
+
+/**
+ * Retrieve centrally stored currency preference or defaults
+ */
+export function getStoredCurrencySettings() {
+  try {
+    const stored = localStorage.getItem('proposalos_settings_currency')
+    if (stored) {
+      return JSON.parse(stored)
+    }
+  } catch {
+    // fallback
+  }
+  return { defaultCurrency: 'INR', defaultTaxRate: 18, defaultValidityDays: 30 }
+}
+
+/**
  * Pre-defined client records for fast selection
  */
 export const PREDEFINED_CLIENTS = [
@@ -408,10 +439,15 @@ export function createDefaultProposalDocJson(proposalTitle = 'Enterprise Softwar
  * Creates empty initial proposal state
  */
 export function createNewProposalModel(existingList = []) {
+  const company = getStoredCompanyDetails()
+  const currencySettings = getStoredCurrencySettings()
+  const defaultCurrency = currencySettings.defaultCurrency || 'INR'
+  const validityDays = currencySettings.defaultValidityDays || 30
+
   const proposalNumber = generateProposalNumber(existingList)
   const today = new Date().toISOString().split('T')[0]
   const validDate = new Date()
-  validDate.setDate(validDate.getDate() + 30)
+  validDate.setDate(validDate.getDate() + validityDays)
   const validUntil = validDate.toISOString().split('T')[0]
 
   return {
@@ -424,7 +460,7 @@ export function createNewProposalModel(existingList = []) {
     status: 'draft',
     proposalType: 'direct', // 'direct' (with logo) | 'b2b' (without logo)
     showCompanyLogo: true,
-    currency: 'INR',
+    currency: defaultCurrency,
     client: {
       name: '',
       companyName: '',
@@ -433,10 +469,10 @@ export function createNewProposalModel(existingList = []) {
       address: '',
       taxNumber: '',
     },
-    company: { ...DEFAULT_COMPANY_DETAILS },
+    company: { ...company },
     content: createDefaultProposalDocJson('Enterprise Digital Modernization Proposal'),
     pricing: {
-      currency: 'INR',
+      currency: defaultCurrency,
       globalDiscount: 0,
       items: [
         {
@@ -641,7 +677,7 @@ export function convertProposalToDocumentCanvasProps(proposal) {
 
   return {
     content: contentBlocks,
-    company: proposal.company || DEFAULT_COMPANY_DETAILS,
+    company: proposal.company || getStoredCompanyDetails(),
     proposal: {
       number: proposal.number,
       title: proposal.title,

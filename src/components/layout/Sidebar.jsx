@@ -5,6 +5,7 @@ import {
     Users,
     Sliders,
     Building2,
+    Coins,
     LogOut,
     PanelLeftClose,
     PanelLeftOpen,
@@ -34,14 +35,19 @@ const workspaceLinks = [
 
 const managementLinks = [
     {
+        name: 'Company Profile',
+        to: '/settings/company',
+        icon: Building2,
+    },
+    {
         name: 'Document Settings',
         to: '/settings/documents',
         icon: Sliders,
     },
     {
-        name: 'Company Profile',
-        to: '/settings/company',
-        icon: Building2,
+        name: 'Currency & Defaults',
+        to: '/settings/currency',
+        icon: Coins,
     },
 ]
 

@@ -12,6 +12,13 @@ import {
   EditClient,
 } from './modules/clients'
 import {
+  SettingsPage,
+  CompanyProfile,
+  DocumentSettings,
+  CurrencySettings,
+  AccountSettings,
+} from './modules/settings'
+import {
   FileText,
   TrendingUp,
   CheckCircle2,
@@ -288,24 +295,12 @@ export function App() {
           <Route path="/clients/new" element={<CreateClient />} />
           <Route path="/clients/create" element={<CreateClient />} />
           <Route path="/clients/:id/edit" element={<EditClient />} />
-          <Route
-            path="/settings/documents"
-            element={
-              <PagePlaceholder
-                title="Document Settings"
-                description="Configure typography, default clauses, currencies, and signing policies."
-              />
-            }
-          />
-          <Route
-            path="/settings/company"
-            element={
-              <PagePlaceholder
-                title="Company Profile"
-                description="Update company logo, legal address, tax registrations, and branding."
-              />
-            }
-          />
+          {/* Workspace Settings Module Routes */}
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/settings/company" element={<CompanyProfile standalone={true} />} />
+          <Route path="/settings/documents" element={<DocumentSettings standalone={true} />} />
+          <Route path="/settings/currency" element={<CurrencySettings standalone={true} />} />
+          <Route path="/settings/account" element={<AccountSettings standalone={true} />} />
           <Route
             path="/help"
             element={
