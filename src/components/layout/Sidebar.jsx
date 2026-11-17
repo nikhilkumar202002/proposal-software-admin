@@ -3,10 +3,8 @@ import {
     LayoutDashboard,
     FileText,
     Users,
-    Layers,
     Sliders,
     Building2,
-    HelpCircle,
     LogOut,
     PanelLeftClose,
     PanelLeftOpen,
@@ -31,11 +29,6 @@ const workspaceLinks = [
         name: 'Clients',
         to: '/clients',
         icon: Users,
-    },
-    {
-        name: 'Templates',
-        to: '/templates',
-        icon: Layers,
     },
 ]
 
@@ -248,36 +241,6 @@ export const Sidebar = ({
 
                     {/* Bottom Section */}
                     <div className="pt-4 mt-auto border-t border-gray-100/90 space-y-2">
-                        {/* Help & Support NavLink */}
-                        <NavLink
-                            to="/help"
-                            onClick={handleLinkClick}
-                            className={`group relative flex items-center rounded-lg text-sm font-medium transition-colors duration-150 ${isCollapsed && !isMobileOpen
-                                ? 'justify-center h-11 w-11 mx-auto'
-                                : 'h-10 px-3'
-                                } ${isRouteActive('/help')
-                                    ? 'bg-[#EFF6FF] text-[#0055FF]'
-                                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/70'
-                                }`}
-                        >
-                            <HelpCircle
-                                className={`shrink-0 transition-colors ${isCollapsed && !isMobileOpen ? 'w-5 h-5' : 'w-4 h-4 mr-3'
-                                    } ${isRouteActive('/help')
-                                        ? 'text-[#0055FF]'
-                                        : 'text-gray-500 group-hover:text-gray-800'
-                                    }`}
-                            />
-                            {(!isCollapsed || isMobileOpen) && (
-                                <span className="flex-1 truncate tracking-tight">Help & Support</span>
-                            )}
-                            {isCollapsed && !isMobileOpen && (
-                                <div className="absolute left-[calc(100%+12px)] top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-md shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 z-50 flex items-center">
-                                    <span>Help & Support</span>
-                                    <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45" />
-                                </div>
-                            )}
-                        </NavLink>
-
                         {/* User Profile Card */}
                         <div
                             className={`relative rounded-xl border border-gray-100 bg-gray-50/70 p-2 transition-all ${isCollapsed && !isMobileOpen ? 'flex justify-center p-1.5' : 'flex items-center gap-2.5'
