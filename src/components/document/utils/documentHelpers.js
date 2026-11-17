@@ -179,12 +179,12 @@ export const SAMPLE_PROPOSAL_DATA = {
     totalValue: '₹14,85,000',
   },
   company: {
-    name: 'ProposalOS Technologies Ltd.',
+    name: 'Domain Dude',
     tagline: 'Enterprise Document & Workflow Systems',
     address: 'Tower B, Suite 402, DLF CyberCity, Gurugram 122002',
     phone: '+91 98765 43210',
-    email: 'contact@proposalos.com',
-    website: 'www.proposalos.com',
+    email: 'contact@domaindude.in',
+    website: 'www.domaindude.in',
     logoUrl: '/src/assets/Domine-Dude_black.png',
   },
   client: {

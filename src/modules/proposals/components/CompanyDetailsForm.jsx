@@ -72,7 +72,7 @@ export const CompanyDetailsForm = ({
               type="email"
               value={company.email || ''}
               onChange={(e) => onChange({ email: e.target.value })}
-              placeholder="e.g. contact@proposalos.com"
+              placeholder="e.g. contact@domaindude.in"
               icon={Mail}
               required
             />
@@ -99,7 +99,7 @@ export const CompanyDetailsForm = ({
             <Input
               value={company.website || ''}
               onChange={(e) => onChange({ website: e.target.value })}
-              placeholder="e.g. www.proposalos.com"
+              placeholder="e.g. www.domaindude.in"
               icon={Globe}
             />
           </div>

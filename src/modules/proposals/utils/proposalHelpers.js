@@ -130,12 +130,12 @@ export function generateProposalNumber(existingList = []) {
  * Default company information
  */
 export const DEFAULT_COMPANY_DETAILS = {
-  name: 'ProposalOS Technologies Ltd.',
+  name: 'Domain Dude',
   tagline: 'Enterprise Document & Workflow Systems',
   address: 'Tower B, Suite 402, DLF CyberCity, Gurugram, Haryana 122002',
   phone: '+91 98765 43210',
-  email: 'contact@proposalos.com',
-  website: 'www.proposalos.com',
+  email: 'contact@domaindude.in',
+  website: 'www.domaindude.in',
   taxNumber: '07AABCP1234F1Z5',
   logoUrl: '/src/assets/Domine-Dude_black.png',
 }
