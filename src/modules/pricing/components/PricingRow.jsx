@@ -1,7 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { GripVertical, Copy, Trash2 } from 'lucide-react'
-import DiscountInput from './DiscountInput'
 import TaxInput from './TaxInput'
 import { formatCurrency } from '../utils/currencyHelpers'
 import { calculateRowTotal } from '../utils/pricingCalculations'
@@ -145,20 +144,7 @@ export const PricingRow = ({
         </div>
       </td>
 
-      {/* 6. Discount (Percentage or Fixed) */}
-      <td className="py-3 px-2 w-32">
-        <DiscountInput
-          type={item.discountType || 'percentage'}
-          value={item.discountValue !== undefined ? item.discountValue : (item.discount || 0)}
-          currencySymbol={currencySymbol}
-          compact
-          disabled={disabled}
-          onChangeType={(type) => handleFieldChange('discountType', type)}
-          onChangeValue={(val) => handleFieldChange('discountValue', val)}
-        />
-      </td>
-
-      {/* 7. Tax (Per Item mode only, otherwise hidden/muted) */}
+      {/* 6. Tax (Per Item mode only, otherwise hidden/muted) */}
       {taxMode === 'per_item' ? (
         <td className="py-3 px-2 w-32">
           <TaxInput
@@ -174,16 +160,11 @@ export const PricingRow = ({
         </td>
       )}
 
-      {/* 8. Total */}
+      {/* 7. Total */}
       <td className="py-3 px-3 w-32 text-right">
         <span className="text-xs font-bold text-gray-900">
           {formatCurrency(calc.total, currency)}
         </span>
-        {calc.discountAmount > 0 && (
-          <div className="text-[10px] text-emerald-600 font-medium">
-            -{formatCurrency(calc.discountAmount, currency)}
-          </div>
-        )}
       </td>
 
       {/* 9. Action Buttons */}

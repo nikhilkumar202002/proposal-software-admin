@@ -81,25 +81,6 @@ export const ProposalInformation = ({
           </div>
         </div>
 
-        {/* Output Type Status Notification Banner */}
-        <div className="p-3 bg-blue-50/40 rounded-xl border border-blue-100 flex items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 text-gray-700">
-            <span className="font-semibold text-gray-900">Current Output Type:</span>
-            <span className="font-bold text-[#0055FF]">
-              {!isB2B ? 'Direct Client Proposal' : 'B2B Partner Proposal'}
-            </span>
-            <span className="text-gray-400">•</span>
-            <span className="text-gray-500">
-              {!isB2B
-                ? 'Company logo is rendered in the document header.'
-                : 'Company logo is hidden from the header (exact layout & margins strictly preserved).'}
-            </span>
-          </div>
-          <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-white border border-blue-200 text-[#0055FF] shrink-0">
-            {!isB2B ? 'Logo Active' : 'Logo Hidden'}
-          </span>
-        </div>
-
         {/* 1. Core Engagement Details */}
         <div className="space-y-4">
           <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-wider">
@@ -144,11 +125,11 @@ export const ProposalInformation = ({
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Proposal Number */}
+            {/* Proposal Number (Read Only) */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-semibold text-gray-700">
-                  Proposal ID <span className="text-red-500">*</span>
+                  Proposal ID <span className="text-gray-400 font-normal">(Read-Only)</span>
                 </label>
                 <button
                   type="button"
@@ -162,9 +143,9 @@ export const ProposalInformation = ({
               </div>
               <Input
                 value={proposal.number || ''}
-                onChange={(e) => onChange({ number: e.target.value })}
+                readOnly
+                inputClassName="bg-gray-50/80 font-mono font-bold text-gray-700 cursor-default select-all focus:ring-0 focus:border-gray-200"
                 placeholder="PROP-2026-001"
-                required
               />
             </div>
 

@@ -35,9 +35,9 @@ const DEFAULT_STATE = {
       unit: 'Milestone',
       unitPrice: 320000,
       discountType: 'percentage',
-      discountValue: 5,
+      discountValue: 0,
       taxRate: 18,
-      total: 358720,
+      total: 377600,
     },
     {
       id: 'item-init-3',

@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { Plus, Trash2, Calendar, Receipt, Percent, Tag, ChevronDown, ChevronUp } from 'lucide-react'
-import DiscountInput from './DiscountInput'
+import { Plus, Trash2, Calendar, Receipt, Tag, ChevronDown, ChevronUp } from 'lucide-react'
 import TaxInput from './TaxInput'
 import { DEFAULT_MILESTONE_PRESETS } from '../services/pricingService'
 import { formatCurrency } from '../utils/currencyHelpers'
@@ -59,7 +58,7 @@ export const PricingSettings = ({
               Commercial Adjustments, Additional Charges & Payment Milestones
             </h4>
             <p className="text-xs text-gray-500 mt-0.5">
-              Configure overall discount, overall tax rates, additional fees, and billing milestone schedules.
+              Configure tax rates, additional charges, and billing milestone schedules.
             </p>
           </div>
         </div>
@@ -79,37 +78,14 @@ export const PricingSettings = ({
       {/* Expandable Body */}
       {isOpen && (
         <div className="p-6 space-y-6 border-t border-gray-100">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* 1. Global Discount */}
-            <div className="p-4 bg-gray-50/70 rounded-xl border border-gray-200/80 space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Percent className="w-4 h-4 text-[#0055FF]" />
-                  <span className="text-xs font-bold text-gray-800 uppercase tracking-wider">
-                    Overall Proposal Discount
-                  </span>
-                </div>
-                <span className="text-[11px] text-gray-500">Applies across all items</span>
-              </div>
-              <div className="w-full">
-                <DiscountInput
-                  type={globalDiscountType}
-                  value={globalDiscountValue}
-                  currencySymbol={currencySymbol}
-                  disabled={disabled}
-                  onChangeType={(t) => onGlobalDiscountChange(t, globalDiscountValue)}
-                  onChangeValue={(v) => onGlobalDiscountChange(globalDiscountType, v)}
-                />
-              </div>
-            </div>
-
-            {/* 2. Overall Tax (when taxMode === 'overall') */}
+          <div>
+            {/* Overall Tax (when taxMode === 'overall') */}
             <div className="p-4 bg-gray-50/70 rounded-xl border border-gray-200/80 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Tag className="w-4 h-4 text-[#0055FF]" />
                   <span className="text-xs font-bold text-gray-800 uppercase tracking-wider">
-                    Overall Statutory Tax
+                    Overall Statutory Tax Rate
                   </span>
                 </div>
                 <span className="text-[11px] text-gray-500">

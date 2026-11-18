@@ -490,7 +490,7 @@ export function createNewProposalModel(existingList = []) {
           quantity: 1,
           unit: 'Milestone',
           unitPrice: 320000,
-          discount: 5,
+          discount: 0,
           tax: 18,
         },
         {

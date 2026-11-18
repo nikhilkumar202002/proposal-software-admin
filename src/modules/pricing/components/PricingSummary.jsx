@@ -154,7 +154,7 @@ export const PricingSummary = ({
             <div className="text-[11px] font-bold text-[#0055FF] uppercase tracking-wider">
               Total Proposed Investment
             </div>
-            <div className="text-[11px] text-gray-500">All deliverables, discounts & taxes included</div>
+            <div className="text-[11px] text-gray-500">All deliverables & applicable taxes included</div>
           </div>
           <div className="text-right">
             <span className="text-2xl font-black text-gray-950 tracking-tight">

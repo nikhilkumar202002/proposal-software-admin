@@ -140,7 +140,6 @@ export const PricingTable = ({
                 <th className="py-3 px-2 w-20 text-center">Qty</th>
                 <th className="py-3 px-2 w-28">Unit</th>
                 <th className="py-3 px-2 w-32 text-right">Unit Price</th>
-                <th className="py-3 px-2 w-32 text-center">Discount</th>
                 {taxMode === 'per_item' ? (
                   <th className="py-3 px-2 w-32 text-center">Tax Rate</th>
                 ) : (
@@ -175,7 +174,7 @@ export const PricingTable = ({
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={9} className="py-12 text-center">
+                      <td colSpan={8} className="py-12 text-center">
                         <div className="flex flex-col items-center justify-center text-gray-400">
                           <Receipt className="w-8 h-8 mb-2 stroke-[1.5]" />
                           <p className="text-sm font-semibold text-gray-600">No deliverable items added yet</p>
