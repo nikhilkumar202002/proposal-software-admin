@@ -49,11 +49,11 @@ export const ProposalTable = ({
               <span
                 className={`text-[9.5px] font-semibold px-1.5 py-0.5 rounded shrink-0 border ${
                   r.proposalType === 'b2b' || r.showCompanyLogo === false
-                    ? 'bg-blue-50 text-[#0055FF] border-blue-200'
-                    : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                    ? 'bg-gray-100 text-gray-700 border-gray-200'
+                    : 'bg-orange-50 text-[#FB6C00] border-orange-200'
                 }`}
               >
-                {r.proposalType === 'b2b' || r.showCompanyLogo === false ? 'B2B' : 'Direct'}
+                {r.proposalType === 'b2b' || r.showCompanyLogo === false ? 'B2B (No Logo)' : 'Direct'}
               </span>
             </div>
             {r.projectName && (
@@ -73,7 +73,7 @@ export const ProposalTable = ({
         const r = row && typeof row === 'object' ? row : {}
         return (
           <div className="flex items-center gap-2 max-w-[200px]">
-            <div className="w-6 h-6 rounded-lg bg-blue-50 text-[#0055FF] flex items-center justify-center shrink-0">
+            <div className="w-6 h-6 rounded-lg bg-orange-50 text-[#FB6C00] flex items-center justify-center shrink-0">
               <Building2 className="w-3.5 h-3.5" />
             </div>
             <div className="truncate">
