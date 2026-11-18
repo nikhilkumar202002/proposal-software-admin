@@ -33,7 +33,6 @@ export const useProposalStore = create((set, get) => ({
   isGeneratingPdf: false,
   error: null,
 
-  // --- Collection Actions ---
   fetchProposals: async (customParams = {}) => {
     set({ isLoading: true, error: null })
     try {
@@ -59,7 +58,6 @@ export const useProposalStore = create((set, get) => ({
     set({ selectedProposalIds: ids })
   },
 
-  // --- Single Proposal Actions ---
   initNewProposal: () => {
     const fresh = createNewProposalModel(get().proposals)
     const totals = calculateProposalTotals(fresh.pricing)
@@ -105,7 +103,6 @@ export const useProposalStore = create((set, get) => ({
     })
   },
 
-  // Update client details
   updateClient: (fields) => {
     set((state) => {
       if (!state.currentProposal) return state

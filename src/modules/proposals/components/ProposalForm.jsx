@@ -149,8 +149,8 @@ export const ProposalForm = ({
         </div>
       </div>
 
-      {/* Active Proposal Summary Card (Steps 1-3) */}
-      {activeStep <= 3 && (
+      {/* Active Proposal Summary Card (Steps 2-3) */}
+      {(activeStep === 2 || activeStep === 3) && (
         <ProposalSummary proposal={proposal} totals={totals} />
       )}
 

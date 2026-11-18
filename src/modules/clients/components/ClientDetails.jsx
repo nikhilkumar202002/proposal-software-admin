@@ -111,7 +111,7 @@ export const ClientDetails = ({
                   href={client.website}
                   target="_blank"
                   rel="noreferrer"
-                  className="font-medium text-[#0055FF] hover:underline flex items-center gap-1"
+                  className="font-medium text-[#FB6C00] hover:underline flex items-center gap-1"
                 >
                   {client.website.replace(/^https?:\/\//, '')}
                   <ExternalLink className="w-3 h-3" />
