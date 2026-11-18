@@ -53,19 +53,27 @@ export const ProposalPreview = () => {
   return (
     <div className="space-y-6">
       {/* Top Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-5 rounded-2xl border border-gray-200/80 shadow-2xs print:hidden">
-        <div className="flex items-center gap-3">
+      <div className="space-y-3 print:hidden">
+        {/* Back Button Top */}
+        <div>
           <Button
             variant="outline"
             size="sm"
             onClick={() => navigate('/proposals')}
             icon={ArrowLeft}
-            className="text-xs"
+            className="text-xs shadow-2xs"
           >
-            Back to List
+            Back
           </Button>
+        </div>
 
-          <div>
+        {/* Title on Left, Proposal Number & Action Buttons on Right */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-950 tracking-tight">
+            {currentProposal.title}
+          </h1>
+
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs font-bold text-[#0055FF]">
                 {currentProposal.number}
@@ -73,53 +81,50 @@ export const ProposalPreview = () => {
               <span className="text-gray-300">•</span>
               <StatusBadge status={currentProposal.status || 'draft'} />
             </div>
-            <h2 className="text-xl font-bold text-gray-900 tracking-tight mt-0.5">
-              {currentProposal.title}
-            </h2>
+
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handlePrint}
+                icon={Printer}
+                className="text-xs"
+              >
+                Print
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => downloadPdf(currentProposal.id)}
+                disabled={isGeneratingPdf}
+                icon={FileDown}
+                className="text-xs"
+              >
+                {isGeneratingPdf ? 'Generating...' : 'Export PDF'}
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleDuplicate}
+                icon={Copy}
+                className="text-xs hidden md:inline-flex"
+              >
+                Duplicate
+              </Button>
+
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => navigate(`/proposals/${currentProposal.id}/edit`)}
+                icon={Edit3}
+                className="text-xs font-semibold"
+              >
+                Edit Proposal
+              </Button>
+            </div>
           </div>
-        </div>
-
-        <div className="flex items-center gap-2 flex-wrap">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handlePrint}
-            icon={Printer}
-            className="text-xs"
-          >
-            Print
-          </Button>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => downloadPdf(currentProposal.id)}
-            disabled={isGeneratingPdf}
-            icon={FileDown}
-            className="text-xs"
-          >
-            {isGeneratingPdf ? 'Generating...' : 'Export PDF'}
-          </Button>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleDuplicate}
-            icon={Copy}
-            className="text-xs hidden md:inline-flex"
-          >
-            Duplicate
-          </Button>
-
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => navigate(`/proposals/${currentProposal.id}/edit`)}
-            icon={Edit3}
-            className="text-xs font-semibold"
-          >
-            Edit Proposal
-          </Button>
         </div>
       </div>
 

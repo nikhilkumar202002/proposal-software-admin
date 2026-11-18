@@ -66,29 +66,32 @@ export const CreateProposal = () => {
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-5 rounded-2xl border border-gray-200/80 shadow-2xs">
-        <div className="flex items-center gap-3">
+      <div className="space-y-3">
+        {/* Back Button Top */}
+        <div>
           <Button
             variant="outline"
             size="sm"
             onClick={() => navigate('/proposals')}
             icon={ArrowLeft}
-            className="text-xs"
+            className="text-xs shadow-2xs"
           >
             Back
           </Button>
+        </div>
 
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs font-bold text-[#0055FF]">
-                {currentProposal.number}
-              </span>
-              <span className="text-gray-300">•</span>
-              <span className="text-xs text-gray-500 font-medium">New Proposal</span>
-            </div>
-            <h2 className="text-xl font-bold text-gray-900 tracking-tight mt-0.5">
-              {currentProposal.title || 'Untitled Proposal'}
-            </h2>
+        {/* Title on Left, Proposal Number & Tag on Right */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-950 tracking-tight">
+            {currentProposal.title || 'Untitled Proposal'}
+          </h1>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="font-mono text-xs font-bold text-[#0055FF]">
+              {currentProposal.number}
+            </span>
+            <span className="text-gray-300">•</span>
+            <span className="text-xs text-gray-500 font-medium">New Proposal</span>
           </div>
         </div>
       </div>

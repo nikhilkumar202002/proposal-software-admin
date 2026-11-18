@@ -60,10 +60,10 @@ export const ProposalActions = ({
             size="sm"
             onClick={onNext}
             disabled={currentStep >= totalSteps || isSaving}
+            rightIcon={ChevronRight}
             className="text-xs"
           >
-            <span>Next</span>
-            <ChevronRight className="w-4 h-4 ml-1" />
+            Next
           </Button>
         </div>
 

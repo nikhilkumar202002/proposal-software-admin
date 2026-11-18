@@ -66,19 +66,27 @@ export const EditProposal = () => {
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-5 rounded-2xl border border-gray-200/80 shadow-2xs">
-        <div className="flex items-center gap-3">
+      <div className="space-y-3">
+        {/* Back Button Top */}
+        <div>
           <Button
             variant="outline"
             size="sm"
             onClick={() => navigate('/proposals')}
             icon={ArrowLeft}
-            className="text-xs"
+            className="text-xs shadow-2xs"
           >
             Back
           </Button>
+        </div>
 
-          <div>
+        {/* Title on Left, Proposal Number & Action Buttons on Right */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-950 tracking-tight">
+            {currentProposal.title || 'Untitled Proposal'}
+          </h1>
+
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs font-bold text-[#0055FF]">
                 {currentProposal.number}
@@ -86,42 +94,39 @@ export const EditProposal = () => {
               <span className="text-gray-300">•</span>
               <StatusBadge status={currentProposal.status || 'draft'} />
             </div>
-            <h2 className="text-xl font-bold text-gray-900 tracking-tight mt-0.5">
-              {currentProposal.title || 'Untitled Proposal'}
-            </h2>
+
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => navigate(`/proposals/${currentProposal.id}/preview`)}
+                icon={Eye}
+                className="text-xs"
+              >
+                A4 Preview
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleDuplicate}
+                icon={Copy}
+                className="text-xs hidden sm:inline-flex"
+              >
+                Duplicate
+              </Button>
+
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => setShowDeleteConfirm(true)}
+                icon={Trash2}
+                className="text-xs"
+              >
+                Delete
+              </Button>
+            </div>
           </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate(`/proposals/${currentProposal.id}/preview`)}
-            icon={Eye}
-            className="text-xs"
-          >
-            A4 Preview
-          </Button>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleDuplicate}
-            icon={Copy}
-            className="text-xs hidden sm:inline-flex"
-          >
-            Duplicate
-          </Button>
-
-          <Button
-            variant="danger"
-            size="sm"
-            onClick={() => setShowDeleteConfirm(true)}
-            icon={Trash2}
-            className="text-xs"
-          >
-            Delete
-          </Button>
         </div>
       </div>
 

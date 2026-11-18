@@ -22,10 +22,9 @@ import { convertProposalToDocumentCanvasProps } from '../utils/proposalHelpers'
 const STEPS = [
   { step: 1, title: 'Proposal Info', icon: FileText, desc: 'Number & Dates' },
   { step: 2, title: 'Client Details', icon: Users, desc: 'Recipient Info' },
-  { step: 3, title: 'Company Details', icon: Building, desc: 'Branding & Entity' },
-  { step: 4, title: 'Document Narrative', icon: BookOpen, desc: 'TipTap Editor' },
-  { step: 5, title: 'Pricing & Taxes', icon: Calculator, desc: 'Dynamic Schedule' },
-  { step: 6, title: 'A4 Document Preview', icon: Eye, desc: 'Print & PDF' },
+  { step: 3, title: 'Document Narrative', icon: BookOpen, desc: 'TipTap Editor' },
+  { step: 4, title: 'Pricing & Taxes', icon: Calculator, desc: 'Dynamic Schedule' },
+  { step: 5, title: 'A4 Document Preview', icon: Eye, desc: 'Print & PDF' },
 ]
 
 export const ProposalForm = ({
@@ -149,11 +148,6 @@ export const ProposalForm = ({
         </div>
       </div>
 
-      {/* Active Proposal Summary Card (Steps 2-3) */}
-      {(activeStep === 2 || activeStep === 3) && (
-        <ProposalSummary proposal={proposal} totals={totals} />
-      )}
-
       {/* Step Content Area */}
       <div>
         {activeStep === 1 && (
@@ -171,14 +165,6 @@ export const ProposalForm = ({
         )}
 
         {activeStep === 3 && (
-          <CompanyDetailsForm
-            company={proposal?.company}
-            onChange={onUpdateCompany}
-            onResetDefault={onResetCompany}
-          />
-        )}
-
-        {activeStep === 4 && (
           <ProposalEditorPanel
             content={proposal?.content}
             onChange={onUpdateDocumentContent}
@@ -186,7 +172,7 @@ export const ProposalForm = ({
           />
         )}
 
-        {activeStep === 5 && (
+        {activeStep === 4 && (
           <ProposalPricing
             pricing={proposal?.pricing}
             onAddItem={onAddPricingItem}
@@ -199,7 +185,7 @@ export const ProposalForm = ({
           />
         )}
 
-        {activeStep === 6 && (
+        {activeStep === 5 && (
           <div className="space-y-4">
             <div className="bg-white p-4 rounded-2xl border border-gray-200/80 shadow-2xs flex items-center justify-between">
               <div>
@@ -231,7 +217,7 @@ export const ProposalForm = ({
         onNext={() => onStepChange(Math.min(STEPS.length, activeStep + 1))}
         onSaveDraft={() => handleSaveWithFeedback('draft')}
         onPublish={() => handleSaveWithFeedback('sent')}
-        onPreview={() => onStepChange(6)}
+        onPreview={() => onStepChange(5)}
         onDownloadPdf={() => onDownloadPdf(proposal?.id)}
         onDuplicate={onDuplicate}
         onDelete={onDelete}

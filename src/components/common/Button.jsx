@@ -47,7 +47,7 @@ export const Button = forwardRef(function Button(
   const isIconButton = variant === 'icon' || (!children && (Icon || LeftIcon))
 
   const baseClasses =
-    'inline-flex items-center justify-center border font-medium transition-all duration-150 select-none focus:outline-none focus-visible:ring-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer'
+    'inline-flex items-center justify-center border font-medium transition-all duration-150 select-none focus:outline-none focus-visible:ring-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer whitespace-nowrap'
 
   const sizeClass = isIconButton ? iconSizeStyles[size] || iconSizeStyles.md : sizeStyles[size] || sizeStyles.md
   const variantClass = variantStyles[variant] || variantStyles.primary
@@ -68,7 +68,7 @@ export const Button = forwardRef(function Button(
         <RenderIcon className="w-4 h-4 shrink-0" />
       ) : null}
 
-      {children && <span>{children}</span>}
+      {children && <span className="inline-flex items-center gap-1.5 whitespace-nowrap">{children}</span>}
 
       {!loading && RightIcon && <RightIcon className="w-4 h-4 shrink-0" />}
     </button>
