@@ -1,5 +1,6 @@
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import AdminLayout from './components/layout/AdminLayout'
+import { Dashboard } from './modules/Dashboard'
 import {
   ProposalList,
   CreateProposal,
@@ -18,16 +19,7 @@ import {
   CurrencySettings,
   AccountSettings,
 } from './modules/settings'
-import {
-  FileText,
-  TrendingUp,
-  CheckCircle2,
-  Clock,
-  Plus,
-  ArrowUpRight,
-  Filter,
-  Eye,
-} from 'lucide-react'
+import { FileText } from 'lucide-react'
 
 // Dashboard Overview Page
 const DashboardOverview = () => {
