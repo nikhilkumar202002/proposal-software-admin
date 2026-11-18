@@ -42,7 +42,7 @@ export const CompanyContactForm = ({
             value={company.phone || ''}
             onChange={(e) => handleChange('phone', e.target.value)}
             disabled={disabled}
-            placeholder="e.g. +91 98765 43210"
+            placeholder="e.g. +91 77360 16507, +91 90480 06320"
             className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 focus:border-[#0055FF] transition-colors"
           />
           <p className="mt-1 text-[10px] text-gray-400">

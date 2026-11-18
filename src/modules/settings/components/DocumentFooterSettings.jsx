@@ -3,7 +3,7 @@ import { PAGE_NUMBER_FORMATS } from '../utils/settingsHelpers'
 export const DocumentFooterSettings = ({
   footer = {},
   onChange = () => {},
-  companyPhone = '+91 98765 43210',
+  companyPhone = '+91 77360 16507, +91 90480 06320',
   companyAddress = '',
   disabled = false,
   className = '',
@@ -48,7 +48,7 @@ export const DocumentFooterSettings = ({
             value={footer.contactPhone || companyPhone}
             onChange={(e) => handleChange('contactPhone', e.target.value)}
             disabled={disabled || footer.visible === false}
-            placeholder="+91 98765 43210"
+            placeholder="+91 77360 16507, +91 90480 06320"
             className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF] focus:ring-1 focus:ring-[#0055FF]"
           />
         </div>

@@ -9,7 +9,7 @@ export const DocumentFooter = ({
   height = 16, // in mm
   className = '',
 }) => {
-  const companyPhone = company.phone || '+91 98765 43210'
+  const companyPhone = company.phone || '+91 77360 16507, +91 90480 06320'
   const companyAddress = company.address || 'Tower B, Suite 402, DLF CyberCity, Gurugram, Haryana 122002'
 
   return (
@@ -21,16 +21,17 @@ export const DocumentFooter = ({
         <div className="w-full h-px bg-gray-200/90 mb-2 shrink-0" />
       )}
 
-      <div className="flex items-center justify-between text-[10px] text-gray-600 pt-1 gap-4">
-        {/* Left Side: Contact Numbers */}
-        <div className="flex items-center gap-1.5 shrink-0 text-left">
-          <span className="font-semibold text-gray-800">
+      {/* 3 Equal Columns Footer Layout */}
+      <div className="grid grid-cols-3 items-center text-[10px] text-gray-600 pt-1 w-full gap-2">
+        {/* Left Column (1/3): Contact Numbers */}
+        <div className="text-left truncate font-semibold text-gray-800">
+          <span className="truncate block" title={companyPhone}>
             {companyPhone}
           </span>
         </div>
 
-        {/* Center: Page Number */}
-        <div className="shrink-0 text-center">
+        {/* Center Column (1/3): Centered Page Number */}
+        <div className="text-center">
           <DocumentPageNumber
             pageNumber={pageNumber}
             totalPages={totalPages}
@@ -39,9 +40,9 @@ export const DocumentFooter = ({
           />
         </div>
 
-        {/* Right Side: Address */}
-        <div className="text-right truncate max-w-[50%]">
-          <span className="font-medium text-gray-700 truncate block">
+        {/* Right Column (1/3): Address */}
+        <div className="text-right truncate font-medium text-gray-700">
+          <span className="truncate block" title={companyAddress}>
             {companyAddress}
           </span>
         </div>

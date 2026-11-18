@@ -86,7 +86,7 @@ export const CompanyDetailsForm = ({
             <Input
               value={company.phone || ''}
               onChange={(e) => onChange({ phone: e.target.value })}
-              placeholder="e.g. +91 98765 43210"
+              placeholder="e.g. +91 77360 16507, +91 90480 06320"
               icon={Phone}
             />
           </div>

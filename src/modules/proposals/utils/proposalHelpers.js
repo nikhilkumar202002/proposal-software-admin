@@ -104,7 +104,7 @@ export const DEFAULT_COMPANY_DETAILS = {
   name: 'Domain Dude',
   tagline: 'Enterprise Document & Workflow Systems',
   address: 'Tower B, Suite 402, DLF CyberCity, Gurugram, Haryana 122002',
-  phone: '+91 98765 43210',
+  phone: '+91 77360 16507, +91 90480 06320',
   email: 'contact@domaindude.in',
   website: 'www.domaindude.in',
   taxNumber: '07AABCP1234F1Z5',
