@@ -28,7 +28,7 @@ export const CurrencySettings = ({ standalone = false }) => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-5 border-b border-gray-200">
           <div>
             <h1 className="text-xl font-bold text-gray-900 tracking-tight flex items-center gap-2">
-              <Coins className="w-5 h-5 text-[#FB6C00]" />
+              <Coins className="w-5 h-5 text-[#0055FF]" />
               Currency & Commercial Default Rules
             </h1>
             <p className="text-xs text-gray-500 mt-0.5">
@@ -39,7 +39,7 @@ export const CurrencySettings = ({ standalone = false }) => {
           <button
             type="submit"
             disabled={isSaving}
-            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-[#FB6C00] hover:bg-[#E65F00] active:scale-[0.98] rounded-xl shadow-2xs transition-all disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-[#0055FF] hover:bg-[#0044CC] active:scale-[0.98] rounded-xl shadow-2xs transition-all disabled:opacity-50 cursor-pointer"
           >
             {isSaving ? (
               <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -90,7 +90,7 @@ export const CurrencySettings = ({ standalone = false }) => {
           <button
             type="submit"
             disabled={isSaving}
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-white bg-[#FB6C00] hover:bg-[#E65F00] active:scale-[0.98] rounded-xl shadow-2xs transition-all disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-white bg-[#0055FF] hover:bg-[#0044CC] active:scale-[0.98] rounded-xl shadow-2xs transition-all disabled:opacity-50 cursor-pointer"
           >
             {isSaving ? (
               <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

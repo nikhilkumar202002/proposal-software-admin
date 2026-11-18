@@ -31,7 +31,7 @@ export const DocumentFooterSettings = ({
             checked={footer.visible !== false}
             onChange={(e) => handleChange('visible', e.target.checked)}
             disabled={disabled}
-            className="w-4 h-4 text-[#FB6C00] rounded border-gray-300 focus:ring-[#FB6C00]"
+            className="w-4 h-4 text-[#0055FF] rounded border-gray-300 focus:ring-[#0055FF]"
           />
           <span className="text-xs font-semibold text-gray-700">Show Footer</span>
         </label>
@@ -49,7 +49,7 @@ export const DocumentFooterSettings = ({
             onChange={(e) => handleChange('contactPhone', e.target.value)}
             disabled={disabled || footer.visible === false}
             placeholder="+91 98765 43210"
-            className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00] focus:ring-1 focus:ring-[#FB6C00]"
+            className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF] focus:ring-1 focus:ring-[#0055FF]"
           />
         </div>
 
@@ -64,7 +64,7 @@ export const DocumentFooterSettings = ({
             onChange={(e) => handleChange('addressText', e.target.value)}
             disabled={disabled || footer.visible === false}
             placeholder="Tower B, Suite 402, DLF CyberCity, Gurugram"
-            className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00] focus:ring-1 focus:ring-[#FB6C00]"
+            className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF] focus:ring-1 focus:ring-[#0055FF]"
           />
         </div>
       </div>
@@ -82,7 +82,7 @@ export const DocumentFooterSettings = ({
             value={footer.height || 16}
             onChange={(e) => handleChange('height', parseInt(e.target.value) || 16)}
             disabled={disabled || footer.visible === false}
-            className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00] focus:ring-1 focus:ring-[#FB6C00]"
+            className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF] focus:ring-1 focus:ring-[#0055FF]"
           />
           <p className="mt-1 text-[10px] text-gray-400">Standard A4 default is 16mm.</p>
         </div>
@@ -96,7 +96,7 @@ export const DocumentFooterSettings = ({
             value={footer.pageNumberFormat || 'pageOfTotal'}
             onChange={(e) => handleChange('pageNumberFormat', e.target.value)}
             disabled={disabled || footer.visible === false || footer.showPageNumbers === false}
-            className="w-full h-8 px-2 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00] cursor-pointer"
+            className="w-full h-8 px-2 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF] cursor-pointer"
           >
             {PAGE_NUMBER_FORMATS.map((fmt) => (
               <option key={fmt.value} value={fmt.value}>
@@ -114,7 +114,7 @@ export const DocumentFooterSettings = ({
               checked={footer.showDivider !== false}
               onChange={(e) => handleChange('showDivider', e.target.checked)}
               disabled={disabled || footer.visible === false}
-              className="w-4 h-4 text-[#FB6C00] rounded border-gray-300 focus:ring-[#FB6C00]"
+              className="w-4 h-4 text-[#0055FF] rounded border-gray-300 focus:ring-[#0055FF]"
             />
             <span className="text-xs font-medium text-gray-700">Show Footer Divider Line</span>
           </label>
@@ -125,7 +125,7 @@ export const DocumentFooterSettings = ({
               checked={footer.showPageNumbers !== false}
               onChange={(e) => handleChange('showPageNumbers', e.target.checked)}
               disabled={disabled || footer.visible === false}
-              className="w-4 h-4 text-[#FB6C00] rounded border-gray-300 focus:ring-[#FB6C00]"
+              className="w-4 h-4 text-[#0055FF] rounded border-gray-300 focus:ring-[#0055FF]"
             />
             <span className="text-xs font-medium text-gray-700">Enable Page Numbering</span>
           </label>

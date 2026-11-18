@@ -28,7 +28,7 @@ export const DocumentHeaderSettings = ({
             checked={header.visible !== false}
             onChange={(e) => handleChange('visible', e.target.checked)}
             disabled={disabled}
-            className="w-4 h-4 text-[#FB6C00] rounded border-gray-300 focus:ring-[#FB6C00]"
+            className="w-4 h-4 text-[#0055FF] rounded border-gray-300 focus:ring-[#0055FF]"
           />
           <span className="text-xs font-semibold text-gray-700">Show Header</span>
         </label>
@@ -47,7 +47,7 @@ export const DocumentHeaderSettings = ({
             value={header.height || 22}
             onChange={(e) => handleChange('height', parseInt(e.target.value) || 22)}
             disabled={disabled || header.visible === false}
-            className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00] focus:ring-1 focus:ring-[#FB6C00]"
+            className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF] focus:ring-1 focus:ring-[#0055FF]"
           />
           <p className="mt-1 text-[10px] text-gray-400">Standard A4 default is 22mm.</p>
         </div>
@@ -63,7 +63,7 @@ export const DocumentHeaderSettings = ({
             onChange={(e) => handleChange('website', e.target.value)}
             disabled={disabled || header.visible === false}
             placeholder="www.domaindude.in"
-            className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00] focus:ring-1 focus:ring-[#FB6C00]"
+            className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF] focus:ring-1 focus:ring-[#0055FF]"
           />
           <p className="mt-1 text-[10px] text-gray-400">Positioned on top-right of every page.</p>
         </div>
@@ -76,7 +76,7 @@ export const DocumentHeaderSettings = ({
               checked={header.showDivider !== false}
               onChange={(e) => handleChange('showDivider', e.target.checked)}
               disabled={disabled || header.visible === false}
-              className="w-4 h-4 text-[#FB6C00] rounded border-gray-300 focus:ring-[#FB6C00]"
+              className="w-4 h-4 text-[#0055FF] rounded border-gray-300 focus:ring-[#0055FF]"
             />
             <span className="text-xs font-medium text-gray-700">Show Header Divider Line</span>
           </label>
@@ -87,7 +87,7 @@ export const DocumentHeaderSettings = ({
               checked={header.showDate !== false}
               onChange={(e) => handleChange('showDate', e.target.checked)}
               disabled={disabled || header.visible === false}
-              className="w-4 h-4 text-[#FB6C00] rounded border-gray-300 focus:ring-[#FB6C00]"
+              className="w-4 h-4 text-[#0055FF] rounded border-gray-300 focus:ring-[#0055FF]"
             />
             <span className="text-xs font-medium text-gray-700">Display Proposal Generation Date</span>
           </label>

@@ -15,7 +15,7 @@ export const CurrencySelector = ({
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
         aria-label="Select Currency"
-        className="w-full h-9 pl-3 pr-8 text-xs font-semibold text-gray-800 bg-white border border-gray-300 rounded-lg shadow-2xs hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FB6C00]/20 focus:border-[#FB6C00] transition-colors appearance-none cursor-pointer disabled:bg-gray-50 disabled:cursor-not-allowed"
+        className="w-full h-9 pl-3 pr-8 text-xs font-semibold text-gray-800 bg-white border border-gray-300 rounded-lg shadow-2xs hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 focus:border-[#0055FF] transition-colors appearance-none cursor-pointer disabled:bg-gray-50 disabled:cursor-not-allowed"
       >
         {CURRENCY_OPTIONS.map((opt) => (
           <option key={opt.value} value={opt.value}>

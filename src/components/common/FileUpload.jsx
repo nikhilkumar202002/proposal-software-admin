@@ -86,10 +86,10 @@ export const FileUpload = ({
           disabled
             ? 'bg-gray-50 border-gray-200 cursor-not-allowed opacity-60'
             : isDragOver
-            ? 'border-[#FB6C00] bg-orange-50/50'
+            ? 'border-[#0055FF] bg-blue-50/50'
             : error
             ? 'border-red-300 bg-red-50/20 hover:border-red-400'
-            : 'border-gray-200 bg-white hover:border-[#FB6C00]/60 hover:bg-orange-50/20'
+            : 'border-gray-200 bg-white hover:border-[#0055FF]/60 hover:bg-blue-50/20'
         }`}
       >
         <input
@@ -103,12 +103,12 @@ export const FileUpload = ({
         />
 
         <div className="flex flex-col items-center justify-center">
-          <div className="w-11 h-11 rounded-2xl bg-orange-50 text-[#FB6C00] flex items-center justify-center mb-3">
+          <div className="w-11 h-11 rounded-2xl bg-blue-50 text-[#0055FF] flex items-center justify-center mb-3">
             <UploadCloud className="w-6 h-6 stroke-[2]" />
           </div>
 
           <p className="text-xs sm:text-sm font-semibold text-gray-900">
-            <span className="text-[#FB6C00] hover:underline">Click to upload</span> or drag and drop
+            <span className="text-[#0055FF] hover:underline">Click to upload</span> or drag and drop
           </p>
 
           <p className="text-[11px] text-gray-400 mt-1">{helperText}</p>
@@ -123,7 +123,7 @@ export const FileUpload = ({
             </div>
             <div className="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
               <div
-                className="bg-[#FB6C00] h-1.5 rounded-full transition-all duration-200"
+                className="bg-[#0055FF] h-1.5 rounded-full transition-all duration-200"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -148,7 +148,7 @@ export const FileUpload = ({
               className="flex items-center justify-between p-2.5 px-3 hover:bg-gray-50/80 transition-colors text-xs"
             >
               <div className="flex items-center gap-2.5 min-w-0">
-                <File className="w-4 h-4 text-[#FB6C00] shrink-0" />
+                <File className="w-4 h-4 text-[#0055FF] shrink-0" />
                 <div className="truncate">
                   <p className="font-medium text-gray-900 truncate">{file.name}</p>
                   <p className="text-[10px] text-gray-400">{formatBytes(file.size)}</p>

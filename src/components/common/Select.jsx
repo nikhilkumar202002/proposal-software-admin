@@ -112,7 +112,7 @@ export const Select = ({
           error
             ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/15'
             : isOpen
-            ? 'border-[#FB6C00] ring-2 ring-[#FB6C00]/15'
+            ? 'border-[#0055FF] ring-2 ring-[#0055FF]/15'
             : 'border-gray-200 hover:border-gray-300'
         }`}
         aria-haspopup="listbox"
@@ -162,7 +162,7 @@ export const Select = ({
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search options..."
-                  className="w-full text-xs pl-8 pr-2.5 py-1.5 rounded-md border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:border-[#FB6C00]"
+                  className="w-full text-xs pl-8 pr-2.5 py-1.5 rounded-md border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:border-[#0055FF]"
                 />
               </div>
             </div>
@@ -187,13 +187,13 @@ export const Select = ({
                       option.disabled
                         ? 'opacity-40 cursor-not-allowed bg-transparent text-gray-400'
                         : isSelected
-                        ? 'bg-orange-50/70 text-[#FB6C00] font-medium'
+                        ? 'bg-blue-50/70 text-[#0055FF] font-medium'
                         : 'text-gray-700 hover:bg-gray-50'
                     }`}
                   >
                     <span className="truncate">{option.label}</span>
                     {isSelected && (
-                      <Check className="w-4 h-4 text-[#FB6C00] shrink-0 ml-2" />
+                      <Check className="w-4 h-4 text-[#0055FF] shrink-0 ml-2" />
                     )}
                   </button>
                 )

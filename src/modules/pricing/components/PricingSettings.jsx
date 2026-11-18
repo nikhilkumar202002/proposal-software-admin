@@ -51,7 +51,7 @@ export const PricingSettings = ({
         className="w-full px-6 py-4 flex items-center justify-between bg-gray-50/50 hover:bg-gray-50 transition-colors cursor-pointer text-left"
       >
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#FB6C00]">
+          <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-[#0055FF]">
             <Receipt className="w-4 h-4 stroke-[2]" />
           </div>
           <div>
@@ -65,7 +65,7 @@ export const PricingSettings = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-[#FB6C00] bg-orange-50 px-2.5 py-1 rounded-full border border-orange-100">
+          <span className="text-xs font-semibold text-[#0055FF] bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">
             {isOpen ? 'Collapse Settings' : 'Expand Settings'}
           </span>
           {isOpen ? (
@@ -84,7 +84,7 @@ export const PricingSettings = ({
             <div className="p-4 bg-gray-50/70 rounded-xl border border-gray-200/80 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Percent className="w-4 h-4 text-[#FB6C00]" />
+                  <Percent className="w-4 h-4 text-[#0055FF]" />
                   <span className="text-xs font-bold text-gray-800 uppercase tracking-wider">
                     Overall Proposal Discount
                   </span>
@@ -107,7 +107,7 @@ export const PricingSettings = ({
             <div className="p-4 bg-gray-50/70 rounded-xl border border-gray-200/80 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Tag className="w-4 h-4 text-[#FB6C00]" />
+                  <Tag className="w-4 h-4 text-[#0055FF]" />
                   <span className="text-xs font-bold text-gray-800 uppercase tracking-wider">
                     Overall Statutory Tax
                   </span>
@@ -151,7 +151,7 @@ export const PricingSettings = ({
                 value={newChargeLabel}
                 onChange={(e) => setNewChargeLabel(e.target.value)}
                 disabled={disabled}
-                className="flex-1 h-9 px-3 text-xs font-medium text-gray-800 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00] focus:ring-1 focus:ring-[#FB6C00]"
+                className="flex-1 h-9 px-3 text-xs font-medium text-gray-800 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF] focus:ring-1 focus:ring-[#0055FF]"
               />
               <div className="relative w-full sm:w-40">
                 <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400">
@@ -165,13 +165,13 @@ export const PricingSettings = ({
                   value={newChargeAmount}
                   onChange={(e) => setNewChargeAmount(e.target.value)}
                   disabled={disabled}
-                  className="w-full h-9 pl-7 pr-3 text-xs font-semibold text-right text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00] focus:ring-1 focus:ring-[#FB6C00]"
+                  className="w-full h-9 pl-7 pr-3 text-xs font-semibold text-right text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF] focus:ring-1 focus:ring-[#0055FF]"
                 />
               </div>
               <button
                 type="submit"
                 disabled={disabled || !newChargeLabel.trim()}
-                className="w-full sm:w-auto h-9 px-4 text-xs font-semibold text-white bg-[#FB6C00] hover:bg-[#E65F00] rounded-lg shadow-2xs transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 cursor-pointer"
+                className="w-full sm:w-auto h-9 px-4 text-xs font-semibold text-white bg-[#0055FF] hover:bg-[#0044CC] rounded-lg shadow-2xs transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Add Charge</span>
@@ -228,7 +228,7 @@ export const PricingSettings = ({
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
                 <h5 className="text-xs font-bold text-gray-800 uppercase tracking-wider flex items-center gap-2">
-                  <Calendar className="w-3.5 h-3.5 text-[#FB6C00]" />
+                  <Calendar className="w-3.5 h-3.5 text-[#0055FF]" />
                   Billing Milestones & Advance Schedule
                 </h5>
                 <p className="text-xs text-gray-500 mt-0.5">
@@ -249,7 +249,7 @@ export const PricingSettings = ({
                   defaultValue=""
                   disabled={disabled}
                   aria-label="Milestone presets"
-                  className="h-8 px-2.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00] cursor-pointer"
+                  className="h-8 px-2.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF] cursor-pointer"
                 >
                   <option value="" disabled>
                     Choose preset...
@@ -277,7 +277,7 @@ export const PricingSettings = ({
                     className="p-3 bg-white rounded-lg border border-gray-200 shadow-2xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs"
                   >
                     <div className="flex items-center gap-2 flex-1">
-                      <span className="w-5 h-5 rounded-full bg-orange-100 text-[#FB6C00] font-bold flex items-center justify-center text-[10px] shrink-0">
+                      <span className="w-5 h-5 rounded-full bg-blue-100 text-[#0055FF] font-bold flex items-center justify-center text-[10px] shrink-0">
                         {idx + 1}
                       </span>
                       <input
@@ -302,7 +302,7 @@ export const PricingSettings = ({
                           }
                           className={`px-1.5 py-0.5 rounded transition-all cursor-pointer ${
                             ms.type === 'percentage'
-                              ? 'bg-white text-[#FB6C00] shadow-2xs'
+                              ? 'bg-white text-[#0055FF] shadow-2xs'
                               : 'text-gray-500'
                           }`}
                         >
@@ -315,7 +315,7 @@ export const PricingSettings = ({
                           }
                           className={`px-1.5 py-0.5 rounded transition-all cursor-pointer ${
                             ms.type === 'fixed'
-                              ? 'bg-white text-[#FB6C00] shadow-2xs'
+                              ? 'bg-white text-[#0055FF] shadow-2xs'
                               : 'text-gray-500'
                           }`}
                         >
@@ -366,7 +366,7 @@ export const PricingSettings = ({
                   })
                 }
                 disabled={disabled}
-                className="w-full py-2 text-xs font-semibold text-[#FB6C00] bg-orange-50/50 hover:bg-orange-50 border border-dashed border-[#FB6C00]/40 rounded-lg flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                className="w-full py-2 text-xs font-semibold text-[#0055FF] bg-blue-50/50 hover:bg-blue-50 border border-dashed border-[#0055FF]/40 rounded-lg flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Add Payment Milestone</span>

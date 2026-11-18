@@ -56,7 +56,7 @@ export const CurrencyInput = ({
         </label>
       )}
 
-      <div className="relative flex rounded-lg border border-gray-200 bg-white focus-within:border-[#FB6C00] focus-within:ring-2 focus-within:ring-[#FB6C00]/15 transition-all">
+      <div className="relative flex rounded-lg border border-gray-200 bg-white focus-within:border-[#0055FF] focus-within:ring-2 focus-within:ring-[#0055FF]/15 transition-all">
         {/* Currency Selector dropdown */}
         <div className="relative">
           <button
@@ -79,7 +79,7 @@ export const CurrencyInput = ({
                   onClick={() => handleSelectCurrency(c.code)}
                   className={`w-full text-left px-3.5 py-1.5 text-xs flex items-center justify-between transition-colors cursor-pointer ${
                     c.code === selectedCurrency.code
-                      ? 'bg-orange-50 text-[#FB6C00] font-semibold'
+                      ? 'bg-blue-50 text-[#0055FF] font-semibold'
                       : 'text-gray-700 hover:bg-gray-50'
                   }`}
                 >

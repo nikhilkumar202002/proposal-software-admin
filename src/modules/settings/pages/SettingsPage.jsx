@@ -59,11 +59,11 @@ export const SettingsPage = ({ initialTab = 'company' }) => {
   }
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto pb-12">
+    <div className="space-y-6 w-full pb-12">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-gray-200">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#FB6C00] shadow-2xs">
+          <div className="w-11 h-11 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-[#0055FF] shadow-2xs">
             <SettingsIcon className="w-6 h-6 stroke-[2]" />
           </div>
           <div>
@@ -125,12 +125,12 @@ export const SettingsPage = ({ initialTab = 'company' }) => {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer select-none ${
                 isActive
-                  ? 'bg-white text-[#FB6C00] shadow-2xs ring-1 ring-black/5'
+                  ? 'bg-white text-[#0055FF] shadow-2xs ring-1 ring-black/5'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
               }`}
             >
               <Icon
-                className={`w-4 h-4 ${isActive ? 'text-[#FB6C00]' : 'text-gray-400'}`}
+                className={`w-4 h-4 ${isActive ? 'text-[#0055FF]' : 'text-gray-400'}`}
               />
               <span>{tab.label}</span>
             </button>

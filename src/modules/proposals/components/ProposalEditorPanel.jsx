@@ -46,7 +46,7 @@ export const ProposalEditorPanel = ({
       <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-2xs">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#FB6C00]">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-[#0055FF]">
               <BookOpen className="w-5 h-5 stroke-[2]" />
             </div>
             <div>
@@ -85,11 +85,11 @@ export const ProposalEditorPanel = ({
                 return (
                   <div
                     key={tpl.id}
-                    className="p-3 bg-gray-50/70 hover:bg-orange-50/40 rounded-xl border border-gray-200/80 hover:border-orange-200 transition-all flex flex-col justify-between gap-2"
+                    className="p-3 bg-gray-50/70 hover:bg-blue-50/40 rounded-xl border border-gray-200/80 hover:border-blue-200 transition-all flex flex-col justify-between gap-2"
                   >
                     <div>
                       <h4 className="text-xs font-semibold text-gray-900 flex items-center gap-1.5">
-                        <FileCode className="w-3.5 h-3.5 text-[#FB6C00]" />
+                        <FileCode className="w-3.5 h-3.5 text-[#0055FF]" />
                         {tpl.title}
                       </h4>
                       <p className="text-[11px] text-gray-500 mt-1 line-clamp-2">

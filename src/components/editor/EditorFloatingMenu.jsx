@@ -81,7 +81,7 @@ export const EditorFloatingMenu = ({ editor }) => {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-6 h-6 rounded-full bg-white border border-gray-200 shadow-2xs hover:border-[#FB6C00] text-gray-400 hover:text-[#FB6C00] flex items-center justify-center transition-colors cursor-pointer"
+        className="w-6 h-6 rounded-full bg-white border border-gray-200 shadow-2xs hover:border-[#0055FF] text-gray-400 hover:text-[#0055FF] flex items-center justify-center transition-colors cursor-pointer"
         title="Insert block"
       >
         <Plus className="w-3.5 h-3.5" />
@@ -99,7 +99,7 @@ export const EditorFloatingMenu = ({ editor }) => {
             onClick={() =>
               handleAction(() => editor.chain().focus().toggleHeading({ level: 1 }).run())
             }
-            className="w-full flex items-center gap-2.5 px-3 py-1.5 text-gray-700 hover:bg-orange-50 hover:text-[#FB6C00] transition-colors"
+            className="w-full flex items-center gap-2.5 px-3 py-1.5 text-gray-700 hover:bg-blue-50 hover:text-[#0055FF] transition-colors"
           >
             <Heading1 className="w-4 h-4 text-gray-400" />
             <span>Heading 1</span>
@@ -110,7 +110,7 @@ export const EditorFloatingMenu = ({ editor }) => {
             onClick={() =>
               handleAction(() => editor.chain().focus().toggleHeading({ level: 2 }).run())
             }
-            className="w-full flex items-center gap-2.5 px-3 py-1.5 text-gray-700 hover:bg-orange-50 hover:text-[#FB6C00] transition-colors"
+            className="w-full flex items-center gap-2.5 px-3 py-1.5 text-gray-700 hover:bg-blue-50 hover:text-[#0055FF] transition-colors"
           >
             <Heading2 className="w-4 h-4 text-gray-400" />
             <span>Heading 2</span>
@@ -121,7 +121,7 @@ export const EditorFloatingMenu = ({ editor }) => {
             onClick={() =>
               handleAction(() => editor.chain().focus().toggleBulletList().run())
             }
-            className="w-full flex items-center gap-2.5 px-3 py-1.5 text-gray-700 hover:bg-orange-50 hover:text-[#FB6C00] transition-colors"
+            className="w-full flex items-center gap-2.5 px-3 py-1.5 text-gray-700 hover:bg-blue-50 hover:text-[#0055FF] transition-colors"
           >
             <List className="w-4 h-4 text-gray-400" />
             <span>Bullet List</span>
@@ -132,7 +132,7 @@ export const EditorFloatingMenu = ({ editor }) => {
             onClick={() =>
               handleAction(() => editor.chain().focus().toggleOrderedList().run())
             }
-            className="w-full flex items-center gap-2.5 px-3 py-1.5 text-gray-700 hover:bg-orange-50 hover:text-[#FB6C00] transition-colors"
+            className="w-full flex items-center gap-2.5 px-3 py-1.5 text-gray-700 hover:bg-blue-50 hover:text-[#0055FF] transition-colors"
           >
             <ListOrdered className="w-4 h-4 text-gray-400" />
             <span>Numbered List</span>
@@ -145,7 +145,7 @@ export const EditorFloatingMenu = ({ editor }) => {
                 editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
               )
             }
-            className="w-full flex items-center gap-2.5 px-3 py-1.5 text-gray-700 hover:bg-orange-50 hover:text-[#FB6C00] transition-colors"
+            className="w-full flex items-center gap-2.5 px-3 py-1.5 text-gray-700 hover:bg-blue-50 hover:text-[#0055FF] transition-colors"
           >
             <TableIcon className="w-4 h-4 text-gray-400" />
             <span>Table (3 × 3)</span>
@@ -158,7 +158,7 @@ export const EditorFloatingMenu = ({ editor }) => {
                 editor.chain().focus().toggleCallout({ type: 'info' }).run()
               )
             }
-            className="w-full flex items-center gap-2.5 px-3 py-1.5 text-gray-700 hover:bg-orange-50 hover:text-[#FB6C00] transition-colors"
+            className="w-full flex items-center gap-2.5 px-3 py-1.5 text-gray-700 hover:bg-blue-50 hover:text-[#0055FF] transition-colors"
           >
             <Info className="w-4 h-4 text-gray-400" />
             <span>Proposal Notice Box</span>
@@ -171,7 +171,7 @@ export const EditorFloatingMenu = ({ editor }) => {
             onClick={() =>
               handleAction(() => editor.chain().focus().setPageBreak().run())
             }
-            className="w-full flex items-center gap-2.5 px-3 py-1.5 text-[#FB6C00] hover:bg-orange-50 font-medium transition-colors"
+            className="w-full flex items-center gap-2.5 px-3 py-1.5 text-[#0055FF] hover:bg-blue-50 font-medium transition-colors"
           >
             <Scissors className="w-4 h-4" />
             <span>A4 Page Break</span>

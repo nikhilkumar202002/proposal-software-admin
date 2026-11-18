@@ -106,13 +106,13 @@ export const ProposalForm = ({
                   <div
                     className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs transition-all border ${
                       isCurrent
-                        ? 'bg-[#FB6C00] text-white border-[#FB6C00] shadow-sm shadow-[#FB6C00]/20'
+                        ? 'bg-[#0055FF] text-white border-[#0055FF] shadow-sm shadow-[#0055FF]/20'
                         : isPast
-                        ? 'bg-orange-50 text-[#FB6C00] border-orange-200'
+                        ? 'bg-blue-50 text-[#0055FF] border-blue-200'
                         : 'bg-gray-50 text-gray-400 border-gray-200 group-hover:bg-gray-100'
                     }`}
                   >
-                    {isPast ? <CheckCircle2 className="w-4 h-4 text-[#FB6C00]" /> : <Icon className="w-4 h-4" />}
+                    {isPast ? <CheckCircle2 className="w-4 h-4 text-[#0055FF]" /> : <Icon className="w-4 h-4" />}
                   </div>
 
                   <div>
@@ -138,7 +138,7 @@ export const ProposalForm = ({
                   <div className="flex-1 h-0.5 mx-4 bg-gray-100 rounded">
                     <div
                       className={`h-full transition-all duration-300 ${
-                        isPast ? 'bg-[#FB6C00]' : 'bg-transparent'
+                        isPast ? 'bg-[#0055FF]' : 'bg-transparent'
                       }`}
                     />
                   </div>

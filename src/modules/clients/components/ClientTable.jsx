@@ -27,11 +27,11 @@ export const ClientTable = ({
         const initials = getClientInitials(r.name, r.companyName)
         return (
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center font-bold text-xs text-[#FB6C00] shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center font-bold text-xs text-[#0055FF] shrink-0">
               {initials}
             </div>
             <div className="min-w-0">
-              <span className="font-semibold text-xs text-gray-900 block truncate group-hover:text-[#FB6C00] transition-colors">
+              <span className="font-semibold text-xs text-gray-900 block truncate group-hover:text-[#0055FF] transition-colors">
                 {r.companyName || '—'}
               </span>
               <span className="text-[11px] text-gray-500 block truncate">
@@ -170,7 +170,7 @@ export const ClientTable = ({
             <button
               type="button"
               onClick={() => onEdit(r)}
-              className="p-1.5 text-gray-400 hover:text-[#FB6C00] hover:bg-orange-50 rounded-lg transition-colors cursor-pointer"
+              className="p-1.5 text-gray-400 hover:text-[#0055FF] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
               title="Edit Client"
             >
               <Edit3 className="w-4 h-4" />

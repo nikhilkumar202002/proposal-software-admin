@@ -36,7 +36,7 @@ export const DefaultCurrencySelector = ({
                   disabled={disabled}
                   className={`flex items-center justify-between p-3 rounded-lg border text-left transition-all cursor-pointer ${
                     isSelected
-                      ? 'border-[#FB6C00] bg-orange-50/50 ring-1 ring-[#FB6C00]'
+                      ? 'border-[#0055FF] bg-blue-50/50 ring-1 ring-[#0055FF]'
                       : 'border-gray-200 bg-white hover:border-gray-300'
                   }`}
                 >
@@ -48,7 +48,7 @@ export const DefaultCurrencySelector = ({
                     </div>
                   </div>
                   {isSelected && (
-                    <span className="w-2 h-2 rounded-full bg-[#FB6C00]" />
+                    <span className="w-2 h-2 rounded-full bg-[#0055FF]" />
                   )}
                 </button>
               )
@@ -77,7 +77,7 @@ export const DefaultCurrencySelector = ({
                   handleChange('defaultTaxRate', parseFloat(e.target.value) || 0)
                 }
                 disabled={disabled}
-                className="w-full h-9 pl-3 pr-8 text-xs font-semibold text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00] focus:ring-1 focus:ring-[#FB6C00]"
+                className="w-full h-9 pl-3 pr-8 text-xs font-semibold text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF] focus:ring-1 focus:ring-[#0055FF]"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400">
                 %
@@ -93,7 +93,7 @@ export const DefaultCurrencySelector = ({
                   disabled={disabled}
                   className={`px-2 py-1 text-[11px] font-semibold rounded-md border transition-colors cursor-pointer ${
                     currencySettings.defaultTaxRate === rate
-                      ? 'bg-orange-50 text-[#FB6C00] border-orange-200'
+                      ? 'bg-blue-50 text-[#0055FF] border-blue-200'
                       : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
                   }`}
                 >
@@ -121,7 +121,7 @@ export const DefaultCurrencySelector = ({
               handleChange('defaultValidityDays', parseInt(e.target.value) || 30)
             }
             disabled={disabled}
-            className="w-full h-9 px-3 text-xs font-semibold text-gray-800 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00] cursor-pointer"
+            className="w-full h-9 px-3 text-xs font-semibold text-gray-800 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF] cursor-pointer"
           >
             {VALIDITY_PERIOD_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -143,7 +143,7 @@ export const DefaultCurrencySelector = ({
               }}
               defaultValue=""
               disabled={disabled}
-              className="text-[11px] text-[#FB6C00] font-semibold bg-transparent border-0 cursor-pointer focus:ring-0"
+              className="text-[11px] text-[#0055FF] font-semibold bg-transparent border-0 cursor-pointer focus:ring-0"
             >
               <option value="" disabled>
                 Choose Preset...
@@ -165,7 +165,7 @@ export const DefaultCurrencySelector = ({
             onChange={(e) => handleChange('defaultPaymentTerms', e.target.value)}
             disabled={disabled}
             placeholder="e.g. 40% Advance, 40% Beta Milestone, 20% on Go-Live"
-            className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00] focus:ring-1 focus:ring-[#FB6C00]"
+            className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF] focus:ring-1 focus:ring-[#0055FF]"
           />
         </div>
       </div>

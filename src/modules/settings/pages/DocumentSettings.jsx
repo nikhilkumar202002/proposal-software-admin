@@ -41,7 +41,7 @@ export const DocumentSettings = ({ standalone = false }) => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-5 border-b border-gray-200">
           <div>
             <h1 className="text-xl font-bold text-gray-900 tracking-tight flex items-center gap-2">
-              <Sliders className="w-5 h-5 text-[#FB6C00]" />
+              <Sliders className="w-5 h-5 text-[#0055FF]" />
               Document Layout & Physical A4 Formatting
             </h1>
             <p className="text-xs text-gray-500 mt-0.5">
@@ -52,7 +52,7 @@ export const DocumentSettings = ({ standalone = false }) => {
           <button
             type="submit"
             disabled={isSaving}
-            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-[#FB6C00] hover:bg-[#E65F00] active:scale-[0.98] rounded-xl shadow-2xs transition-all disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-[#0055FF] hover:bg-[#0044CC] active:scale-[0.98] rounded-xl shadow-2xs transition-all disabled:opacity-50 cursor-pointer"
           >
             {isSaving ? (
               <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -83,7 +83,7 @@ export const DocumentSettings = ({ standalone = false }) => {
       <div className="bg-white rounded-2xl border border-gray-200/80 shadow-2xs p-6 space-y-6">
         <div>
           <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-            <FileText className="w-4 h-4 text-[#FB6C00]" />
+            <FileText className="w-4 h-4 text-[#0055FF]" />
             A4 Page Geometry & Margins
           </h3>
           <p className="text-xs text-gray-500 mt-0.5">
@@ -104,7 +104,7 @@ export const DocumentSettings = ({ standalone = false }) => {
                 disabled={isSaving}
                 className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                   docSettings.orientation === 'portrait'
-                    ? 'border-[#FB6C00] bg-orange-50/40 ring-1 ring-[#FB6C00]'
+                    ? 'border-[#0055FF] bg-blue-50/40 ring-1 ring-[#0055FF]'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
@@ -113,7 +113,7 @@ export const DocumentSettings = ({ standalone = false }) => {
                     A4
                   </div>
                   {docSettings.orientation === 'portrait' && (
-                    <span className="w-2 h-2 rounded-full bg-[#FB6C00]" />
+                    <span className="w-2 h-2 rounded-full bg-[#0055FF]" />
                   )}
                 </div>
                 <div className="text-xs font-bold text-gray-900">Portrait</div>
@@ -126,7 +126,7 @@ export const DocumentSettings = ({ standalone = false }) => {
                 disabled={isSaving}
                 className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                   docSettings.orientation === 'landscape'
-                    ? 'border-[#FB6C00] bg-orange-50/40 ring-1 ring-[#FB6C00]'
+                    ? 'border-[#0055FF] bg-blue-50/40 ring-1 ring-[#0055FF]'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
@@ -135,7 +135,7 @@ export const DocumentSettings = ({ standalone = false }) => {
                     A4
                   </div>
                   {docSettings.orientation === 'landscape' && (
-                    <span className="w-2 h-2 rounded-full bg-[#FB6C00]" />
+                    <span className="w-2 h-2 rounded-full bg-[#0055FF]" />
                   )}
                 </div>
                 <div className="text-xs font-bold text-gray-900">Landscape</div>
@@ -158,7 +158,7 @@ export const DocumentSettings = ({ standalone = false }) => {
                   disabled={isSaving}
                   className={`flex items-center justify-between p-2.5 rounded-lg border text-left transition-all cursor-pointer ${
                     docSettings.marginPreset === key
-                      ? 'border-[#FB6C00] bg-orange-50/40'
+                      ? 'border-[#0055FF] bg-blue-50/40'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
@@ -167,7 +167,7 @@ export const DocumentSettings = ({ standalone = false }) => {
                     <span className="text-[11px] text-gray-500 block">{p.description}</span>
                   </div>
                   {docSettings.marginPreset === key && (
-                    <span className="w-2 h-2 rounded-full bg-[#FB6C00] shrink-0" />
+                    <span className="w-2 h-2 rounded-full bg-[#0055FF] shrink-0" />
                   )}
                 </button>
               ))}
@@ -194,7 +194,7 @@ export const DocumentSettings = ({ standalone = false }) => {
                   })
                 }
                 disabled={isSaving}
-                className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00]"
+                className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF]"
               />
             </div>
             <div>
@@ -210,7 +210,7 @@ export const DocumentSettings = ({ standalone = false }) => {
                   })
                 }
                 disabled={isSaving}
-                className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00]"
+                className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF]"
               />
             </div>
             <div>
@@ -226,7 +226,7 @@ export const DocumentSettings = ({ standalone = false }) => {
                   })
                 }
                 disabled={isSaving}
-                className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00]"
+                className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF]"
               />
             </div>
             <div>
@@ -242,7 +242,7 @@ export const DocumentSettings = ({ standalone = false }) => {
                   })
                 }
                 disabled={isSaving}
-                className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00]"
+                className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF]"
               />
             </div>
           </div>
@@ -271,7 +271,7 @@ export const DocumentSettings = ({ standalone = false }) => {
         <div className="flex items-center justify-between pb-3 border-b border-gray-100">
           <div>
             <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-              <Stamp className="w-4 h-4 text-[#FB6C00]" />
+              <Stamp className="w-4 h-4 text-[#0055FF]" />
               Document Security & Watermarking
             </h3>
             <p className="text-xs text-gray-500 mt-0.5">
@@ -289,7 +289,7 @@ export const DocumentSettings = ({ standalone = false }) => {
                 })
               }
               disabled={isSaving}
-              className="w-4 h-4 text-[#FB6C00] rounded border-gray-300 focus:ring-[#FB6C00]"
+              className="w-4 h-4 text-[#0055FF] rounded border-gray-300 focus:ring-[#0055FF]"
             />
             <span className="text-xs font-semibold text-gray-700">Enable Watermark</span>
           </label>
@@ -311,7 +311,7 @@ export const DocumentSettings = ({ standalone = false }) => {
                 }
                 disabled={isSaving}
                 placeholder="e.g. DRAFT or CONFIDENTIAL"
-                className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00]"
+                className="w-full h-8 px-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF]"
               />
             </div>
 
@@ -331,7 +331,7 @@ export const DocumentSettings = ({ standalone = false }) => {
                   })
                 }
                 disabled={isSaving}
-                className="w-full h-8 accent-[#FB6C00] cursor-pointer"
+                className="w-full h-8 accent-[#0055FF] cursor-pointer"
               />
             </div>
 
@@ -366,7 +366,7 @@ export const DocumentSettings = ({ standalone = false }) => {
           <button
             type="submit"
             disabled={isSaving}
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-white bg-[#FB6C00] hover:bg-[#E65F00] active:scale-[0.98] rounded-xl shadow-2xs transition-all disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-white bg-[#0055FF] hover:bg-[#0044CC] active:scale-[0.98] rounded-xl shadow-2xs transition-all disabled:opacity-50 cursor-pointer"
           >
             {isSaving ? (
               <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

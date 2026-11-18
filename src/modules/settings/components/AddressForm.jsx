@@ -21,7 +21,7 @@ export const AddressForm = ({
           onChange={(e) => handleChange('address', e.target.value)}
           disabled={disabled}
           placeholder="e.g. Tower B, Suite 402, DLF CyberCity"
-          className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#FB6C00]/20 focus:border-[#FB6C00] transition-colors"
+          className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 focus:border-[#0055FF] transition-colors"
         />
         <p className="mt-1 text-[10px] text-gray-400">
           Rendered on the right side of the document footer and in corporate execution blocks.
@@ -40,7 +40,7 @@ export const AddressForm = ({
             onChange={(e) => handleChange('city', e.target.value)}
             disabled={disabled}
             placeholder="e.g. Gurugram"
-            className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#FB6C00]/20 focus:border-[#FB6C00] transition-colors"
+            className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 focus:border-[#0055FF] transition-colors"
           />
         </div>
 
@@ -55,7 +55,7 @@ export const AddressForm = ({
             onChange={(e) => handleChange('state', e.target.value)}
             disabled={disabled}
             placeholder="e.g. Haryana"
-            className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#FB6C00]/20 focus:border-[#FB6C00] transition-colors"
+            className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 focus:border-[#0055FF] transition-colors"
           />
         </div>
 
@@ -70,7 +70,7 @@ export const AddressForm = ({
             onChange={(e) => handleChange('postalCode', e.target.value)}
             disabled={disabled}
             placeholder="e.g. 122002"
-            className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#FB6C00]/20 focus:border-[#FB6C00] transition-colors"
+            className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 focus:border-[#0055FF] transition-colors"
           />
         </div>
 
@@ -85,7 +85,7 @@ export const AddressForm = ({
             onChange={(e) => handleChange('country', e.target.value)}
             disabled={disabled}
             placeholder="e.g. India"
-            className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#FB6C00]/20 focus:border-[#FB6C00] transition-colors"
+            className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 focus:border-[#0055FF] transition-colors"
           />
         </div>
       </div>

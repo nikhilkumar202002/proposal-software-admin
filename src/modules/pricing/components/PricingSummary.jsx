@@ -34,7 +34,7 @@ export const PricingSummary = ({
       {/* Header */}
       <div className="px-6 py-4 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <Receipt className="w-4 h-4 text-[#FB6C00]" />
+          <Receipt className="w-4 h-4 text-[#0055FF]" />
           <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider">
             Commercial Summary & Investment Total
           </h4>
@@ -98,7 +98,7 @@ export const PricingSummary = ({
 
         {/* 5. Statutory Taxes */}
         {taxMode === 'per_item' ? (
-          <div className="space-y-1.5 pl-2 border-l-2 border-orange-200">
+          <div className="space-y-1.5 pl-2 border-l-2 border-blue-200">
             {taxGroups.length > 0 ? (
               taxGroups.map((g) => (
                 <div
@@ -149,9 +149,9 @@ export const PricingSummary = ({
         )}
 
         {/* 7. Grand Total Highlight Box */}
-        <div className="mt-4 p-4 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-between">
+        <div className="mt-4 p-4 rounded-xl bg-blue-50 border border-blue-200/80 flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold text-[#FB6C00] uppercase tracking-wider">
+            <div className="text-[11px] font-bold text-[#0055FF] uppercase tracking-wider">
               Total Proposed Investment
             </div>
             <div className="text-[11px] text-gray-500">All deliverables, discounts & taxes included</div>

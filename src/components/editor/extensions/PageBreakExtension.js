@@ -26,7 +26,7 @@ export const PageBreakExtension = Node.create({
       'div',
       mergeAttributes(HTMLAttributes, {
         'data-type': 'page-break',
-        class: 'doc-page-break-node my-4 py-2 border-y-2 border-dashed border-[#FB6C00]/60 bg-orange-50/40 text-[#FB6C00] font-semibold text-xs flex items-center justify-center gap-2 select-none cursor-pointer',
+        class: 'doc-page-break-node my-4 py-2 border-y-2 border-dashed border-[#0055FF]/60 bg-blue-50/40 text-[#0055FF] font-semibold text-xs flex items-center justify-center gap-2 select-none cursor-pointer',
       }),
       ['span', { class: 'uppercase tracking-wider' }, '— Page Break (A4 Boundary) —'],
     ]

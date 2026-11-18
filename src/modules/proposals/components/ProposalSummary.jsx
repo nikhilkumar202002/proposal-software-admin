@@ -20,7 +20,7 @@ export const ProposalSummary = ({
       {/* Title & Status */}
       <div className="flex items-start justify-between gap-3 pb-3 border-b border-gray-100">
         <div>
-          <span className="text-[11px] font-mono font-bold text-[#FB6C00]">
+          <span className="text-[11px] font-mono font-bold text-[#0055FF]">
             {proposal.number || 'DRAFT'}
           </span>
           <h4 className="text-sm font-bold text-gray-900 mt-0.5 line-clamp-1">
@@ -41,11 +41,11 @@ export const ProposalSummary = ({
           </span>
         </div>
 
-        <div className="p-3 bg-orange-50/50 rounded-xl border border-orange-100">
-          <span className="text-[10px] font-semibold text-[#FB6C00] uppercase tracking-wider block">
+        <div className="p-3 bg-blue-50/50 rounded-xl border border-blue-100">
+          <span className="text-[10px] font-semibold text-[#0055FF] uppercase tracking-wider block">
             Grand Total
           </span>
-          <span className="text-xs font-extrabold text-[#FB6C00] line-clamp-1 mt-0.5">
+          <span className="text-xs font-extrabold text-[#0055FF] line-clamp-1 mt-0.5">
             {formatCurrency(totals?.grandTotal || 0, currency)}
           </span>
         </div>

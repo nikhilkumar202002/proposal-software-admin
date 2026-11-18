@@ -106,7 +106,7 @@ const LinkInsertModalContent = ({
             type="checkbox"
             checked={openInNewTab}
             onChange={(e) => setOpenInNewTab(e.target.checked)}
-            className="w-4 h-4 rounded border-gray-300 text-[#FB6C00] focus:ring-[#FB6C00] cursor-pointer"
+            className="w-4 h-4 rounded border-gray-300 text-[#0055FF] focus:ring-[#0055FF] cursor-pointer"
           />
           <label
             htmlFor="open-in-new-tab"

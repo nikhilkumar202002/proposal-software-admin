@@ -23,7 +23,7 @@ export const CompanyProfileForm = ({
             onChange={(e) => handleChange('name', e.target.value)}
             disabled={disabled}
             placeholder="e.g. Domain Dude Technologies Pvt Ltd"
-            className={`w-full h-9 px-3 text-xs text-gray-900 bg-white border rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#FB6C00]/20 focus:border-[#FB6C00] transition-colors ${
+            className={`w-full h-9 px-3 text-xs text-gray-900 bg-white border rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 focus:border-[#0055FF] transition-colors ${
               errors.name ? 'border-red-500' : 'border-gray-300'
             }`}
           />
@@ -43,7 +43,7 @@ export const CompanyProfileForm = ({
             onChange={(e) => handleChange('taxNumber', e.target.value)}
             disabled={disabled}
             placeholder="e.g. 07AABCP1234F1Z5 or US-EIN-94301928"
-            className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#FB6C00]/20 focus:border-[#FB6C00] transition-colors"
+            className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 focus:border-[#0055FF] transition-colors"
           />
         </div>
       </div>
@@ -59,7 +59,7 @@ export const CompanyProfileForm = ({
           onChange={(e) => handleChange('tagline', e.target.value)}
           disabled={disabled}
           placeholder="e.g. Enterprise Document & Workflow Systems"
-          className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#FB6C00]/20 focus:border-[#FB6C00] transition-colors"
+          className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 focus:border-[#0055FF] transition-colors"
         />
         <p className="mt-1 text-[11px] text-gray-400">
           Displayed on proposal cover blocks and corporate signature agreements.
@@ -77,7 +77,7 @@ export const CompanyProfileForm = ({
           onChange={(e) => handleChange('additionalInfo', e.target.value)}
           disabled={disabled}
           placeholder="e.g. Incorporated under Indian Companies Act 2013 | ISO 27001 Certified..."
-          className="w-full p-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#FB6C00]/20 focus:border-[#FB6C00] transition-colors"
+          className="w-full p-2.5 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 focus:border-[#0055FF] transition-colors"
         />
       </div>
     </div>

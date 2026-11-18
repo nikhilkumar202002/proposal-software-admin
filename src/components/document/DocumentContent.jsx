@@ -26,7 +26,7 @@ function renderBlock(block) {
             </h1>
           )}
           {block.subtitle && (
-            <p className="text-xs font-semibold text-[#FB6C00] uppercase tracking-wider mb-3">
+            <p className="text-xs font-semibold text-[#0055FF] uppercase tracking-wider mb-3">
               {block.subtitle}
             </p>
           )}
@@ -99,7 +99,7 @@ function renderBlock(block) {
             <div className="px-3.5 py-2 bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-700 flex items-center justify-between">
               <span>{block.caption}</span>
               {block.isContinued && (
-                <span className="text-[10px] text-[#FB6C00] font-medium bg-orange-50 px-2 py-0.5 rounded-full border border-orange-200">
+                <span className="text-[10px] text-[#0055FF] font-medium bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
                   (Continued from previous page)
                 </span>
               )}
@@ -166,7 +166,7 @@ function renderBlock(block) {
         <blockquote
           key={id}
           data-block-id={id}
-          className="my-3 pl-3.5 border-l-2 border-[#FB6C00] text-xs text-gray-600 italic bg-orange-50/20 py-2 pr-3 rounded-r-md"
+          className="my-3 pl-3.5 border-l-2 border-[#0055FF] text-xs text-gray-600 italic bg-blue-50/20 py-2 pr-3 rounded-r-md"
         >
           {block.text}
         </blockquote>

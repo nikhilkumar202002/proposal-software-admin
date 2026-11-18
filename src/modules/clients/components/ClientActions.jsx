@@ -25,7 +25,7 @@ export const ClientActions = ({
         {/* Left: Bulk Selection Actions */}
         <div className="flex items-center gap-2">
           {selectedCount > 0 && (
-            <div className="flex items-center gap-2 bg-orange-50 border border-orange-200/80 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#FB6C00]">
+            <div className="flex items-center gap-2 bg-blue-50 border border-blue-200/80 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#0055FF]">
               <span>
                 {selectedCount} client{selectedCount > 1 ? 's' : ''} selected
               </span>

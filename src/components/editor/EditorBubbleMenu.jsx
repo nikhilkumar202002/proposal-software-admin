@@ -66,7 +66,7 @@ export const EditorBubbleMenu = ({ editor }) => {
   const btnClass = (active) =>
     `p-1.5 rounded transition-colors cursor-pointer ${
       active
-        ? 'bg-orange-50 text-[#FB6C00]'
+        ? 'bg-blue-50 text-[#0055FF]'
         : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
     }`
 

@@ -94,7 +94,7 @@ export const DocumentCanvas = ({
           {/* Left: Proposal status & page tracker */}
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-orange-50 text-[#FB6C00] flex items-center justify-center">
+              <div className="w-7 h-7 rounded-lg bg-blue-50 text-[#0055FF] flex items-center justify-center">
                 <FileCheck2 className="w-4 h-4 stroke-[2]" />
               </div>
               <div className="hidden sm:flex flex-col">
@@ -188,7 +188,7 @@ export const DocumentCanvas = ({
             <button
               type="button"
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-[#FB6C00] hover:bg-[#E65F00] rounded-lg transition-colors shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-[#0055FF] hover:bg-[#0044CC] rounded-lg transition-colors shadow-xs"
               title="Print or Save as PDF via Chromium Browsershot"
             >
               <Printer className="w-3.5 h-3.5 stroke-[2.2]" />

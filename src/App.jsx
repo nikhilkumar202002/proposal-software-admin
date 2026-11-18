@@ -131,7 +131,7 @@ const DashboardOverview = () => {
           <button
             type="button"
             onClick={() => navigate('/proposals/new')}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-[#FB6C00] hover:bg-[#E65F00] rounded-lg transition-colors shadow-xs cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-[#0055FF] hover:bg-[#0044CC] rounded-lg transition-colors shadow-xs cursor-pointer"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             Create Proposal
@@ -152,7 +152,7 @@ const DashboardOverview = () => {
                 <span className="text-xs font-medium text-gray-500">
                   {stat.label}
                 </span>
-                <div className="w-8 h-8 rounded-lg bg-orange-50 border border-orange-100 flex items-center justify-center text-[#FB6C00]">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-[#0055FF]">
                   <Icon className="w-4 h-4" />
                 </div>
               </div>
@@ -191,7 +191,7 @@ const DashboardOverview = () => {
           <button
             type="button"
             onClick={() => navigate('/proposals')}
-            className="text-xs font-semibold text-[#FB6C00] hover:text-[#E65F00] flex items-center gap-1 cursor-pointer"
+            className="text-xs font-semibold text-[#0055FF] hover:text-[#0044CC] flex items-center gap-1 cursor-pointer"
           >
             Manage Proposals
             <ArrowUpRight className="w-3.5 h-3.5" />
@@ -261,8 +261,8 @@ const PagePlaceholder = ({ title, description }) => (
     <div className="max-w-md">
       <h2 className="text-xl font-bold text-gray-900 tracking-tight">{title}</h2>
       <p className="text-sm text-gray-500 mt-1">{description}</p>
-      <div className="mt-6 p-4 rounded-xl bg-orange-50/50 border border-orange-100 text-xs text-gray-600 flex items-center gap-3">
-        <div className="w-8 h-8 rounded-lg bg-[#FB6C00] text-white flex items-center justify-center shrink-0">
+      <div className="mt-6 p-4 rounded-xl bg-blue-50/50 border border-blue-100 text-xs text-gray-600 flex items-center gap-3">
+        <div className="w-8 h-8 rounded-lg bg-[#0055FF] text-white flex items-center justify-center shrink-0">
           <FileText className="w-4 h-4" />
         </div>
         <div>

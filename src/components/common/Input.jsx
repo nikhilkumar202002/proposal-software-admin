@@ -63,7 +63,7 @@ export const Input = forwardRef(function Input(
           } py-2 ${
             error
               ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/15'
-              : 'border-gray-200 hover:border-gray-300 focus:border-[#FB6C00] focus:ring-2 focus:ring-[#FB6C00]/15'
+              : 'border-gray-200 hover:border-gray-300 focus:border-[#0055FF] focus:ring-2 focus:ring-[#0055FF]/15'
           } ${inputClassName}`}
           {...props}
         />

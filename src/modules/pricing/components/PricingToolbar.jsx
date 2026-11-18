@@ -45,7 +45,7 @@ export const PricingToolbar = ({
           type="button"
           onClick={() => onAddItem()}
           disabled={disabled}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-[#FB6C00] hover:bg-[#E65F00] active:scale-[0.98] rounded-lg shadow-2xs transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-[#0055FF] hover:bg-[#0044CC] active:scale-[0.98] rounded-lg shadow-2xs transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           <Plus className="w-4 h-4 stroke-[2.5]" />
           <span>Add Deliverable Item</span>
@@ -74,10 +74,10 @@ export const PricingToolbar = ({
                     key={idx}
                     type="button"
                     onClick={() => handleSelectPreset(preset)}
-                    className="w-full text-left px-3 py-2 text-xs hover:bg-orange-50/60 transition-colors flex items-center justify-between group"
+                    className="w-full text-left px-3 py-2 text-xs hover:bg-blue-50/60 transition-colors flex items-center justify-between group"
                   >
                     <div className="pr-2">
-                      <div className="font-semibold text-gray-800 group-hover:text-[#FB6C00]">
+                      <div className="font-semibold text-gray-800 group-hover:text-[#0055FF]">
                         {preset.description}
                       </div>
                       <div className="text-[11px] text-gray-500">
@@ -116,7 +116,7 @@ export const PricingToolbar = ({
               disabled={disabled}
               className={`px-2 py-0.5 rounded transition-all cursor-pointer ${
                 taxMode === 'per_item'
-                  ? 'bg-white text-[#FB6C00] shadow-2xs'
+                  ? 'bg-white text-[#0055FF] shadow-2xs'
                   : 'text-gray-500 hover:text-gray-900'
               }`}
             >
@@ -128,7 +128,7 @@ export const PricingToolbar = ({
               disabled={disabled}
               className={`px-2 py-0.5 rounded transition-all cursor-pointer ${
                 taxMode === 'overall'
-                  ? 'bg-white text-[#FB6C00] shadow-2xs'
+                  ? 'bg-white text-[#0055FF] shadow-2xs'
                   : 'text-gray-500 hover:text-gray-900'
               }`}
             >

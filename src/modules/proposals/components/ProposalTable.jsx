@@ -24,7 +24,7 @@ export const ProposalTable = ({
         const r = row && typeof row === 'object' ? row : {}
         return (
           <div className="flex flex-col">
-            <span className="font-mono font-bold text-xs text-gray-900 group-hover:text-[#FB6C00] transition-colors">
+            <span className="font-mono font-bold text-xs text-gray-900 group-hover:text-[#0055FF] transition-colors">
               {r.number || '—'}
             </span>
             <span className="text-[11px] text-gray-400">
@@ -50,7 +50,7 @@ export const ProposalTable = ({
                 className={`text-[9.5px] font-semibold px-1.5 py-0.5 rounded shrink-0 border ${
                   r.proposalType === 'b2b' || r.showCompanyLogo === false
                     ? 'bg-gray-100 text-gray-700 border-gray-200'
-                    : 'bg-orange-50 text-[#FB6C00] border-orange-200'
+                    : 'bg-blue-50 text-[#0055FF] border-blue-200'
                 }`}
               >
                 {r.proposalType === 'b2b' || r.showCompanyLogo === false ? 'B2B (No Logo)' : 'Direct'}
@@ -73,7 +73,7 @@ export const ProposalTable = ({
         const r = row && typeof row === 'object' ? row : {}
         return (
           <div className="flex items-center gap-2 max-w-[200px]">
-            <div className="w-6 h-6 rounded-lg bg-orange-50 text-[#FB6C00] flex items-center justify-center shrink-0">
+            <div className="w-6 h-6 rounded-lg bg-blue-50 text-[#0055FF] flex items-center justify-center shrink-0">
               <Building2 className="w-3.5 h-3.5" />
             </div>
             <div className="truncate">
@@ -178,7 +178,7 @@ export const ProposalTable = ({
             <button
               type="button"
               onClick={() => onEdit(r)}
-              className="p-1.5 text-gray-400 hover:text-[#FB6C00] hover:bg-orange-50 rounded-lg transition-colors cursor-pointer"
+              className="p-1.5 text-gray-400 hover:text-[#0055FF] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
               title="Edit Proposal"
             >
               <Edit3 className="w-4 h-4" />

@@ -40,7 +40,7 @@ export const StatsCard = ({
         </span>
 
         {Icon && (
-          <div className="w-9 h-9 rounded-xl bg-orange-50 text-[#FB6C00] flex items-center justify-center shrink-0 shadow-2xs">
+          <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#0055FF] flex items-center justify-center shrink-0 shadow-2xs">
             <Icon className="w-4.5 h-4.5" />
           </div>
         )}

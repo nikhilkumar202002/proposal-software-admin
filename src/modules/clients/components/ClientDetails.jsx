@@ -30,7 +30,7 @@ export const ClientDetails = ({
       <div className="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-2xs">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center font-bold text-lg text-[#FB6C00] shadow-2xs shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center font-bold text-lg text-[#0055FF] shadow-2xs shrink-0">
               {initials}
             </div>
 
@@ -82,7 +82,7 @@ export const ClientDetails = ({
         {/* Contact & Digital Channels */}
         <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-2xs space-y-4">
           <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider pb-3 border-b border-gray-100 flex items-center gap-2">
-            <Mail className="w-4 h-4 text-[#FB6C00]" />
+            <Mail className="w-4 h-4 text-[#0055FF]" />
             Direct Communication & Web
           </h4>
 
@@ -91,7 +91,7 @@ export const ClientDetails = ({
               <span className="text-gray-400">Email Address</span>
               <a
                 href={`mailto:${client.email}`}
-                className="font-medium text-gray-900 hover:text-[#FB6C00] transition-colors"
+                className="font-medium text-gray-900 hover:text-[#0055FF] transition-colors"
               >
                 {client.email}
               </a>
@@ -111,7 +111,7 @@ export const ClientDetails = ({
                   href={client.website}
                   target="_blank"
                   rel="noreferrer"
-                  className="font-medium text-[#FB6C00] hover:underline flex items-center gap-1"
+                  className="font-medium text-[#0055FF] hover:underline flex items-center gap-1"
                 >
                   {client.website.replace(/^https?:\/\//, '')}
                   <ExternalLink className="w-3 h-3" />
@@ -126,7 +126,7 @@ export const ClientDetails = ({
         {/* Commercial & Tax Registration */}
         <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-2xs space-y-4">
           <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider pb-3 border-b border-gray-100 flex items-center gap-2">
-            <Receipt className="w-4 h-4 text-[#FB6C00]" />
+            <Receipt className="w-4 h-4 text-[#0055FF]" />
             Legal & Tax Profile
           </h4>
 
@@ -140,7 +140,7 @@ export const ClientDetails = ({
 
             <div className="flex items-center justify-between">
               <span className="text-gray-400">Active Proposals</span>
-              <span className="font-bold text-[#FB6C00] px-2 py-0.5 rounded-full bg-orange-50 border border-orange-100">
+              <span className="font-bold text-[#0055FF] px-2 py-0.5 rounded-full bg-blue-50 border border-blue-100">
                 {client.proposalsCount || 0} Proposals
               </span>
             </div>
@@ -157,7 +157,7 @@ export const ClientDetails = ({
         {/* Physical & Billing Address */}
         <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-2xs space-y-3 md:col-span-2">
           <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider pb-3 border-b border-gray-100 flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-[#FB6C00]" />
+            <MapPin className="w-4 h-4 text-[#0055FF]" />
             Registered Office & Billing Address
           </h4>
 
@@ -170,7 +170,7 @@ export const ClientDetails = ({
         {client.notes && (
           <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-2xs space-y-3 md:col-span-2">
             <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider pb-3 border-b border-gray-100 flex items-center gap-2">
-              <FileText className="w-4 h-4 text-[#FB6C00]" />
+              <FileText className="w-4 h-4 text-[#0055FF]" />
               Account Notes & Context
             </h4>
 

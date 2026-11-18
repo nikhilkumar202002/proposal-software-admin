@@ -37,7 +37,7 @@ export const TaxInput = ({
         onChange={handleSelectChange}
         disabled={disabled}
         aria-label="Select Tax Rate"
-        className={`bg-white border border-gray-300 rounded-lg text-gray-800 font-medium shadow-2xs hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FB6C00]/20 focus:border-[#FB6C00] cursor-pointer disabled:bg-gray-50 disabled:cursor-not-allowed ${
+        className={`bg-white border border-gray-300 rounded-lg text-gray-800 font-medium shadow-2xs hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 focus:border-[#0055FF] cursor-pointer disabled:bg-gray-50 disabled:cursor-not-allowed ${
           compact ? 'h-8 text-xs px-2' : 'h-9 text-sm px-2.5'
         }`}
       >
@@ -51,7 +51,7 @@ export const TaxInput = ({
 
       {/* Direct custom numeric input if not in standard preset */}
       {!isStandardRate && (
-        <div className={`relative flex items-center w-16 border border-gray-300 rounded-lg overflow-hidden bg-white focus-within:border-[#FB6C00] focus-within:ring-2 focus-within:ring-[#FB6C00]/20 ${
+        <div className={`relative flex items-center w-16 border border-gray-300 rounded-lg overflow-hidden bg-white focus-within:border-[#0055FF] focus-within:ring-2 focus-within:ring-[#0055FF]/20 ${
           compact ? 'h-8 text-xs' : 'h-9 text-sm'
         }`}>
           <input

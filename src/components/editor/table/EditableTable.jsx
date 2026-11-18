@@ -67,7 +67,7 @@ export const EditableTable = ({
                         type="text"
                         value={cell}
                         onChange={(e) => handleCellChange(rIdx, cIdx, e.target.value)}
-                        className="w-full px-2 py-1.5 rounded border border-transparent hover:border-gray-200 focus:border-[#FB6C00] focus:bg-white text-xs text-gray-800 focus:outline-none transition-colors"
+                        className="w-full px-2 py-1.5 rounded border border-transparent hover:border-gray-200 focus:border-[#0055FF] focus:bg-white text-xs text-gray-800 focus:outline-none transition-colors"
                       />
                     ) : (
                       <span className="text-gray-800">{cell}</span>
@@ -98,7 +98,7 @@ export const EditableTable = ({
           <button
             type="button"
             onClick={handleAddRow}
-            className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-[#FB6C00] hover:bg-orange-50 rounded transition-colors"
+            className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-[#0055FF] hover:bg-blue-50 rounded transition-colors"
           >
             <Plus className="w-3.5 h-3.5" />
             Add Row

@@ -119,7 +119,7 @@ export const DatePicker = ({
           error
             ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/15'
             : isOpen
-            ? 'border-[#FB6C00] ring-2 ring-[#FB6C00]/15'
+            ? 'border-[#0055FF] ring-2 ring-[#0055FF]/15'
             : 'border-gray-200 hover:border-gray-300'
         }`}
         aria-haspopup="dialog"
@@ -216,9 +216,9 @@ export const DatePicker = ({
                     isDisabled
                       ? 'text-gray-300 cursor-not-allowed'
                       : isSelected
-                      ? 'bg-[#FB6C00] text-white font-semibold shadow-2xs'
+                      ? 'bg-[#0055FF] text-white font-semibold shadow-2xs'
                       : isToday
-                      ? 'bg-orange-50 text-[#FB6C00] font-semibold border border-orange-200'
+                      ? 'bg-blue-50 text-[#0055FF] font-semibold border border-blue-200'
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
@@ -233,7 +233,7 @@ export const DatePicker = ({
             <button
               type="button"
               onClick={handleSelectToday}
-              className="text-[#FB6C00] hover:text-[#E65F00] font-medium cursor-pointer"
+              className="text-[#0055FF] hover:text-[#0044CC] font-medium cursor-pointer"
             >
               Today
             </button>

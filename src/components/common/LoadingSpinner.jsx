@@ -13,7 +13,7 @@ export const LoadingSpinner = ({
   text,
   fullScreen = false,
   className = '',
-  color = 'text-[#FB6C00]',
+  color = 'text-[#0055FF]',
 }) => {
   const sizeClass = sizeStyles[size] || sizeStyles.md
 

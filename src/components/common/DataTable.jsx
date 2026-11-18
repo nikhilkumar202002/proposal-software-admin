@@ -59,7 +59,7 @@ export const DataTable = ({
                       if (el) el.indeterminate = isPartiallySelected
                     }}
                     onChange={handleSelectAllChange}
-                    className="w-4 h-4 rounded border-gray-300 text-[#FB6C00] focus:ring-[#FB6C00] cursor-pointer"
+                    className="w-4 h-4 rounded border-gray-300 text-[#0055FF] focus:ring-[#0055FF] cursor-pointer"
                     aria-label="Select all rows"
                   />
                 </th>
@@ -94,9 +94,9 @@ export const DataTable = ({
                         <span className="text-gray-400">
                           {isSorted ? (
                             sortDirection === 'asc' ? (
-                              <ChevronUp className="w-3.5 h-3.5 text-[#FB6C00]" />
+                              <ChevronUp className="w-3.5 h-3.5 text-[#0055FF]" />
                             ) : (
-                              <ChevronDown className="w-3.5 h-3.5 text-[#FB6C00]" />
+                              <ChevronDown className="w-3.5 h-3.5 text-[#0055FF]" />
                             )
                           ) : (
                             <ChevronsUpDown className="w-3.5 h-3.5 text-gray-300" />
@@ -123,7 +123,7 @@ export const DataTable = ({
                   className="px-5 py-16 text-center text-gray-400"
                 >
                   <div className="flex flex-col items-center justify-center gap-2">
-                    <Loader2 className="w-6 h-6 animate-spin text-[#FB6C00]" />
+                    <Loader2 className="w-6 h-6 animate-spin text-[#0055FF]" />
                     <span className="text-xs font-medium text-gray-500">
                       Loading records...
                     </span>
@@ -162,7 +162,7 @@ export const DataTable = ({
                       onRowClick ? 'cursor-pointer' : ''
                     } ${
                       isSelected
-                        ? 'bg-orange-50/40 hover:bg-orange-50/70'
+                        ? 'bg-blue-50/40 hover:bg-blue-50/70'
                         : 'hover:bg-gray-50/70'
                     }`}
                   >
@@ -172,7 +172,7 @@ export const DataTable = ({
                           type="checkbox"
                           checked={isSelected}
                           onChange={(e) => handleRowCheckbox(id, e)}
-                          className="w-4 h-4 rounded border-gray-300 text-[#FB6C00] focus:ring-[#FB6C00] cursor-pointer"
+                          className="w-4 h-4 rounded border-gray-300 text-[#0055FF] focus:ring-[#0055FF] cursor-pointer"
                           aria-label={`Select row ${id}`}
                         />
                       </td>

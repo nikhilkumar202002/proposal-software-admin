@@ -46,7 +46,7 @@ export const DocumentHeader = ({
             href={website.startsWith('http') ? website : `https://${website}`}
             target="_blank"
             rel="noreferrer"
-            className="text-[11px] font-semibold text-gray-900 hover:text-[#FB6C00] transition-colors mt-0.5 tracking-tight"
+            className="text-[11px] font-semibold text-gray-900 hover:text-[#0055FF] transition-colors mt-0.5 tracking-tight"
           >
             {website}
           </a>

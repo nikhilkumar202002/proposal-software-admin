@@ -75,7 +75,7 @@ export const SearchInput = ({
         value={currentValue}
         onChange={handleChange}
         placeholder={placeholder}
-        className={`w-full pl-9 pr-12 py-2 text-sm bg-white hover:bg-gray-50/60 focus:bg-white border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#FB6C00] focus:ring-2 focus:ring-[#FB6C00]/15 transition-all disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed ${inputClassName}`}
+        className={`w-full pl-9 pr-12 py-2 text-sm bg-white hover:bg-gray-50/60 focus:bg-white border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#0055FF] focus:ring-2 focus:ring-[#0055FF]/15 transition-all disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed ${inputClassName}`}
         {...props}
       />
 

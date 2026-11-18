@@ -54,8 +54,8 @@ export const PricingRow = ({
     <tr
       ref={setNodeRef}
       style={style}
-      className={`group border-b border-gray-100 hover:bg-orange-50/20 transition-colors ${
-        isDragging ? 'bg-orange-50/40 shadow-md ring-1 ring-[#FB6C00]/30' : ''
+      className={`group border-b border-gray-100 hover:bg-blue-50/20 transition-colors ${
+        isDragging ? 'bg-blue-50/40 shadow-md ring-1 ring-[#0055FF]/30' : ''
       }`}
     >
       {/* 1. Drag Handle & Index */}
@@ -86,7 +86,7 @@ export const PricingRow = ({
           placeholder="Deliverable title or scope summary..."
           onChange={(e) => handleFieldChange('description', e.target.value)}
           disabled={disabled}
-          className="w-full text-xs font-medium text-gray-900 placeholder-gray-400 bg-transparent border-0 border-b border-transparent focus:border-[#FB6C00] focus:ring-0 px-1 py-1 hover:border-gray-200 transition-colors"
+          className="w-full text-xs font-medium text-gray-900 placeholder-gray-400 bg-transparent border-0 border-b border-transparent focus:border-[#0055FF] focus:ring-0 px-1 py-1 hover:border-gray-200 transition-colors"
         />
       </td>
 
@@ -104,7 +104,7 @@ export const PricingRow = ({
             )
           }
           disabled={disabled}
-          className="w-full h-8 text-center text-xs font-semibold text-gray-800 bg-white border border-gray-200 rounded-lg shadow-2xs focus:border-[#FB6C00] focus:ring-1 focus:ring-[#FB6C00]"
+          className="w-full h-8 text-center text-xs font-semibold text-gray-800 bg-white border border-gray-200 rounded-lg shadow-2xs focus:border-[#0055FF] focus:ring-1 focus:ring-[#0055FF]"
         />
       </td>
 
@@ -114,7 +114,7 @@ export const PricingRow = ({
           value={item.unit || 'Milestone'}
           onChange={(e) => handleFieldChange('unit', e.target.value)}
           disabled={disabled}
-          className="w-full h-8 text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg shadow-2xs focus:border-[#FB6C00] focus:ring-1 focus:ring-[#FB6C00] px-1.5 cursor-pointer"
+          className="w-full h-8 text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg shadow-2xs focus:border-[#0055FF] focus:ring-1 focus:ring-[#0055FF] px-1.5 cursor-pointer"
         >
           {UNIT_OPTIONS.map((u) => (
             <option key={u} value={u}>
@@ -140,7 +140,7 @@ export const PricingRow = ({
               handleFieldChange('unitPrice', Math.max(0, parseFloat(e.target.value) || 0))
             }
             disabled={disabled}
-            className="w-full h-8 pl-7 pr-2 text-right text-xs font-semibold text-gray-900 bg-white border border-gray-200 rounded-lg shadow-2xs focus:border-[#FB6C00] focus:ring-1 focus:ring-[#FB6C00]"
+            className="w-full h-8 pl-7 pr-2 text-right text-xs font-semibold text-gray-900 bg-white border border-gray-200 rounded-lg shadow-2xs focus:border-[#0055FF] focus:ring-1 focus:ring-[#0055FF]"
           />
         </div>
       </td>

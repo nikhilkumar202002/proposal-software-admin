@@ -36,7 +36,7 @@ export const DocumentSettings = ({
       {/* Drawer Header */}
       <div className="h-14 px-5 border-b border-gray-100 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-orange-50 text-[#FB6C00] flex items-center justify-center">
+          <div className="w-7 h-7 rounded-lg bg-blue-50 text-[#0055FF] flex items-center justify-center">
             <Sliders className="w-4 h-4" />
           </div>
           <span className="font-bold text-sm text-gray-900 tracking-tight">
@@ -67,7 +67,7 @@ export const DocumentSettings = ({
               onClick={() => onUpdate({ orientation: 'portrait' })}
               className={`p-2.5 rounded-xl border flex items-center gap-2 font-medium transition-colors cursor-pointer ${
                 settings.orientation === 'portrait'
-                  ? 'border-[#FB6C00] bg-orange-50/60 text-[#FB6C00]'
+                  ? 'border-[#0055FF] bg-blue-50/60 text-[#0055FF]'
                   : 'border-gray-200 hover:bg-gray-50 text-gray-600'
               }`}
             >
@@ -80,7 +80,7 @@ export const DocumentSettings = ({
               onClick={() => onUpdate({ orientation: 'landscape' })}
               className={`p-2.5 rounded-xl border flex items-center gap-2 font-medium transition-colors cursor-pointer ${
                 settings.orientation === 'landscape'
-                  ? 'border-[#FB6C00] bg-orange-50/60 text-[#FB6C00]'
+                  ? 'border-[#0055FF] bg-blue-50/60 text-[#0055FF]'
                   : 'border-gray-200 hover:bg-gray-50 text-gray-600'
               }`}
             >
@@ -102,7 +102,7 @@ export const DocumentSettings = ({
                 type="number"
                 value={settings.margins?.top ?? 35}
                 onChange={(e) => handleMarginChange('top', e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#FB6C00] focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#0055FF] focus:outline-none"
               />
             </div>
             <div>
@@ -111,7 +111,7 @@ export const DocumentSettings = ({
                 type="number"
                 value={settings.margins?.bottom ?? 25}
                 onChange={(e) => handleMarginChange('bottom', e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#FB6C00] focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#0055FF] focus:outline-none"
               />
             </div>
             <div>
@@ -120,7 +120,7 @@ export const DocumentSettings = ({
                 type="number"
                 value={settings.margins?.left ?? 18}
                 onChange={(e) => handleMarginChange('left', e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#FB6C00] focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#0055FF] focus:outline-none"
               />
             </div>
             <div>
@@ -129,7 +129,7 @@ export const DocumentSettings = ({
                 type="number"
                 value={settings.margins?.right ?? 18}
                 onChange={(e) => handleMarginChange('right', e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#FB6C00] focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#0055FF] focus:outline-none"
               />
             </div>
           </div>
@@ -147,7 +147,7 @@ export const DocumentSettings = ({
                   header: { ...settings.header, visible: e.target.checked },
                 })
               }
-              className="rounded text-[#FB6C00] focus:ring-[#FB6C00] cursor-pointer"
+              className="rounded text-[#0055FF] focus:ring-[#0055FF] cursor-pointer"
             />
           </div>
 
@@ -162,7 +162,7 @@ export const DocumentSettings = ({
                       header: { ...settings.header, template: e.target.value },
                     })
                   }
-                  className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 bg-white text-xs font-medium focus:border-[#FB6C00] focus:outline-none"
+                  className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 bg-white text-xs font-medium focus:border-[#0055FF] focus:outline-none"
                 >
                   <option value="modern">Modern (Split Brand & Ref)</option>
                   <option value="corporate">Corporate (Prominent Title)</option>
@@ -180,7 +180,7 @@ export const DocumentSettings = ({
                       header: { ...settings.header, height: Number(e.target.value) || 22 },
                     })
                   }
-                  className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#FB6C00] focus:outline-none"
+                  className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#0055FF] focus:outline-none"
                 />
               </div>
             </div>
@@ -199,7 +199,7 @@ export const DocumentSettings = ({
                   footer: { ...settings.footer, visible: e.target.checked },
                 })
               }
-              className="rounded text-[#FB6C00] focus:ring-[#FB6C00] cursor-pointer"
+              className="rounded text-[#0055FF] focus:ring-[#0055FF] cursor-pointer"
             />
           </div>
 
@@ -214,7 +214,7 @@ export const DocumentSettings = ({
                       footer: { ...settings.footer, pageNumberFormat: e.target.value },
                     })
                   }
-                  className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 bg-white text-xs font-medium focus:border-[#FB6C00] focus:outline-none"
+                  className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 bg-white text-xs font-medium focus:border-[#0055FF] focus:outline-none"
                 >
                   <option value="pageOfTotal">Page 01 of 05</option>
                   <option value="fraction">1 / 5</option>
@@ -238,7 +238,7 @@ export const DocumentSettings = ({
                   watermark: { ...settings.watermark, enabled: e.target.checked },
                 })
               }
-              className="rounded text-[#FB6C00] focus:ring-[#FB6C00] cursor-pointer"
+              className="rounded text-[#0055FF] focus:ring-[#0055FF] cursor-pointer"
             />
           </div>
 
@@ -262,7 +262,7 @@ export const DocumentSettings = ({
                       }
                       className={`px-2 py-1 text-[10px] font-bold rounded border ${
                         settings.watermark?.text === text
-                          ? 'border-[#FB6C00] bg-orange-50 text-[#FB6C00]'
+                          ? 'border-[#0055FF] bg-blue-50 text-[#0055FF]'
                           : 'border-gray-200 hover:bg-gray-50 text-gray-600'
                       }`}
                     >
@@ -283,7 +283,7 @@ export const DocumentSettings = ({
                     })
                   }
                   placeholder="e.g. STRICTLY CONFIDENTIAL"
-                  className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#FB6C00] focus:outline-none"
+                  className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#0055FF] focus:outline-none"
                 />
               </div>
 
@@ -305,7 +305,7 @@ export const DocumentSettings = ({
                       },
                     })
                   }
-                  className="w-full accent-[#FB6C00]"
+                  className="w-full accent-[#0055FF]"
                 />
               </div>
             </div>
@@ -327,7 +327,7 @@ export const DocumentSettings = ({
         <button
           type="button"
           onClick={onClose}
-          className="px-4 py-1.5 text-xs font-semibold text-white bg-[#FB6C00] hover:bg-[#E65F00] rounded-lg transition-colors"
+          className="px-4 py-1.5 text-xs font-semibold text-white bg-[#0055FF] hover:bg-[#0044CC] rounded-lg transition-colors"
         >
           Apply & Close
         </button>

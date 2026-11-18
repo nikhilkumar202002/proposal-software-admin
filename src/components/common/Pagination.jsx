@@ -52,7 +52,7 @@ export const Pagination = ({
             <select
               value={pageSize}
               onChange={(e) => onPageSizeChange(Number(e.target.value))}
-              className="px-2 py-1 bg-white border border-gray-200 rounded-md text-xs font-medium text-gray-700 focus:outline-none focus:border-[#FB6C00] cursor-pointer"
+              className="px-2 py-1 bg-white border border-gray-200 rounded-md text-xs font-medium text-gray-700 focus:outline-none focus:border-[#0055FF] cursor-pointer"
             >
               {pageSizeOptions.map((opt) => (
                 <option key={opt} value={opt}>
@@ -97,7 +97,7 @@ export const Pagination = ({
                 onClick={() => onPageChange(p)}
                 className={`min-w-8 h-8 px-2 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                   isCurrent
-                    ? 'bg-[#FB6C00] text-white font-semibold shadow-2xs'
+                    ? 'bg-[#0055FF] text-white font-semibold shadow-2xs'
                     : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
                 }`}
                 aria-current={isCurrent ? 'page' : undefined}

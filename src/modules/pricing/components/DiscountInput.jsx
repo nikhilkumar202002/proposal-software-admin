@@ -34,7 +34,7 @@ export const DiscountInput = ({
   }
 
   return (
-    <div className={`flex items-center rounded-lg border border-gray-300 bg-white shadow-2xs overflow-hidden focus-within:border-[#FB6C00] focus-within:ring-2 focus-within:ring-[#FB6C00]/20 transition-all ${className}`}>
+    <div className={`flex items-center rounded-lg border border-gray-300 bg-white shadow-2xs overflow-hidden focus-within:border-[#0055FF] focus-within:ring-2 focus-within:ring-[#0055FF]/20 transition-all ${className}`}>
       {/* Type toggle button */}
       <button
         type="button"
@@ -45,7 +45,7 @@ export const DiscountInput = ({
           compact ? 'w-7 h-8 text-[11px]' : 'w-8 h-9 text-xs'
         } ${
           isPercentage
-            ? 'bg-orange-50 text-[#FB6C00] hover:bg-orange-100'
+            ? 'bg-blue-50 text-[#0055FF] hover:bg-blue-100'
             : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
         } disabled:opacity-50 disabled:cursor-not-allowed`}
       >

@@ -35,7 +35,7 @@ export const ClientDetailsForm = ({
         {/* Header & Quick Selector */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-5 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#FB6C00]">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-[#0055FF]">
               <Users className="w-5 h-5 stroke-[2]" />
             </div>
             <div>
@@ -75,13 +75,13 @@ export const ClientDetailsForm = ({
                   onClick={() => handleSelectPredefined(c)}
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-xl font-medium border transition-all cursor-pointer ${
                     isSelected
-                      ? 'bg-orange-50 text-[#FB6C00] border-orange-200 shadow-2xs font-semibold'
+                      ? 'bg-blue-50 text-[#0055FF] border-blue-200 shadow-2xs font-semibold'
                       : 'bg-gray-50 hover:bg-gray-100 text-gray-700 border-gray-200'
                   }`}
                 >
                   <Building2 className="w-3.5 h-3.5 opacity-70" />
                   <span>{c.companyName}</span>
-                  {isSelected && <Check className="w-3.5 h-3.5 text-[#FB6C00]" />}
+                  {isSelected && <Check className="w-3.5 h-3.5 text-[#0055FF]" />}
                 </button>
               )
             })}

@@ -67,7 +67,7 @@ export const Textarea = forwardRef(function Textarea(
           className={`w-full text-sm rounded-lg border bg-white p-3 transition-all text-gray-900 placeholder:text-gray-400 focus:outline-none disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed resize-y ${
             error
               ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/15'
-              : 'border-gray-200 hover:border-gray-300 focus:border-[#FB6C00] focus:ring-2 focus:ring-[#FB6C00]/15'
+              : 'border-gray-200 hover:border-gray-300 focus:border-[#0055FF] focus:ring-2 focus:ring-[#0055FF]/15'
           } ${textareaClassName}`}
           {...props}
         />

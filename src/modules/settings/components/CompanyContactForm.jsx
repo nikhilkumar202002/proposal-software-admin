@@ -23,7 +23,7 @@ export const CompanyContactForm = ({
             onChange={(e) => handleChange('email', e.target.value)}
             disabled={disabled}
             placeholder="e.g. contact@domaindude.in"
-            className={`w-full h-9 px-3 text-xs text-gray-900 bg-white border rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#FB6C00]/20 focus:border-[#FB6C00] transition-colors ${
+            className={`w-full h-9 px-3 text-xs text-gray-900 bg-white border rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 focus:border-[#0055FF] transition-colors ${
               errors.email ? 'border-red-500' : 'border-gray-300'
             }`}
           />
@@ -43,7 +43,7 @@ export const CompanyContactForm = ({
             onChange={(e) => handleChange('phone', e.target.value)}
             disabled={disabled}
             placeholder="e.g. +91 98765 43210"
-            className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#FB6C00]/20 focus:border-[#FB6C00] transition-colors"
+            className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 focus:border-[#0055FF] transition-colors"
           />
           <p className="mt-1 text-[10px] text-gray-400">
             Rendered on the left side of the document footer.
@@ -61,7 +61,7 @@ export const CompanyContactForm = ({
             onChange={(e) => handleChange('website', e.target.value)}
             disabled={disabled}
             placeholder="e.g. www.domaindude.in"
-            className={`w-full h-9 px-3 text-xs text-gray-900 bg-white border rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#FB6C00]/20 focus:border-[#FB6C00] transition-colors ${
+            className={`w-full h-9 px-3 text-xs text-gray-900 bg-white border rounded-lg shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 focus:border-[#0055FF] transition-colors ${
               errors.website ? 'border-red-500' : 'border-gray-300'
             }`}
           />

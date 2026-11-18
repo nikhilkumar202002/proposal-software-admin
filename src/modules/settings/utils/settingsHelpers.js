@@ -60,7 +60,7 @@ export const DEFAULT_DOCUMENT_CONFIG = {
     angle: -45,
   },
   typography: {
-    fontFamily: 'Inter, system-ui, sans-serif',
+    fontFamily: 'Poppins, sans-serif',
     baseSize: '14px',
     lineHeight: '1.6',
   },

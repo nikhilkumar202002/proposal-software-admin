@@ -27,7 +27,7 @@ export const AccountSettings = ({ standalone = false }) => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-5 border-b border-gray-200">
           <div>
             <h1 className="text-xl font-bold text-gray-900 tracking-tight flex items-center gap-2">
-              <User className="w-5 h-5 text-[#FB6C00]" />
+              <User className="w-5 h-5 text-[#0055FF]" />
               Account & Profile Settings
             </h1>
             <p className="text-xs text-gray-500 mt-0.5">
@@ -38,7 +38,7 @@ export const AccountSettings = ({ standalone = false }) => {
           <button
             type="submit"
             disabled={isSaving}
-            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-[#FB6C00] hover:bg-[#E65F00] active:scale-[0.98] rounded-xl shadow-2xs transition-all disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-[#0055FF] hover:bg-[#0044CC] active:scale-[0.98] rounded-xl shadow-2xs transition-all disabled:opacity-50 cursor-pointer"
           >
             {isSaving ? (
               <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -85,7 +85,7 @@ export const AccountSettings = ({ standalone = false }) => {
               onChange={(e) => updateAccount({ fullName: e.target.value })}
               disabled={isSaving}
               placeholder="e.g. Administrator"
-              className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00] focus:ring-1 focus:ring-[#FB6C00]"
+              className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF] focus:ring-1 focus:ring-[#0055FF]"
             />
           </div>
 
@@ -99,7 +99,7 @@ export const AccountSettings = ({ standalone = false }) => {
               onChange={(e) => updateAccount({ email: e.target.value })}
               disabled={isSaving}
               placeholder="e.g. admin@domaindude.in"
-              className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#FB6C00] focus:ring-1 focus:ring-[#FB6C00]"
+              className="w-full h-9 px-3 text-xs text-gray-900 bg-white border border-gray-300 rounded-lg shadow-2xs focus:border-[#0055FF] focus:ring-1 focus:ring-[#0055FF]"
             />
           </div>
 
@@ -125,7 +125,7 @@ export const AccountSettings = ({ standalone = false }) => {
         {/* Notifications */}
         <div className="bg-white rounded-2xl border border-gray-200/80 shadow-2xs p-6 space-y-4">
           <div className="flex items-center gap-2">
-            <Bell className="w-4 h-4 text-[#FB6C00]" />
+            <Bell className="w-4 h-4 text-[#0055FF]" />
             <h3 className="text-sm font-bold text-gray-900">Proposal Notifications</h3>
           </div>
           <p className="text-xs text-gray-500">
@@ -138,7 +138,7 @@ export const AccountSettings = ({ standalone = false }) => {
               checked={account.notificationsEnabled !== false}
               onChange={(e) => updateAccount({ notificationsEnabled: e.target.checked })}
               disabled={isSaving}
-              className="w-4 h-4 text-[#FB6C00] rounded border-gray-300 focus:ring-[#FB6C00]"
+              className="w-4 h-4 text-[#0055FF] rounded border-gray-300 focus:ring-[#0055FF]"
             />
             <span className="text-xs font-semibold text-gray-800">
               Enable Real-Time Proposal Activity Emails
@@ -149,7 +149,7 @@ export const AccountSettings = ({ standalone = false }) => {
         {/* Security / 2FA */}
         <div className="bg-white rounded-2xl border border-gray-200/80 shadow-2xs p-6 space-y-4">
           <div className="flex items-center gap-2">
-            <Shield className="w-4 h-4 text-[#FB6C00]" />
+            <Shield className="w-4 h-4 text-[#0055FF]" />
             <h3 className="text-sm font-bold text-gray-900">Security & Access</h3>
           </div>
           <p className="text-xs text-gray-500">
@@ -174,7 +174,7 @@ export const AccountSettings = ({ standalone = false }) => {
           <button
             type="submit"
             disabled={isSaving}
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-white bg-[#FB6C00] hover:bg-[#E65F00] active:scale-[0.98] rounded-xl shadow-2xs transition-all disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-white bg-[#0055FF] hover:bg-[#0044CC] active:scale-[0.98] rounded-xl shadow-2xs transition-all disabled:opacity-50 cursor-pointer"
           >
             {isSaving ? (
               <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

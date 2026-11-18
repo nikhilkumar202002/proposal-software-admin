@@ -67,7 +67,7 @@ export const ProposalPreview = () => {
 
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-mono text-xs font-bold text-[#FB6C00]">
+              <span className="font-mono text-xs font-bold text-[#0055FF]">
                 {currentProposal.number}
               </span>
               <span className="text-gray-300">•</span>

@@ -38,7 +38,7 @@ export function getEditorExtensions(options = {}) {
     Link.configure({
       openOnClick: false,
       HTMLAttributes: {
-        class: 'text-[#FB6C00] underline font-medium hover:text-[#E65F00] cursor-pointer',
+        class: 'text-[#0055FF] underline font-medium hover:text-[#0044CC] cursor-pointer',
         rel: 'noopener noreferrer',
         target: '_blank',
       },

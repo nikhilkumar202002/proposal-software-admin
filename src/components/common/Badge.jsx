@@ -1,5 +1,5 @@
 const variantStyles = {
-  default: 'bg-orange-50 text-[#FB6C00] border-orange-200/80',
+  default: 'bg-blue-50 text-[#0055FF] border-blue-200/80',
   success: 'bg-emerald-50 text-emerald-700 border-emerald-200/80',
   warning: 'bg-amber-50 text-amber-700 border-amber-200/80',
   danger: 'bg-red-50 text-red-700 border-red-200/80',
@@ -8,7 +8,7 @@ const variantStyles = {
 }
 
 const dotStyles = {
-  default: 'bg-[#FB6C00]',
+  default: 'bg-[#0055FF]',
   success: 'bg-emerald-500',
   warning: 'bg-amber-500',
   danger: 'bg-red-500',

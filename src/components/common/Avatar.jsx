@@ -51,7 +51,7 @@ export const Avatar = ({
         className={`${sizeClass} rounded-full overflow-hidden flex items-center justify-center font-semibold border border-gray-100 shadow-2xs ${
           src && !hasError
             ? 'bg-gray-100'
-            : bgColor || 'bg-gradient-to-tr from-[#FB6C00] to-amber-400 text-white'
+            : bgColor || 'bg-gradient-to-tr from-[#0055FF] to-amber-400 text-white'
         }`}
       >
         {src && !hasError ? (

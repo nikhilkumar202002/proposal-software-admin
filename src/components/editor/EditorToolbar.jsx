@@ -60,7 +60,7 @@ export const EditorToolbar = ({ editor, className = '' }) => {
 
   const btnBase =
     'h-7 px-2 rounded flex items-center justify-center text-xs font-medium transition-colors select-none cursor-pointer'
-  const activeClass = 'bg-orange-50 text-[#FB6C00] font-semibold border border-orange-200 shadow-2xs'
+  const activeClass = 'bg-blue-50 text-[#0055FF] font-semibold border border-blue-200 shadow-2xs'
   const inactiveClass = 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 border border-transparent'
 
   const handleLinkSubmit = ({ href, target }) => {
@@ -126,7 +126,7 @@ export const EditorToolbar = ({ editor, className = '' }) => {
                   setIsHeadingDropdownOpen(false)
                 }}
                 className={`w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 cursor-pointer ${
-                  !currentHeading ? 'text-[#FB6C00] font-bold bg-orange-50/50' : 'text-gray-700'
+                  !currentHeading ? 'text-[#0055FF] font-bold bg-blue-50/50' : 'text-gray-700'
                 }`}
               >
                 Paragraph
@@ -138,7 +138,7 @@ export const EditorToolbar = ({ editor, className = '' }) => {
                   setIsHeadingDropdownOpen(false)
                 }}
                 className={`w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 font-bold cursor-pointer ${
-                  currentHeading === 1 ? 'text-[#FB6C00] bg-orange-50/50' : 'text-gray-800'
+                  currentHeading === 1 ? 'text-[#0055FF] bg-blue-50/50' : 'text-gray-800'
                 }`}
               >
                 Heading 1
@@ -150,7 +150,7 @@ export const EditorToolbar = ({ editor, className = '' }) => {
                   setIsHeadingDropdownOpen(false)
                 }}
                 className={`w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 font-semibold cursor-pointer ${
-                  currentHeading === 2 ? 'text-[#FB6C00] bg-orange-50/50' : 'text-gray-800'
+                  currentHeading === 2 ? 'text-[#0055FF] bg-blue-50/50' : 'text-gray-800'
                 }`}
               >
                 Heading 2
@@ -162,7 +162,7 @@ export const EditorToolbar = ({ editor, className = '' }) => {
                   setIsHeadingDropdownOpen(false)
                 }}
                 className={`w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 font-medium cursor-pointer ${
-                  currentHeading === 3 ? 'text-[#FB6C00] bg-orange-50/50' : 'text-gray-800'
+                  currentHeading === 3 ? 'text-[#0055FF] bg-blue-50/50' : 'text-gray-800'
                 }`}
               >
                 Heading 3
@@ -349,7 +349,7 @@ export const EditorToolbar = ({ editor, className = '' }) => {
           <button
             type="button"
             onClick={commands.insertPageBreak}
-            className={`${btnBase} text-[#FB6C00] hover:bg-orange-50 font-semibold border border-orange-200/80 p-1.5 gap-1`}
+            className={`${btnBase} text-[#0055FF] hover:bg-blue-50 font-semibold border border-blue-200/80 p-1.5 gap-1`}
             title="Insert Manual A4 Page Break (Ctrl+Enter)"
           >
             <Scissors className="w-3.5 h-3.5" />

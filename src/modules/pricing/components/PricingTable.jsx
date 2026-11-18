@@ -186,7 +186,7 @@ export const PricingTable = ({
                             type="button"
                             onClick={() => handleAddItem()}
                             disabled={disabled}
-                            className="mt-4 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-[#FB6C00] hover:bg-[#E65F00] rounded-lg shadow-2xs transition-colors cursor-pointer"
+                            className="mt-4 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-[#0055FF] hover:bg-[#0044CC] rounded-lg shadow-2xs transition-colors cursor-pointer"
                           >
                             <Plus className="w-3.5 h-3.5" />
                             <span>Add First Deliverable</span>

@@ -29,11 +29,11 @@ export const ClientCard = ({
         {/* Top Header */}
         <div className="flex items-start justify-between gap-3 pb-3 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center font-bold text-xs text-[#FB6C00] shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center font-bold text-xs text-[#0055FF] shrink-0">
               {initials}
             </div>
             <div>
-              <h4 className="text-sm font-bold text-gray-900 group-hover:text-[#FB6C00] transition-colors line-clamp-1">
+              <h4 className="text-sm font-bold text-gray-900 group-hover:text-[#0055FF] transition-colors line-clamp-1">
                 {client.companyName}
               </h4>
               <p className="text-xs text-gray-500 line-clamp-1">
@@ -54,7 +54,7 @@ export const ClientCard = ({
             <a
               href={`mailto:${client.email}`}
               onClick={(e) => e.stopPropagation()}
-              className="hover:text-[#FB6C00] truncate"
+              className="hover:text-[#0055FF] truncate"
             >
               {client.email}
             </a>
@@ -82,7 +82,7 @@ export const ClientCard = ({
       {/* Bottom Footer: Proposal Count & Status */}
       <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
         <div className="flex items-center gap-1.5 font-semibold text-gray-700">
-          <FileText className="w-3.5 h-3.5 text-[#FB6C00]" />
+          <FileText className="w-3.5 h-3.5 text-[#0055FF]" />
           <span>{client.proposalsCount || 0} Proposals</span>
         </div>
 

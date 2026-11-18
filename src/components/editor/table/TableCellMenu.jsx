@@ -48,7 +48,7 @@ export const TableCellMenu = ({ editor }) => {
         className="p-1 rounded hover:bg-gray-100 text-gray-600 flex items-center gap-0.5"
         title="Insert Row Below"
       >
-        <Plus className="w-3 h-3 text-[#FB6C00]" />
+        <Plus className="w-3 h-3 text-[#0055FF]" />
         <span>Row</span>
       </button>
 
@@ -59,7 +59,7 @@ export const TableCellMenu = ({ editor }) => {
         className="p-1 rounded hover:bg-gray-100 text-gray-600 flex items-center gap-0.5"
         title="Insert Column Right"
       >
-        <Plus className="w-3 h-3 text-[#FB6C00]" />
+        <Plus className="w-3 h-3 text-[#0055FF]" />
         <span>Col</span>
       </button>
 

@@ -83,7 +83,7 @@ export const CompanyLogoUpload = ({
             onClick={() => !disabled && fileInputRef.current?.click()}
             className={`border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition-all ${
               dragActive
-                ? 'border-[#FB6C00] bg-orange-50/50'
+                ? 'border-[#0055FF] bg-blue-50/50'
                 : 'border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50/50'
             } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
@@ -96,7 +96,7 @@ export const CompanyLogoUpload = ({
               className="hidden"
             />
             <div className="flex items-center justify-center gap-2 text-xs font-semibold text-gray-700">
-              <Upload className="w-4 h-4 text-[#FB6C00]" />
+              <Upload className="w-4 h-4 text-[#0055FF]" />
               <span>Click to upload or drag & drop</span>
             </div>
             <p className="text-[11px] text-gray-400 mt-1">

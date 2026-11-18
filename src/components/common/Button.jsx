@@ -3,7 +3,7 @@ import { Loader2 } from 'lucide-react'
 
 const variantStyles = {
   primary:
-    'bg-[#FB6C00] hover:bg-[#E65F00] text-white border-transparent focus-visible:ring-[#FB6C00]/30 shadow-2xs',
+    'bg-[#0055FF] hover:bg-[#0044CC] text-white border-transparent focus-visible:ring-[#0055FF]/30 shadow-2xs',
   secondary:
     'bg-gray-100 hover:bg-gray-200/80 text-gray-800 border-transparent focus-visible:ring-gray-300',
   outline:

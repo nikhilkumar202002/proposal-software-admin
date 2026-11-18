@@ -132,7 +132,7 @@ export const ImageInsertModal = ({
             </span>
             <div
               onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-gray-200 rounded-xl p-5 text-center bg-gray-50/50 hover:border-[#FB6C00] hover:bg-orange-50/20 transition-all cursor-pointer select-none"
+              className="border-2 border-dashed border-gray-200 rounded-xl p-5 text-center bg-gray-50/50 hover:border-[#0055FF] hover:bg-blue-50/20 transition-all cursor-pointer select-none"
             >
               <input
                 ref={fileInputRef}
@@ -141,7 +141,7 @@ export const ImageInsertModal = ({
                 onChange={handleFileChange}
                 className="hidden"
               />
-              <UploadCloud className="w-6 h-6 text-[#FB6C00] mx-auto mb-1.5" />
+              <UploadCloud className="w-6 h-6 text-[#0055FF] mx-auto mb-1.5" />
               <p className="text-xs font-semibold text-gray-900">
                 Click to browse an image
               </p>

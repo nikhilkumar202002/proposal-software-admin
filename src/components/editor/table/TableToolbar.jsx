@@ -66,7 +66,7 @@ export const TableToolbar = ({ editor }) => {
           onClick={() => setIsGridOpen(!isGridOpen)}
           className={`h-7 px-2 rounded flex items-center gap-1 text-xs font-medium transition-colors cursor-pointer ${
             isTableActive
-              ? 'bg-orange-50 text-[#FB6C00] font-semibold'
+              ? 'bg-blue-50 text-[#0055FF] font-semibold'
               : 'text-gray-700 hover:bg-gray-100'
           }`}
           title="Insert Table"
@@ -97,7 +97,7 @@ export const TableToolbar = ({ editor }) => {
                       onClick={() => handleInsertGrid(rIdx + 1, cIdx + 1)}
                       className={`w-6 h-6 rounded border transition-colors cursor-pointer ${
                         isHighlighted
-                          ? 'bg-[#FB6C00] border-[#FB6C00]'
+                          ? 'bg-[#0055FF] border-[#0055FF]'
                           : 'bg-white border-gray-200 hover:border-gray-300'
                       }`}
                     />
@@ -114,21 +114,21 @@ export const TableToolbar = ({ editor }) => {
               <button
                 type="button"
                 onClick={() => insertProposalPreset('pricing')}
-                className="w-full text-left px-2 py-1 text-xs text-gray-700 hover:bg-orange-50 hover:text-[#FB6C00] rounded font-medium transition-colors"
+                className="w-full text-left px-2 py-1 text-xs text-gray-700 hover:bg-blue-50 hover:text-[#0055FF] rounded font-medium transition-colors"
               >
                 📊 Commercial Pricing Matrix (4 Cols)
               </button>
               <button
                 type="button"
                 onClick={() => insertProposalPreset('timeline')}
-                className="w-full text-left px-2 py-1 text-xs text-gray-700 hover:bg-orange-50 hover:text-[#FB6C00] rounded font-medium transition-colors"
+                className="w-full text-left px-2 py-1 text-xs text-gray-700 hover:bg-blue-50 hover:text-[#0055FF] rounded font-medium transition-colors"
               >
                 ⏱ Project Timeline Schedule (3 Cols)
               </button>
               <button
                 type="button"
                 onClick={() => insertProposalPreset('deliverables')}
-                className="w-full text-left px-2 py-1 text-xs text-gray-700 hover:bg-orange-50 hover:text-[#FB6C00] rounded font-medium transition-colors"
+                className="w-full text-left px-2 py-1 text-xs text-gray-700 hover:bg-blue-50 hover:text-[#0055FF] rounded font-medium transition-colors"
               >
                 📋 Deliverables & Acceptance (4 Cols)
               </button>
@@ -149,7 +149,7 @@ export const TableToolbar = ({ editor }) => {
           >
             <div className="relative">
               <Rows className="w-3.5 h-3.5" />
-              <Plus className="w-2 h-2 text-[#FB6C00] absolute -top-1 -right-1 stroke-[3]" />
+              <Plus className="w-2 h-2 text-[#0055FF] absolute -top-1 -right-1 stroke-[3]" />
             </div>
           </button>
           <button
@@ -160,7 +160,7 @@ export const TableToolbar = ({ editor }) => {
           >
             <div className="relative">
               <Rows className="w-3.5 h-3.5" />
-              <Plus className="w-2 h-2 text-[#FB6C00] absolute -bottom-1 -right-1 stroke-[3]" />
+              <Plus className="w-2 h-2 text-[#0055FF] absolute -bottom-1 -right-1 stroke-[3]" />
             </div>
           </button>
           <button
@@ -182,7 +182,7 @@ export const TableToolbar = ({ editor }) => {
           >
             <div className="relative">
               <Columns className="w-3.5 h-3.5" />
-              <Plus className="w-2 h-2 text-[#FB6C00] absolute -top-1 -left-1 stroke-[3]" />
+              <Plus className="w-2 h-2 text-[#0055FF] absolute -top-1 -left-1 stroke-[3]" />
             </div>
           </button>
           <button
@@ -193,7 +193,7 @@ export const TableToolbar = ({ editor }) => {
           >
             <div className="relative">
               <Columns className="w-3.5 h-3.5" />
-              <Plus className="w-2 h-2 text-[#FB6C00] absolute -top-1 -right-1 stroke-[3]" />
+              <Plus className="w-2 h-2 text-[#0055FF] absolute -top-1 -right-1 stroke-[3]" />
             </div>
           </button>
           <button
