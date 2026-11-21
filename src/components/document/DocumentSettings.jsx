@@ -4,6 +4,7 @@ import {
   Maximize2,
   X,
   RotateCcw,
+  Type,
 } from 'lucide-react'
 import { DEFAULT_DOCUMENT_SETTINGS } from './hooks/useDocumentSettings'
 
@@ -87,6 +88,87 @@ export const DocumentSettings = ({
               <Maximize2 className="w-4 h-4" />
               <span>Landscape (297×210)</span>
             </button>
+          </div>
+        </div>
+
+        {/* Typography & Document Font Sizing */}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <label className="flex items-center gap-1.5 font-semibold text-gray-900 text-xs">
+              <Type className="w-3.5 h-3.5 text-[#0055FF]" />
+              <span>Document Typography & Font Sizes</span>
+            </label>
+            <button
+              type="button"
+              onClick={() => {
+                onUpdate({
+                  typography: {
+                    baseSize: 12,
+                    heading1Size: 16,
+                    heading2Size: 14,
+                    heading3Size: 14,
+                  },
+                })
+              }}
+              className="text-[10px] font-semibold text-[#0055FF] hover:underline cursor-pointer"
+            >
+              Reset (12px Default)
+            </button>
+          </div>
+
+          <div className="space-y-3 bg-gray-50/70 p-3 rounded-xl border border-gray-200/80">
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-gray-600 text-[11px] font-medium">Body Text / Paragraphs</span>
+                <span className="font-mono text-[11px] font-bold text-gray-900">
+                  {settings.typography?.baseSize || 12}px
+                </span>
+              </div>
+              <div className="flex items-center gap-1">
+                {[10, 11, 12, 13, 14, 15, 16].map((sz) => {
+                  const isCur = (settings.typography?.baseSize || 12) === sz
+                  return (
+                    <button
+                      key={sz}
+                      type="button"
+                      onClick={() => {
+                        const ratio = sz / 12
+                        onUpdate({
+                          typography: {
+                            baseSize: sz,
+                            heading1Size: Math.round(16 * ratio),
+                            heading2Size: Math.round(14 * ratio),
+                            heading3Size: Math.round(14 * ratio),
+                          },
+                        })
+                      }}
+                      className={`flex-1 py-1 text-center rounded text-[11px] font-semibold border transition-colors cursor-pointer ${
+                        isCur
+                          ? 'bg-[#0055FF] text-white border-[#0055FF] shadow-2xs'
+                          : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100'
+                      }`}
+                    >
+                      {sz}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-gray-200/60 text-[11px]">
+              <div>
+                <span className="text-gray-500 block mb-0.5">Main Heading</span>
+                <span className="font-semibold text-gray-900">
+                  {settings.typography?.heading1Size || 16}px
+                </span>
+              </div>
+              <div>
+                <span className="text-gray-500 block mb-0.5">Subheading</span>
+                <span className="font-semibold text-gray-900">
+                  {settings.typography?.heading2Size || 14}px
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 

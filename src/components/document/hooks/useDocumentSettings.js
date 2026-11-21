@@ -30,6 +30,12 @@ export const DEFAULT_DOCUMENT_SETTINGS = {
     angle: -45, // degrees
     preset: 'draft', // 'draft' | 'confidential' | 'custom'
   },
+  typography: {
+    baseSize: 12, // 12px default body/paragraph/table font
+    heading1Size: 16, // 16px default main heading
+    heading2Size: 14, // 14px default subheading
+    heading3Size: 14, // 14px default sub-subheading
+  },
   zoom: 1.0,
   pageSpacing: 28, // px
   showPageNumbers: true,
@@ -55,6 +61,13 @@ export function useDocumentSettings(initialSettings = {}) {
       ...DEFAULT_DOCUMENT_SETTINGS.watermark,
       ...(initialSettings.watermark || {}),
     },
+    typography: {
+      baseSize: 12,
+      heading1Size: 16,
+      heading2Size: 14,
+      heading3Size: 14,
+      ...(initialSettings.typography || {}),
+    },
   }))
 
   const updateSettings = useCallback((updates) => {
@@ -79,9 +92,17 @@ export function useDocumentSettings(initialSettings = {}) {
           ...prev.watermark,
           ...(next.watermark || {}),
         },
+        typography: {
+          ...prev.typography,
+          ...(next.typography || {}),
+        },
       }
     })
   }, [])
+
+  const setTypography = useCallback((typography) => {
+    updateSettings({ typography })
+  }, [updateSettings])
 
   const setOrientation = useCallback((orientation) => {
     updateSettings({ orientation })
@@ -106,6 +127,7 @@ export function useDocumentSettings(initialSettings = {}) {
     setZoom,
     setMargins,
     setWatermark,
+    setTypography,
   }
 }
 

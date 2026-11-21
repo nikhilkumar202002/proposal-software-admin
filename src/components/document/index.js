@@ -9,6 +9,7 @@ export { default as DocumentPageNumber } from './DocumentPageNumber'
 export { default as DocumentPageBreak } from './DocumentPageBreak'
 export { default as DocumentWatermark } from './DocumentWatermark'
 export { default as DocumentSettings } from './DocumentSettings'
+export { default as DocumentFontResizer } from './DocumentFontResizer'
 
 // Hooks
 export { default as useDocumentPagination } from './hooks/useDocumentPagination'

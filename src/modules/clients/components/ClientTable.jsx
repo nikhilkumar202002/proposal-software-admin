@@ -1,5 +1,5 @@
 import { Eye, Edit3, Trash2, FilePlus } from 'lucide-react'
-import { DataTable, Badge, ActionMenu } from '../../../components/common'
+import { DataTable, Badge } from '../../../components/common'
 import { getClientInitials } from '../utils/clientHelpers'
 
 export const ClientTable = ({
@@ -137,29 +137,6 @@ export const ClientTable = ({
       align: 'right',
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
-        const actions = [
-          {
-            label: 'View Profile',
-            icon: Eye,
-            onClick: () => onView(r),
-          },
-          {
-            label: 'Edit Client',
-            icon: Edit3,
-            onClick: () => onEdit(r),
-          },
-          {
-            label: 'Create Proposal',
-            icon: FilePlus,
-            onClick: () => onCreateProposal(r),
-          },
-          {
-            label: 'Delete Client',
-            icon: Trash2,
-            danger: true,
-            onClick: () => onDelete(r),
-          },
-        ]
 
         return (
           <div
@@ -169,20 +146,39 @@ export const ClientTable = ({
             <button
               type="button"
               onClick={() => onView(r)}
-              className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+              className="p-1.5 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
               title="View Client Profile"
+              aria-label="View Client Profile"
             >
               <Eye className="w-4 h-4" />
             </button>
             <button
               type="button"
               onClick={() => onEdit(r)}
-              className="p-1.5 text-gray-400 hover:text-[#0055FF] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+              className="p-1.5 text-gray-500 hover:text-[#0055FF] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
               title="Edit Client"
+              aria-label="Edit Client"
             >
               <Edit3 className="w-4 h-4" />
             </button>
-            <ActionMenu items={actions} align="right" />
+            <button
+              type="button"
+              onClick={() => onCreateProposal(r)}
+              className="p-1.5 text-gray-500 hover:text-[#0055FF] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+              title="Create Proposal for Client"
+              aria-label="Create Proposal for Client"
+            >
+              <FilePlus className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => onDelete(r)}
+              className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+              title="Delete Client"
+              aria-label="Delete Client"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
           </div>
         )
       },

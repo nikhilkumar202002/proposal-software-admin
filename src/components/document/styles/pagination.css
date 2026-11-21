@@ -4,7 +4,7 @@
 
 /* Document Typography & Blocks */
 .doc-heading-1 {
-  font-size: 16px;
+  font-size: var(--doc-h1-size, 16px);
   font-weight: 700;
   line-height: 1.35;
   color: #111827;
@@ -14,7 +14,7 @@
 }
 
 .doc-heading-2 {
-  font-size: 14px;
+  font-size: var(--doc-h2-size, 14px);
   font-weight: 700;
   line-height: 1.35;
   color: #1F2937;
@@ -24,7 +24,7 @@
 }
 
 .doc-heading-3 {
-  font-size: 14px;
+  font-size: var(--doc-h3-size, 14px);
   font-weight: 600;
   line-height: 1.35;
   color: #374151;
@@ -33,7 +33,7 @@
 }
 
 .doc-paragraph {
-  font-size: 12px;
+  font-size: var(--doc-base-size, 12px);
   line-height: 1.6;
   color: #374151;
   margin-bottom: 10px;
@@ -53,7 +53,7 @@
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 12px;
+  font-size: var(--doc-base-size, 12px);
 }
 
 .doc-table th {

@@ -34,6 +34,7 @@ export const DocumentPagination = ({
 
   // Get usable width for the measurement sandbox
   const area = getUsableContentArea(settings)
+  const typography = settings.typography || { baseSize: 12, heading1Size: 16, heading2Size: 14, heading3Size: 14 }
 
   return (
     <div className={`document-pagination-wrapper w-full ${className}`}>
@@ -41,7 +42,13 @@ export const DocumentPagination = ({
       <div
         ref={sandboxRef}
         className="document-measurement-sandbox no-print"
-        style={{ width: `${area.widthMm}mm` }}
+        style={{
+          width: `${area.widthMm}mm`,
+          '--doc-base-size': `${typography.baseSize || 12}px`,
+          '--doc-h1-size': `${typography.heading1Size || 16}px`,
+          '--doc-h2-size': `${typography.heading2Size || 14}px`,
+          '--doc-h3-size': `${typography.heading3Size || 14}px`,
+        }}
         aria-hidden="true"
       >
         <DocumentContent blocks={blocks} />

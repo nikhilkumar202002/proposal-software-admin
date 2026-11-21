@@ -12,10 +12,10 @@ export function useDocumentPagination(blocks = [], settings = {}) {
 
   const totalPages = pages.length
 
-  // Trigger measurement when blocks change
+  // Trigger measurement when blocks or formatting change
   useEffect(() => {
     measure()
-  }, [blocks, settings.orientation, settings.margins, measure])
+  }, [blocks, settings.orientation, settings.margins, settings.typography, measure])
 
   return {
     pages,

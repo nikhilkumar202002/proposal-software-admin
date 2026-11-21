@@ -19,6 +19,7 @@ export const DocumentPage = ({
   const headerSettings = settings.header || { visible: true, height: 22 }
   const footerSettings = settings.footer || { visible: true, height: 16 }
   const watermark = settings.watermark || { enabled: false }
+  const typography = settings.typography || { baseSize: 12, heading1Size: 16, heading2Size: 14, heading3Size: 14 }
 
   const showHeader = headerSettings.visible !== false
   const showFooter = footerSettings.visible !== false
@@ -74,7 +75,15 @@ export const DocumentPage = ({
       )}
 
       {/* Main Content Area: sits between reserved header and footer */}
-      <div className="document-content-area">
+      <div
+        className="document-content-area"
+        style={{
+          '--doc-base-size': `${typography.baseSize || 12}px`,
+          '--doc-h1-size': `${typography.heading1Size || 16}px`,
+          '--doc-h2-size': `${typography.heading2Size || 14}px`,
+          '--doc-h3-size': `${typography.heading3Size || 14}px`,
+        }}
+      >
         {children}
       </div>
 

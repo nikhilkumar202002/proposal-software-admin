@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import DocumentPagination from './DocumentPagination'
 import DocumentSettings from './DocumentSettings'
+import DocumentFontResizer from './DocumentFontResizer'
 import { useDocumentSettings } from './hooks/useDocumentSettings'
 import {
   ZoomIn,
@@ -137,8 +138,14 @@ export const DocumentCanvas = ({
             </div>
           </div>
 
-          {/* Right: Zoom controls, Settings & Print/PDF */}
+          {/* Right: Font size controls, Zoom controls, Settings & Print/PDF */}
           <div className="flex items-center gap-2">
+            {/* Font Resizing Component */}
+            <DocumentFontResizer
+              typography={settings.typography}
+              onChange={(typo) => updateSettings({ typography: typo })}
+            />
+
             {/* Zoom Controls */}
             <div className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-lg p-0.5">
               <button

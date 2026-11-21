@@ -1,5 +1,5 @@
 import { Eye, Edit3, Copy, FileDown, Trash2, Building2 } from 'lucide-react'
-import { DataTable, ActionMenu } from '../../../components/common'
+import { DataTable } from '../../../components/common'
 import { formatCurrency, calculateProposalTotals } from '../utils/proposalHelpers'
 import { ProposalStatusDropdown } from './ProposalStatusDropdown'
 
@@ -147,34 +147,6 @@ export const ProposalTable = ({
       align: 'right',
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
-        const actions = [
-          {
-            label: 'View A4 Preview',
-            icon: Eye,
-            onClick: () => onView(r),
-          },
-          {
-            label: 'Edit Proposal',
-            icon: Edit3,
-            onClick: () => onEdit(r),
-          },
-          {
-            label: 'Export PDF',
-            icon: FileDown,
-            onClick: () => onDownloadPdf(r),
-          },
-          {
-            label: 'Duplicate',
-            icon: Copy,
-            onClick: () => onDuplicate(r),
-          },
-          {
-            label: 'Delete',
-            icon: Trash2,
-            danger: true,
-            onClick: () => onDelete(r),
-          },
-        ]
 
         return (
           <div
@@ -184,20 +156,48 @@ export const ProposalTable = ({
             <button
               type="button"
               onClick={() => onView(r)}
-              className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+              className="p-1.5 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
               title="Preview Proposal"
+              aria-label="Preview Proposal"
             >
               <Eye className="w-4 h-4" />
             </button>
             <button
               type="button"
               onClick={() => onEdit(r)}
-              className="p-1.5 text-gray-400 hover:text-[#0055FF] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+              className="p-1.5 text-gray-500 hover:text-[#0055FF] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
               title="Edit Proposal"
+              aria-label="Edit Proposal"
             >
               <Edit3 className="w-4 h-4" />
             </button>
-            <ActionMenu items={actions} align="right" />
+            <button
+              type="button"
+              onClick={() => onDownloadPdf(r)}
+              className="p-1.5 text-gray-500 hover:text-[#0055FF] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+              title="Download PDF"
+              aria-label="Download PDF"
+            >
+              <FileDown className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => onDuplicate(r)}
+              className="p-1.5 text-gray-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer"
+              title="Duplicate Proposal"
+              aria-label="Duplicate Proposal"
+            >
+              <Copy className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => onDelete(r)}
+              className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+              title="Delete Proposal"
+              aria-label="Delete Proposal"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
           </div>
         )
       },

@@ -576,15 +576,6 @@ export function convertProposalToDocumentCanvasProps(proposal) {
     serviceType: proposal.serviceType || proposal.projectName || 'Enterprise Engagement',
   })
 
-  // Add Hero / Header Block (Main Heading)
-  contentBlocks.push({
-    id: 'blk-hero',
-    type: 'hero',
-    title: proposal.title || 'Proposal Document',
-    subtitle: `Prepared for ${proposal.client?.companyName || proposal.client?.name || 'Valued Client'} • ${proposal.number || ''}`,
-    lead: `Project: ${proposal.projectName || proposal.title || 'Enterprise Engagement'} | Valid until ${proposal.validUntil || '30 days from date'}`,
-  })
-
   // Parse TipTap content nodes
   if (proposal.content?.content && Array.isArray(proposal.content.content)) {
     proposal.content.content.forEach((node, i) => {
