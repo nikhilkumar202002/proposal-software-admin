@@ -32,10 +32,14 @@ export const UserTable = ({
   onPageChange = () => {},
   onResetFilters = () => {},
   hasActiveFilters = false,
+  isLoading = false,
 }) => {
   const navigate = useNavigate()
   const [userToDelete, setUserToDelete] = useState(null)
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false)
+
+  const isUserIdSelected = (id) =>
+    selectedIds.some((sid) => String(sid) === String(id))
 
   const totalUsers = users.length
   const totalPages = Math.max(1, Math.ceil(totalUsers / pageSize))
@@ -44,15 +48,15 @@ export const UserTable = ({
 
   const isAllPageSelected =
     paginatedUsers.length > 0 &&
-    paginatedUsers.every((u) => selectedIds.includes(u.id))
+    paginatedUsers.every((u) => isUserIdSelected(u.id))
   const isPartiallySelected =
-    paginatedUsers.some((u) => selectedIds.includes(u.id)) && !isAllPageSelected
+    paginatedUsers.some((u) => isUserIdSelected(u.id)) && !isAllPageSelected
 
   const handleSelectAllOnPage = () => {
     if (isAllPageSelected) {
       // Unselect page items
-      const pageIdSet = new Set(paginatedUsers.map((u) => u.id))
-      const remaining = selectedIds.filter((id) => !pageIdSet.has(id))
+      const pageIdSet = new Set(paginatedUsers.map((u) => String(u.id)))
+      const remaining = selectedIds.filter((id) => !pageIdSet.has(String(id)))
       onSelectAll(remaining)
     } else {
       // Select all on page
@@ -157,7 +161,7 @@ export const UserTable = ({
           <tbody className="divide-y divide-gray-100 bg-white">
             {paginatedUsers.length > 0 ? (
               paginatedUsers.map((user) => {
-                const isSelected = selectedIds.includes(user.id)
+                const isSelected = isUserIdSelected(user.id)
 
                 return (
                   <tr
