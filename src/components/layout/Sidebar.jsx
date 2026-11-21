@@ -10,6 +10,7 @@ import {
     PanelLeftClose,
     ChevronRight,
     X,
+    Sparkles,
 } from 'lucide-react'
 import logoBlack from '../../assets/Domine-Dude_black.png'
 import favIcon from '../../assets/fav-icon.png'
@@ -31,6 +32,12 @@ const workspaceLinks = [
         name: 'Clients',
         to: '/clients',
         icon: Users,
+    },
+    {
+        name: 'AI Chat',
+        to: '/ai',
+        icon: Sparkles,
+        badge: 'New',
     },
 ]
 

@@ -20,6 +20,7 @@ import {
   CurrencySettings,
   AccountSettings,
 } from './modules/settings'
+import { AIChatPage } from './modules/ai'
 import { FileText } from 'lucide-react'
 
 // Simple Page Placeholder for other routes
@@ -54,6 +55,10 @@ export function App() {
         <Route element={<AdminLayout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          {/* AI Chat & Proposal Copilot (ChatGPT Interface) */}
+          <Route path="/ai" element={<AIChatPage />} />
+          <Route path="/chat" element={<AIChatPage />} />
+
           {/* Proposal Management Module Routes */}
           <Route path="/proposals" element={<ProposalList />} />
           <Route path="/proposals/new" element={<CreateProposal />} />

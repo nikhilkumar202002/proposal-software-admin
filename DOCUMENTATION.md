@@ -315,6 +315,8 @@ The application routes are defined in `src/App.jsx` using `react-router-dom`:
 | `/login` | `Login` | Public | Split-screen enterprise authentication with credentials login. |
 | `/` | `Dashboard` | Authenticated | Pipeline metrics, acceptance rates, revenue, and quick actions. |
 | `/dashboard` | `Dashboard` | Authenticated | Alias to primary KPI dashboard. |
+| `/ai` | `AIChatPage` | Authenticated | ChatGPT-style AI chat interface for proposal generation & commercial pricing. |
+| `/chat` | `AIChatPage` | Authenticated | Route alias for AI chat copilot. |
 | `/proposals` | `ProposalList` | Authenticated | Proposals master directory with search, status filtering, and 1-click actions. |
 | `/proposals/new` | `CreateProposal` | Authenticated | 4-tab proposal builder wizard (Info, Scope, Pricing, Review). |
 | `/proposals/create`| `CreateProposal` | Authenticated | Route alias for proposal builder. |
