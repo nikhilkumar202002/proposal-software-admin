@@ -21,6 +21,7 @@ export const ClientTable = ({
     {
       key: 'companyName',
       header: 'Company & Contact',
+      title: 'Company & Contact',
       sortable: true,
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
@@ -45,6 +46,7 @@ export const ClientTable = ({
     {
       key: 'email',
       header: 'Contact Details',
+      title: 'Contact Details',
       sortable: true,
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
@@ -65,6 +67,7 @@ export const ClientTable = ({
     {
       key: 'city',
       header: 'Location',
+      title: 'Location',
       sortable: true,
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
@@ -83,6 +86,7 @@ export const ClientTable = ({
     {
       key: 'taxNumber',
       header: 'Tax ID / GSTIN',
+      title: 'Tax ID / GSTIN',
       sortable: true,
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
@@ -96,6 +100,7 @@ export const ClientTable = ({
     {
       key: 'proposalsCount',
       header: 'Proposals',
+      title: 'Proposals',
       sortable: true,
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
@@ -109,6 +114,7 @@ export const ClientTable = ({
     {
       key: 'status',
       header: 'Status',
+      title: 'Status',
       sortable: true,
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
@@ -127,6 +133,7 @@ export const ClientTable = ({
     {
       key: 'actions',
       header: 'Actions',
+      title: 'Actions',
       align: 'right',
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}

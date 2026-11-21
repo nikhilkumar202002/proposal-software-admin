@@ -89,7 +89,7 @@ export const DataTable = ({
                         col.align === 'right' ? 'justify-end' : ''
                       }`}
                     >
-                      <span>{col.title}</span>
+                      <span>{col.header || col.title || col.label || ''}</span>
                       {col.sortable && (
                         <span className="text-gray-400">
                           {isSorted ? (

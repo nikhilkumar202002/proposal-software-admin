@@ -21,6 +21,7 @@ export const ProposalTable = ({
     {
       key: 'number',
       header: 'Proposal #',
+      title: 'Proposal #',
       sortable: true,
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
@@ -39,6 +40,7 @@ export const ProposalTable = ({
     {
       key: 'title',
       header: 'Proposal Title & Project',
+      title: 'Proposal Title & Project',
       sortable: true,
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
@@ -70,6 +72,7 @@ export const ProposalTable = ({
     {
       key: 'client',
       header: 'Client / Organization',
+      title: 'Client / Organization',
       sortable: true,
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
@@ -95,6 +98,7 @@ export const ProposalTable = ({
     {
       key: 'total',
       header: 'Value / Grand Total',
+      title: 'Value / Grand Total',
       sortable: true,
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
@@ -110,6 +114,7 @@ export const ProposalTable = ({
     {
       key: 'status',
       header: 'Status',
+      title: 'Status',
       sortable: true,
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
@@ -124,6 +129,7 @@ export const ProposalTable = ({
     {
       key: 'validUntil',
       header: 'Valid Until',
+      title: 'Valid Until',
       sortable: true,
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
@@ -137,6 +143,7 @@ export const ProposalTable = ({
     {
       key: 'actions',
       header: 'Actions',
+      title: 'Actions',
       align: 'right',
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
