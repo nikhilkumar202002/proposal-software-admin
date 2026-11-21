@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import Header from './Header'
+import AIButton from '../common/AIButton'
 
 export const AdminLayout = ({ children }) => {
   const location = useLocation()
@@ -69,6 +70,9 @@ export const AdminLayout = ({ children }) => {
           </div>
         </main>
       </div>
+
+      {/* Floating AI Proposal Copilot Button */}
+      <AIButton />
     </div>
   )
 }
