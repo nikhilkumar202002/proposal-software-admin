@@ -455,6 +455,7 @@ export function createNewProposalModel(existingList = []) {
     number: proposalNumber,
     title: 'Enterprise Digital Modernization Proposal',
     projectName: 'Digital Transformation Phase 1',
+    serviceType: 'Cloud Architecture & Digital Modernization',
     date: today,
     validUntil: validUntil,
     status: 'draft',
@@ -536,7 +537,18 @@ export function convertProposalToDocumentCanvasProps(proposal) {
   // Convert TipTap content doc into blocks
   const contentBlocks = []
 
-  // Add Hero / Header Block
+  // Add Client & Project Metadata Block before Main Heading
+  contentBlocks.push({
+    id: 'blk-proposal-meta',
+    type: 'proposalMeta',
+    clientName: proposal.client?.name || '',
+    companyName: proposal.client?.companyName || '',
+    contactNumber: proposal.client?.phone || '',
+    projectTotalCost: formatCurrency(totals.grandTotal, currency),
+    serviceType: proposal.serviceType || proposal.projectName || 'Enterprise Engagement',
+  })
+
+  // Add Hero / Header Block (Main Heading)
   contentBlocks.push({
     id: 'blk-hero',
     type: 'hero',

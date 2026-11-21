@@ -89,8 +89,8 @@ export const ProposalInformation = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Proposal Title - Dominant Field */}
-            <div className="md:col-span-2 space-y-1.5">
+            {/* Proposal Title */}
+            <div className="space-y-1.5">
               <label className="text-xs font-semibold text-gray-700 block">
                 Proposal Title <span className="text-red-500">*</span>
               </label>
@@ -112,6 +112,18 @@ export const ProposalInformation = ({
                 onChange={(e) => onChange({ projectName: e.target.value })}
                 placeholder="e.g. Digital Modernization Phase 1"
                 icon={Layers}
+              />
+            </div>
+
+            {/* Service Type */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-gray-700 block">
+                Service Type
+              </label>
+              <Input
+                value={proposal.serviceType || ''}
+                onChange={(e) => onChange({ serviceType: e.target.value })}
+                placeholder="e.g. Cloud Modernization & Architecture"
               />
             </div>
           </div>

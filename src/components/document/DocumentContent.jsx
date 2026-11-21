@@ -17,6 +17,60 @@ function renderBlock(block) {
   const { id, type } = block
 
   switch (type) {
+    case 'proposalMeta':
+      return (
+        <div
+          key={id}
+          data-block-id={id}
+          className="mb-5 pb-4 border-b border-gray-200 text-[12px] leading-relaxed select-none"
+        >
+          <table className="w-full max-w-lg border-collapse text-[12px]">
+            <tbody>
+              <tr>
+                <td className="py-1 pr-4 font-semibold text-gray-700 w-44 whitespace-nowrap">
+                  Client Name :
+                </td>
+                <td className="py-1 text-gray-900 font-medium">
+                  {block.clientName || '—'}
+                </td>
+              </tr>
+              <tr>
+                <td className="py-1 pr-4 font-semibold text-gray-700 whitespace-nowrap">
+                  Company Name :
+                </td>
+                <td className="py-1 text-gray-900 font-medium">
+                  {block.companyName || '—'}
+                </td>
+              </tr>
+              <tr>
+                <td className="py-1 pr-4 font-semibold text-gray-700 whitespace-nowrap">
+                  Contact Number :
+                </td>
+                <td className="py-1 text-gray-900 font-medium">
+                  {block.contactNumber || '—'}
+                </td>
+              </tr>
+              <tr>
+                <td className="py-1 pr-4 font-semibold text-gray-700 whitespace-nowrap">
+                  Project Total Cost :
+                </td>
+                <td className="py-1 text-gray-900 font-bold">
+                  {block.projectTotalCost || '—'}
+                </td>
+              </tr>
+              <tr>
+                <td className="py-1 pr-4 font-semibold text-gray-700 whitespace-nowrap">
+                  Service Type :
+                </td>
+                <td className="py-1 text-gray-900 font-medium">
+                  {block.serviceType || '—'}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )
+
     case 'hero':
       return (
         <div key={id} data-block-id={id} className="mb-4 pt-1">

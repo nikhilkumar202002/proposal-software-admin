@@ -15,6 +15,7 @@ function getInitialSeedProposals() {
   p1.number = 'PROP-2026-081'
   p1.title = 'Enterprise Cloud Infrastructure Modernization'
   p1.projectName = 'Cloud DevOps & High Availability'
+  p1.serviceType = 'DevOps & Cloud Architecture'
   p1.status = 'signed'
   p1.proposalType = 'direct'
   p1.showCompanyLogo = true
@@ -42,6 +43,7 @@ function getInitialSeedProposals() {
   p2.number = 'PROP-2026-080'
   p2.title = 'Enterprise Brand Identity & Design System'
   p2.projectName = 'UI/UX Redesign'
+  p2.serviceType = 'Brand Identity & Design System'
   p2.status = 'viewed'
   p2.proposalType = 'b2b'
   p2.showCompanyLogo = false
@@ -67,6 +69,7 @@ function getInitialSeedProposals() {
   p3.number = 'PROP-2026-079'
   p3.title = 'Custom AI Automation & Agent Pipeline'
   p3.projectName = 'Intelligent Processing'
+  p3.serviceType = 'AI Automation & Machine Learning'
   p3.status = 'under_review'
   p3.proposalType = 'direct'
   p3.showCompanyLogo = true
@@ -85,6 +88,7 @@ function getInitialSeedProposals() {
   p4.number = 'PROP-2026-078'
   p4.title = 'Cybersecurity Audit & Compliance Review'
   p4.projectName = 'SOC 2 Type II Readiness'
+  p4.serviceType = 'Cybersecurity Audit & Compliance'
   p4.status = 'draft'
   p4.proposalType = 'b2b'
   p4.showCompanyLogo = false

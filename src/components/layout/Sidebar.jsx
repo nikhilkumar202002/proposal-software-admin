@@ -8,10 +8,11 @@ import {
     Coins,
     LogOut,
     PanelLeftClose,
-    PanelLeftOpen,
+    ChevronRight,
     X,
 } from 'lucide-react'
 import logoBlack from '../../assets/Domine-Dude_black.png'
+import favIcon from '../../assets/fav-icon.png'
 
 const workspaceLinks = [
     {
@@ -88,7 +89,12 @@ export const Sidebar = ({
                 key={item.to}
                 to={item.to}
                 end={item.exact}
-                onClick={handleLinkClick}
+                onClick={() => {
+                    handleLinkClick()
+                    if (isCollapsed) {
+                        setIsCollapsed(false)
+                    }
+                }}
                 className={`group relative flex items-center rounded-lg text-sm font-medium transition-colors duration-150 ${isCollapsed ? 'justify-center h-11 w-11 mx-auto my-1' : 'h-10 px-3 my-0.5'
                     } ${active
                         ? 'bg-blue-50 text-[#0055FF]'
@@ -149,17 +155,32 @@ export const Sidebar = ({
 
             {/* Fixed Left Sidebar */}
             <aside
-                className={`fixed top-0 left-0 bottom-0 z-40 bg-white border-r border-gray-200/80 flex flex-col transition-all duration-300 ease-in-out select-none ${isCollapsed ? 'w-[72px]' : 'w-[250px]'
+                onClick={() => {
+                    if (isCollapsed) {
+                        setIsCollapsed(false)
+                    }
+                }}
+                className={`group fixed top-0 left-0 bottom-0 z-40 bg-white border-r border-gray-200/80 flex flex-col transition-all duration-300 ease-in-out select-none ${isCollapsed ? 'w-[72px] cursor-pointer' : 'w-[250px]'
                     } ${isMobileOpen
                         ? 'translate-x-0 w-[260px]'
                         : '-translate-x-full lg:translate-x-0'
                     }`}
             >
+                {/* Floating Expand Arrow on Hover (Collapsed State) */}
+                {isCollapsed && (
+                    <div
+                        className="hidden lg:flex absolute -right-3 top-20 z-50 items-center justify-center w-6 h-6 rounded-full bg-white border border-gray-200 shadow-md text-gray-500 group-hover:text-[#0055FF] group-hover:border-[#0055FF]/40 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none"
+                        title="Click anywhere to expand sidebar"
+                    >
+                        <ChevronRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+                    </div>
+                )}
+
                 {/* Brand Header with Logo from Assets */}
                 <div className="h-16 flex items-center justify-between px-3.5 border-b border-gray-100/90 shrink-0">
-                    <div className="flex items-center min-w-0">
+                    <div className="flex items-center min-w-0 flex-1">
                         {(!isCollapsed || isMobileOpen) ? (
-                            /* Expanded: Full logo from assets without proposal badge */
+                            /* Expanded: Full logo from assets */
                             <div className="flex items-center">
                                 <img
                                     src={logoBlack}
@@ -168,40 +189,45 @@ export const Sidebar = ({
                                 />
                             </div>
                         ) : (
-                            /* Collapsed: Logo mark neatly cropped */
+                            /* Collapsed: Accurate icon mark from assets with hover expand arrow */
                             <div
-                                className="w-9 h-9 rounded-xl flex items-center justify-start overflow-hidden mx-auto bg-blue-50/40 border border-blue-100/60 p-0.5"
-                                title="Domain Dude"
+                                className="relative w-10 h-10 rounded-xl flex items-center justify-center mx-auto bg-blue-50/40 border border-blue-100/70 p-1 group/header transition-all shadow-2xs"
+                                title="Domain Dude - Click anywhere to expand sidebar"
                             >
                                 <img
-                                    src={logoBlack}
-                                    alt="Domain Dude Logo"
-                                    className="h-7.5 max-w-none object-cover object-left"
+                                    src={favIcon}
+                                    alt="Domain Dude"
+                                    className="h-7 w-7 object-contain transition-opacity duration-150 group-hover:opacity-25"
                                 />
+                                <ChevronRight className="w-4 h-4 text-[#0055FF] absolute inset-0 m-auto opacity-0 group-hover:opacity-100 transition-all duration-150 transform group-hover:scale-110" />
                             </div>
                         )}
                     </div>
 
-                    {/* Desktop Collapse / Expand Button */}
-                    <button
-                        type="button"
-                        onClick={() => setIsCollapsed(!isCollapsed)}
-                        className="hidden lg:flex p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors ml-1"
-                        title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-                        aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-                    >
-                        {isCollapsed ? (
-                            <PanelLeftOpen className="w-4 h-4 text-gray-600" />
-                        ) : (
+                    {/* Desktop Close Sidebar Button - Only displayed when sidebar is OPEN */}
+                    {(!isCollapsed || isMobileOpen) && (
+                        <button
+                            type="button"
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                setIsCollapsed(true)
+                            }}
+                            className="hidden lg:flex p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors ml-1 cursor-pointer"
+                            title="Collapse sidebar"
+                            aria-label="Collapse sidebar"
+                        >
                             <PanelLeftClose className="w-4 h-4 text-gray-600" />
-                        )}
-                    </button>
+                        </button>
+                    )}
 
                     {/* Mobile Close Button */}
                     <button
                         type="button"
-                        onClick={() => setIsMobileOpen(false)}
-                        className="flex lg:hidden p-1.5 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors"
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            setIsMobileOpen(false)
+                        }}
+                        className="flex lg:hidden p-1.5 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors cursor-pointer"
                         aria-label="Close sidebar"
                     >
                         <X className="w-5 h-5" />
@@ -277,8 +303,11 @@ export const Sidebar = ({
                             {(!isCollapsed || isMobileOpen) ? (
                                 <button
                                     type="button"
-                                    onClick={handleLogout}
-                                    className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        handleLogout()
+                                    }}
+                                    className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
                                     title="Log out"
                                     aria-label="Log out"
                                 >
