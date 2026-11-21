@@ -444,6 +444,26 @@ export const useProposalStore = create((set, get) => ({
     }
   },
 
+  updateProposalStatus: async (id, status) => {
+    try {
+      const updated = await proposalService.updateProposal(id, { status })
+      set((state) => ({
+        proposals: state.proposals.map((p) =>
+          String(p.id) === String(id) || p.number === id ? { ...p, status } : p
+        ),
+        currentProposal:
+          state.currentProposal &&
+          (String(state.currentProposal.id) === String(id) || state.currentProposal.number === id)
+            ? { ...state.currentProposal, status }
+            : state.currentProposal,
+      }))
+      return updated
+    } catch (err) {
+      console.error('Failed to update proposal status:', err)
+      throw err
+    }
+  },
+
   downloadPdf: async (id) => {
     const proposal = get().currentProposal?.id === id ? get().currentProposal : null
     set({ isGeneratingPdf: true })

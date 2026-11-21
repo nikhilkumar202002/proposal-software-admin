@@ -14,20 +14,48 @@ export const CURRENCY_CONFIG = {
 }
 
 export const PROPOSAL_STATUSES = [
-  { value: 'draft', label: 'Draft', color: 'neutral', bg: 'bg-gray-100 text-gray-700 border-gray-200' },
-  { value: 'sent', label: 'Sent', color: 'info', bg: 'bg-blue-50 text-blue-700 border-blue-200' },
-  { value: 'viewed', label: 'Viewed', color: 'info', bg: 'bg-sky-50 text-sky-700 border-sky-200' },
-  { value: 'under_review', label: 'Under Review', color: 'warning', bg: 'bg-amber-50 text-amber-700 border-amber-200' },
-  { value: 'accepted', label: 'Accepted', color: 'success', bg: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-  { value: 'signed', label: 'Signed', color: 'success', bg: 'bg-emerald-50 text-emerald-800 border-emerald-300' },
-  { value: 'declined', label: 'Declined', color: 'danger', bg: 'bg-red-50 text-red-700 border-red-200' },
-  { value: 'expired', label: 'Expired', color: 'neutral', bg: 'bg-gray-100 text-gray-500 border-gray-300' },
+  {
+    value: 'proposal_sent',
+    label: 'Proposal Sent',
+    color: 'info',
+    bg: 'bg-blue-50 text-blue-700 border-blue-200/90',
+  },
+  {
+    value: 'need_time',
+    label: 'Need Time',
+    color: 'warning',
+    bg: 'bg-amber-50 text-amber-700 border-amber-200/90',
+  },
+  {
+    value: 'signed',
+    label: 'Signed',
+    color: 'success',
+    bg: 'bg-emerald-50 text-emerald-800 border-emerald-200/90',
+  },
+  {
+    value: 'rejected',
+    label: 'Rejected',
+    color: 'danger',
+    bg: 'bg-red-50 text-red-700 border-red-200/90',
+  },
 ]
 
 export function getProposalStatusConfig(status) {
-  const norm = String(status || 'draft').toLowerCase().replace(/\s+/g, '_')
-  const found = PROPOSAL_STATUSES.find((s) => s.value === norm)
-  return found || { value: norm, label: status || 'Draft', color: 'neutral', bg: 'bg-gray-100 text-gray-700 border-gray-200' }
+  const norm = String(status || 'proposal_sent').toLowerCase().trim().replace(/\s+/g, '_')
+  
+  if (['proposal_sent', 'sent', 'proposal_send', 'draft', 'viewed'].includes(norm)) {
+    return PROPOSAL_STATUSES[0] // Proposal Sent
+  }
+  if (['need_time', 'under_review', 'pending', 'needtime'].includes(norm)) {
+    return PROPOSAL_STATUSES[1] // Need Time
+  }
+  if (['signed', 'accepted', 'approved'].includes(norm)) {
+    return PROPOSAL_STATUSES[2] // Signed
+  }
+  if (['rejected', 'declined', 'expired'].includes(norm)) {
+    return PROPOSAL_STATUSES[3] // Rejected
+  }
+  return PROPOSAL_STATUSES[0]
 }
 
 /**
@@ -458,7 +486,7 @@ export function createNewProposalModel(existingList = []) {
     serviceType: 'Cloud Architecture & Digital Modernization',
     date: today,
     validUntil: validUntil,
-    status: 'draft',
+    status: 'proposal_sent',
     proposalType: 'direct', // 'direct' (with logo) | 'b2b' (without logo)
     showCompanyLogo: true,
     currency: defaultCurrency,

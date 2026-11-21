@@ -1,31 +1,47 @@
 import Badge from './Badge'
 
 const statusConfig = {
-  draft: {
-    label: 'Draft',
-    variant: 'neutral',
-  },
-  pending: {
-    label: 'Pending',
-    variant: 'warning',
+  proposal_sent: {
+    label: 'Proposal Sent',
+    variant: 'info',
   },
   sent: {
-    label: 'Sent',
+    label: 'Proposal Sent',
+    variant: 'info',
+  },
+  proposal_send: {
+    label: 'Proposal Sent',
+    variant: 'info',
+  },
+  draft: {
+    label: 'Proposal Sent',
     variant: 'info',
   },
   viewed: {
-    label: 'Viewed',
-    variant: 'default',
+    label: 'Proposal Sent',
+    variant: 'info',
   },
-  approved: {
-    label: 'Approved',
+  need_time: {
+    label: 'Need Time',
+    variant: 'warning',
+  },
+  under_review: {
+    label: 'Need Time',
+    variant: 'warning',
+  },
+  pending: {
+    label: 'Need Time',
+    variant: 'warning',
+  },
+  signed: {
+    label: 'Signed',
     variant: 'success',
   },
   accepted: {
-    label: 'Accepted',
+    label: 'Signed',
     variant: 'success',
   },
-  signed: {
+  approved: {
     label: 'Signed',
     variant: 'success',
   },
@@ -34,7 +50,7 @@ const statusConfig = {
     variant: 'danger',
   },
   declined: {
-    label: 'Declined',
+    label: 'Rejected',
     variant: 'danger',
   },
   expired: {

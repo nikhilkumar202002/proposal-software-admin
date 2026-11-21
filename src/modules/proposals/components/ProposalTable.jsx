@@ -1,6 +1,7 @@
 import { Eye, Edit3, Copy, FileDown, Trash2, Building2 } from 'lucide-react'
-import { DataTable, StatusBadge, ActionMenu } from '../../../components/common'
+import { DataTable, ActionMenu } from '../../../components/common'
 import { formatCurrency, calculateProposalTotals } from '../utils/proposalHelpers'
+import { ProposalStatusDropdown } from './ProposalStatusDropdown'
 
 export const ProposalTable = ({
   proposals = [],
@@ -12,6 +13,7 @@ export const ProposalTable = ({
   onDuplicate = () => {},
   onDelete = () => {},
   onDownloadPdf = () => {},
+  onStatusChange = () => {},
   loading = false,
   className = '',
 }) => {
