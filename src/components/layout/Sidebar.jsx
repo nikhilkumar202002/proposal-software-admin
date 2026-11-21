@@ -91,11 +91,8 @@ export const Sidebar = ({
                 end={item.exact}
                 onClick={() => {
                     handleLinkClick()
-                    if (isCollapsed) {
-                        setIsCollapsed(false)
-                    }
                 }}
-                className={`group relative flex items-center rounded-lg text-sm font-medium transition-colors duration-150 ${isCollapsed ? 'justify-center h-11 w-11 mx-auto my-1' : 'h-10 px-3 my-0.5'
+                className={`group/item relative flex items-center rounded-lg text-sm font-medium transition-colors duration-150 cursor-pointer ${isCollapsed ? 'justify-center h-11 w-11 mx-auto my-1' : 'h-10 px-3 my-0.5'
                     } ${active
                         ? 'bg-blue-50 text-[#0055FF]'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/70'
@@ -108,7 +105,7 @@ export const Sidebar = ({
 
                 <Icon
                     className={`shrink-0 transition-colors ${isCollapsed ? 'w-5 h-5' : 'w-4 h-4 mr-3'
-                        } ${active ? 'text-[#0055FF]' : 'text-gray-500 group-hover:text-gray-800'}`}
+                        } ${active ? 'text-[#0055FF]' : 'text-gray-500 group-hover/item:text-gray-800'}`}
                 />
 
                 {!isCollapsed && (
@@ -119,7 +116,7 @@ export const Sidebar = ({
                     <span
                         className={`text-xs px-2 py-0.5 rounded-full font-medium transition-colors ${active
                             ? 'bg-[#0055FF]/10 text-[#0055FF]'
-                            : 'bg-gray-100 text-gray-600 group-hover:bg-gray-200/80'
+                            : 'bg-gray-100 text-gray-600 group-hover/item:bg-gray-200/80'
                             }`}
                     >
                         {item.badge}
@@ -128,10 +125,10 @@ export const Sidebar = ({
 
                 {/* Floating Tooltip when collapsed */}
                 {isCollapsed && (
-                    <div className="absolute left-[calc(100%+12px)] top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-md shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 z-50 flex items-center gap-1.5">
+                    <div className="absolute left-[calc(100%+14px)] top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-md shadow-xl whitespace-nowrap opacity-0 group-hover/item:opacity-100 pointer-events-none transition-opacity duration-150 z-[100] flex items-center gap-1.5">
                         <span>{item.name}</span>
                         {item.badge && (
-                            <span className="px-1.5 py-0.2 bg-[#0055FF] text-white text-[10px] rounded-full">
+                            <span className="px-1.5 py-0.5 bg-[#0055FF] text-white text-[10px] rounded-full font-semibold">
                                 {item.badge}
                             </span>
                         )}
@@ -160,20 +157,25 @@ export const Sidebar = ({
                         setIsCollapsed(false)
                     }
                 }}
-                className={`group fixed top-0 left-0 bottom-0 z-40 bg-white border-r border-gray-200/80 flex flex-col transition-all duration-300 ease-in-out select-none ${isCollapsed ? 'w-[72px] cursor-pointer' : 'w-[250px]'
+                className={`group/sidebar fixed top-0 left-0 bottom-0 z-40 bg-white border-r border-gray-200/80 flex flex-col transition-all duration-300 ease-in-out select-none cursor-default ${isCollapsed ? 'w-[72px]' : 'w-[250px]'
                     } ${isMobileOpen
                         ? 'translate-x-0 w-[260px]'
                         : '-translate-x-full lg:translate-x-0'
                     }`}
             >
-                {/* Floating Expand Arrow on Hover (Collapsed State) */}
+                {/* Floating Expand Arrow on Hover (ChatGPT style) */}
                 {isCollapsed && (
-                    <div
-                        className="hidden lg:flex absolute -right-3 top-20 z-50 items-center justify-center w-6 h-6 rounded-full bg-white border border-gray-200 shadow-md text-gray-500 group-hover:text-[#0055FF] group-hover:border-[#0055FF]/40 opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none"
-                        title="Click anywhere to expand sidebar"
+                    <button
+                        type="button"
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            setIsCollapsed(false)
+                        }}
+                        className="hidden lg:flex absolute -right-3 top-20 z-50 items-center justify-center w-6 h-6 rounded-full bg-white border border-gray-200 shadow-md text-gray-600 hover:text-[#0055FF] hover:border-[#0055FF]/40 opacity-0 group-hover/sidebar:opacity-100 transition-all duration-200 cursor-pointer"
+                        title="Open sidebar"
                     >
-                        <ChevronRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
-                    </div>
+                        <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
                 )}
 
                 {/* Brand Header with Logo from Assets */}
@@ -189,17 +191,16 @@ export const Sidebar = ({
                                 />
                             </div>
                         ) : (
-                            /* Collapsed: Accurate icon mark from assets with hover expand arrow */
+                            /* Collapsed: Accurate brand mark from assets */
                             <div
-                                className="relative w-10 h-10 rounded-xl flex items-center justify-center mx-auto bg-blue-50/40 border border-blue-100/70 p-1 group/header transition-all shadow-2xs"
+                                className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto bg-white border border-gray-200/80 p-1 shadow-2xs"
                                 title="Domain Dude - Click anywhere to expand sidebar"
                             >
                                 <img
                                     src={favIcon}
                                     alt="Domain Dude"
-                                    className="h-7 w-7 object-contain transition-opacity duration-150 group-hover:opacity-25"
+                                    className="h-7 w-7 object-contain"
                                 />
-                                <ChevronRight className="w-4 h-4 text-[#0055FF] absolute inset-0 m-auto opacity-0 group-hover:opacity-100 transition-all duration-150 transform group-hover:scale-110" />
                             </div>
                         )}
                     </div>
@@ -273,7 +274,7 @@ export const Sidebar = ({
                     <div className="pt-4 mt-auto border-t border-gray-100/90 space-y-2">
                         {/* User Profile Card */}
                         <div
-                            className={`relative rounded-xl border border-gray-100 bg-gray-50/70 p-2 transition-all ${isCollapsed && !isMobileOpen ? 'flex justify-center p-1.5' : 'flex items-center gap-2.5'
+                            className={`group/user relative rounded-xl border border-gray-100 bg-gray-50/70 p-2 transition-all cursor-pointer ${isCollapsed && !isMobileOpen ? 'flex justify-center p-1.5' : 'flex items-center gap-2.5'
                                 }`}
                         >
                             {/* User Avatar */}
@@ -315,7 +316,7 @@ export const Sidebar = ({
                                 </button>
                             ) : (
                                 /* Tooltip for user profile when collapsed */
-                                <div className="absolute left-[calc(100%+12px)] top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-md shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 z-50">
+                                <div className="absolute left-[calc(100%+14px)] top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-md shadow-xl whitespace-nowrap opacity-0 group-hover/user:opacity-100 pointer-events-none transition-opacity duration-150 z-[100]">
                                     Alex Morgan (Admin)
                                     <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45" />
                                 </div>
