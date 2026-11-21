@@ -10,8 +10,13 @@ const roleIcons = {
 }
 
 export const RoleBadge = ({ role = 'viewer', showIcon = true, size = 'sm', className = '' }) => {
-  const roleKey = role?.toLowerCase()
-  const roleConfig = ROLES[roleKey] || ROLES.viewer
+  const roleKey = typeof role === 'string'
+    ? role.toLowerCase().replace(/\s+/g, '_')
+    : role?.id || 'viewer'
+  const roleConfig = ROLES[roleKey] || {
+    name: typeof role === 'string' ? role : role?.name || 'Viewer',
+    color: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+  }
   const Icon = roleIcons[roleKey] || Eye
 
   const sizeClasses = {

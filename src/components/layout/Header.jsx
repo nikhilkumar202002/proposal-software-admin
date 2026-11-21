@@ -142,6 +142,14 @@ export const Header = ({
     fetchCurrentUser()
   }, [fetchCurrentUser])
 
+  const userRoleDisplay =
+    (Array.isArray(user?.roles) && user.roles.length > 0
+      ? (typeof user.roles[0] === 'object' ? user.roles[0]?.name : user.roles[0])
+      : null) ||
+    user?.role?.name ||
+    user?.role ||
+    'Administrator'
+
   // State
   const [searchQuery, setSearchQuery] = useState('')
   const [isNotificationOpen, setIsNotificationOpen] = useState(false)
@@ -545,7 +553,7 @@ export const Header = ({
                 {user?.name || 'User'}
               </span>
               <span className="text-[10px] text-gray-400 leading-none mt-1">
-                {user?.role?.name || user?.role || 'Administrator'}
+                {userRoleDisplay}
               </span>
             </div>
             <ChevronDown className="w-3.5 h-3.5 text-gray-400 transition-transform hidden sm:block" />
@@ -564,7 +572,7 @@ export const Header = ({
                 </p>
                 <div className="mt-1.5">
                   <span className="inline-block px-1.5 py-0.5 text-[10px] font-medium bg-[#EFF6FF] text-[#0055FF] rounded">
-                    {user?.role?.name || user?.role || 'Administrator'}
+                    {userRoleDisplay}
                   </span>
                 </div>
               </div>

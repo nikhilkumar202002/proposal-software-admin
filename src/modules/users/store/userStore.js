@@ -21,11 +21,14 @@ export const useUserStore = create((set, get) => ({
   fetchUsers: async (customParams = {}) => {
     set({ isLoading: true, error: null })
     try {
-      const params = {
-        ...get().filters,
-        ...customParams,
-      }
-      const apiUsers = await userService.getUsers(params)
+      const { search, role, status } = get().filters
+      const queryParams = {}
+      if (search?.trim()) queryParams.search = search.trim()
+      if (role && role !== 'all') queryParams.role = role
+      if (status && status !== 'all') queryParams.status = status
+      Object.assign(queryParams, customParams)
+
+      const apiUsers = await userService.getUsers(queryParams)
       if (Array.isArray(apiUsers)) {
         set({
           users: apiUsers,

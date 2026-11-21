@@ -60,12 +60,23 @@ export const UserList = () => {
 
     // 2. Role Filter
     if (filters.role && filters.role !== 'all') {
-      result = result.filter((u) => u.role === filters.role)
+      const targetRole = filters.role.toLowerCase().replace(/\s+/g, '_')
+      result = result.filter((u) => {
+        if ((u.role || '').toLowerCase().replace(/\s+/g, '_') === targetRole) return true
+        if (Array.isArray(u.roles)) {
+          return u.roles.some((r) => {
+            const str = String(typeof r === 'object' ? r.name : r).toLowerCase().replace(/\s+/g, '_')
+            return str === targetRole
+          })
+        }
+        return false
+      })
     }
 
     // 3. Status Filter
     if (filters.status && filters.status !== 'all') {
-      result = result.filter((u) => u.status === filters.status)
+      const targetStatus = filters.status.toLowerCase()
+      result = result.filter((u) => (u.status || '').toLowerCase() === targetStatus)
     }
 
     // 4. Sorting

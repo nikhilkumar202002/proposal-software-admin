@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Users,
@@ -8,43 +8,108 @@ import {
   ChevronLeft,
   ChevronRight,
   UserPlus,
-  ArrowUpDown,
   SearchX,
+  Loader2,
+  RefreshCw,
 } from 'lucide-react'
 import UserAvatar from './UserAvatar'
 import RoleBadge from './RoleBadge'
 import UserStatusBadge from './UserStatusBadge'
 import UserActions from './UserActions'
 import DeleteUserModal from './DeleteUserModal'
+import useUserStore from '../store/userStore'
+import userService, { normalizeUser } from '../../../services/user.service'
 
 export const UserTable = ({
-  users = [],
-  selectedIds = [],
-  onToggleSelect = () => {},
-  onSelectAll = () => {},
-  onClearSelection = () => {},
-  onDelete = () => {},
-  onBulkDelete = () => {},
-  onBulkUpdateStatus = () => {},
-  onToggleStatus = () => {},
-  currentPage = 1,
+  users: propUsers,
+  selectedIds: propSelectedIds,
+  onToggleSelect: propOnToggleSelect,
+  onSelectAll: propOnSelectAll,
+  onClearSelection: propOnClearSelection,
+  onDelete: propOnDelete,
+  onBulkDelete: propOnBulkDelete,
+  onBulkUpdateStatus: propOnBulkUpdateStatus,
+  onToggleStatus: propOnToggleStatus,
+  currentPage: propCurrentPage,
   pageSize = 6,
-  onPageChange = () => {},
+  onPageChange: propOnPageChange,
   onResetFilters = () => {},
   hasActiveFilters = false,
-  isLoading = false,
+  isLoading: propIsLoading,
+  autoFetch = true,
 }) => {
   const navigate = useNavigate()
+
+  // Store access
+  const store = useUserStore()
+
+  // Internal state for standalone usage
+  const [internalPage, setInternalPage] = useState(1)
+  const [internalSelectedIds, setInternalSelectedIds] = useState([])
+  const [internalLoading, setInternalLoading] = useState(false)
   const [userToDelete, setUserToDelete] = useState(null)
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false)
+
+  // Direct API fetch to /admin/users if users prop is not provided
+  useEffect(() => {
+    if (propUsers === undefined && autoFetch) {
+      if (typeof store.fetchUsers === 'function') {
+        store.fetchUsers()
+      } else {
+        setInternalLoading(true)
+        userService
+          .getUsers()
+          .catch((err) => {
+            console.error('Failed to load users from /admin/users:', err)
+          })
+          .finally(() => {
+            setInternalLoading(false)
+          })
+      }
+    }
+  }, [propUsers, autoFetch])
+
+  // Normalize and unpack users (supports { data: { users: [...] } }, { users: [...] }, or raw API array)
+  const normalizedUsers = useMemo(() => {
+    let source = propUsers !== undefined ? propUsers : store.users
+
+    // If source is a full Laravel API response object: { success: true, data: { users: [...] } }
+    if (source && typeof source === 'object' && !Array.isArray(source)) {
+      if (Array.isArray(source.data?.users)) {
+        source = source.data.users
+      } else if (Array.isArray(source.users)) {
+        source = source.users
+      } else if (Array.isArray(source.data)) {
+        source = source.data
+      }
+    }
+
+    if (!Array.isArray(source)) return []
+
+    return source.map((item) => {
+      if (!item) return null
+      // If already normalized
+      if (item.createdAt && item.role && item.lastLogin) return item
+      // Normalize raw Laravel API user
+      return normalizeUser(item)
+    }).filter(Boolean)
+  }, [propUsers, store.users])
+
+  // Active selection
+  const selectedIds =
+    propSelectedIds !== undefined ? propSelectedIds : (store.selectedUserIds || internalSelectedIds)
 
   const isUserIdSelected = (id) =>
     selectedIds.some((sid) => String(sid) === String(id))
 
-  const totalUsers = users.length
+  // Pagination calculations
+  const currentPage = propCurrentPage !== undefined ? propCurrentPage : internalPage
+  const handlePageChange = propOnPageChange || setInternalPage
+
+  const totalUsers = normalizedUsers.length
   const totalPages = Math.max(1, Math.ceil(totalUsers / pageSize))
   const startIndex = (currentPage - 1) * pageSize
-  const paginatedUsers = users.slice(startIndex, startIndex + pageSize)
+  const paginatedUsers = normalizedUsers.slice(startIndex, startIndex + pageSize)
 
   const isAllPageSelected =
     paginatedUsers.length > 0 &&
@@ -52,24 +117,96 @@ export const UserTable = ({
   const isPartiallySelected =
     paginatedUsers.some((u) => isUserIdSelected(u.id)) && !isAllPageSelected
 
-  const handleSelectAllOnPage = () => {
-    if (isAllPageSelected) {
-      // Unselect page items
-      const pageIdSet = new Set(paginatedUsers.map((u) => String(u.id)))
-      const remaining = selectedIds.filter((id) => !pageIdSet.has(String(id)))
-      onSelectAll(remaining)
+  // Selection handlers
+  const handleToggleSelect = (id) => {
+    if (propOnToggleSelect) {
+      propOnToggleSelect(id)
+    } else if (store.toggleSelectUser) {
+      store.toggleSelectUser(id)
     } else {
-      // Select all on page
-      const combined = Array.from(
-        new Set([...selectedIds, ...paginatedUsers.map((u) => u.id)])
+      const idStr = String(id)
+      setInternalSelectedIds((prev) =>
+        prev.some((sid) => String(sid) === idStr)
+          ? prev.filter((sid) => String(sid) !== idStr)
+          : [...prev, id]
       )
-      onSelectAll(combined)
     }
   }
 
+  const handleSelectAll = (ids) => {
+    if (propOnSelectAll) {
+      propOnSelectAll(ids)
+    } else if (store.selectAllUsers) {
+      store.selectAllUsers(ids)
+    } else {
+      setInternalSelectedIds(ids)
+    }
+  }
+
+  const handleClearSelection = () => {
+    if (propOnClearSelection) {
+      propOnClearSelection()
+    } else if (store.clearSelection) {
+      store.clearSelection()
+    } else {
+      setInternalSelectedIds([])
+    }
+  }
+
+  const handleSelectAllOnPage = () => {
+    if (isAllPageSelected) {
+      const pageIdSet = new Set(paginatedUsers.map((u) => String(u.id)))
+      const remaining = selectedIds.filter((id) => !pageIdSet.has(String(id)))
+      handleSelectAll(remaining)
+    } else {
+      const combined = Array.from(
+        new Set([...selectedIds, ...paginatedUsers.map((u) => u.id)])
+      )
+      handleSelectAll(combined)
+    }
+  }
+
+  // Action handlers
+  const handleDelete = (id) => {
+    if (propOnDelete) {
+      propOnDelete(id)
+    } else if (store.deleteUser) {
+      store.deleteUser(id)
+    }
+  }
+
+  const handleBulkDelete = (ids) => {
+    if (propOnBulkDelete) {
+      propOnBulkDelete(ids)
+    } else if (store.bulkDelete) {
+      store.bulkDelete(ids)
+    }
+  }
+
+  const handleBulkUpdateStatus = (ids, status) => {
+    if (propOnBulkUpdateStatus) {
+      propOnBulkUpdateStatus(ids, status)
+    } else if (store.bulkUpdateStatus) {
+      store.bulkUpdateStatus(ids, status)
+    }
+  }
+
+  const handleToggleStatus = (id, newStatus) => {
+    if (propOnToggleStatus) {
+      propOnToggleStatus(id, newStatus)
+    } else if (store.updateUserStatus) {
+      store.updateUserStatus(id, newStatus)
+    }
+  }
+
+  const isLoading =
+    propIsLoading !== undefined
+      ? propIsLoading
+      : (store.isLoading || internalLoading)
+
   return (
     <div className="bg-white rounded-2xl border border-gray-200/90 shadow-2xs overflow-hidden flex flex-col">
-      {/* Bulk Action Bar (Visible when 1 or more users selected) */}
+      {/* Bulk Action Bar */}
       {selectedIds.length > 0 && (
         <div className="bg-blue-50/90 border-b border-blue-100 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 animate-in fade-in duration-150">
           <div className="flex items-center gap-2">
@@ -84,7 +221,7 @@ export const UserTable = ({
           <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={() => onBulkUpdateStatus(selectedIds, 'active')}
+              onClick={() => handleBulkUpdateStatus(selectedIds, 'active')}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-50 transition-colors cursor-pointer shadow-2xs"
             >
               <CheckCircle2 className="w-3.5 h-3.5" />
@@ -93,7 +230,7 @@ export const UserTable = ({
 
             <button
               type="button"
-              onClick={() => onBulkUpdateStatus(selectedIds, 'inactive')}
+              onClick={() => handleBulkUpdateStatus(selectedIds, 'inactive')}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl bg-white border border-amber-200 text-amber-700 hover:bg-amber-50 transition-colors cursor-pointer shadow-2xs"
             >
               <XCircle className="w-3.5 h-3.5" />
@@ -111,7 +248,7 @@ export const UserTable = ({
 
             <button
               type="button"
-              onClick={onClearSelection}
+              onClick={handleClearSelection}
               className="text-xs font-medium text-gray-500 hover:text-gray-800 px-2 py-1 transition-colors cursor-pointer"
             >
               Clear
@@ -120,7 +257,7 @@ export const UserTable = ({
         </div>
       )}
 
-      {/* Responsive Table Container */}
+      {/* Responsive Table */}
       <div className="overflow-x-auto min-w-full">
         <table className="min-w-full divide-y divide-gray-200/80 text-left text-xs">
           <thead className="bg-gray-50/80 font-semibold text-gray-600 select-none">
@@ -159,9 +296,19 @@ export const UserTable = ({
           </thead>
 
           <tbody className="divide-y divide-gray-100 bg-white">
-            {paginatedUsers.length > 0 ? (
+            {isLoading ? (
+              <tr>
+                <td colSpan={7} className="px-4 py-16 text-center">
+                  <div className="flex flex-col items-center justify-center">
+                    <Loader2 className="w-7 h-7 text-[#0055FF] animate-spin mb-2" />
+                    <span className="text-xs text-gray-500 font-medium">Loading user list from API...</span>
+                  </div>
+                </td>
+              </tr>
+            ) : paginatedUsers.length > 0 ? (
               paginatedUsers.map((user) => {
                 const isSelected = isUserIdSelected(user.id)
+                const userRole = user.role || (Array.isArray(user.roles) ? user.roles[0] : 'viewer')
 
                 return (
                   <tr
@@ -176,7 +323,7 @@ export const UserTable = ({
                       className="px-4 py-3.5"
                       onClick={(e) => {
                         e.stopPropagation()
-                        onToggleSelect(user.id)
+                        handleToggleSelect(user.id)
                       }}
                     >
                       <input
@@ -210,7 +357,7 @@ export const UserTable = ({
 
                     {/* Role */}
                     <td className="px-4 py-3.5 whitespace-nowrap">
-                      <RoleBadge role={user.role} size="sm" />
+                      <RoleBadge role={userRole} size="sm" />
                     </td>
 
                     {/* Status */}
@@ -225,7 +372,7 @@ export const UserTable = ({
 
                     {/* Created Date */}
                     <td className="px-4 py-3.5 whitespace-nowrap text-gray-500 hidden lg:table-cell">
-                      {user.createdAt}
+                      {user.createdAt || ''}
                     </td>
 
                     {/* Actions Menu */}
@@ -236,7 +383,7 @@ export const UserTable = ({
                       <UserActions
                         user={user}
                         onDelete={(targetUser) => setUserToDelete(targetUser)}
-                        onToggleStatus={onToggleStatus}
+                        onToggleStatus={handleToggleStatus}
                       />
                     </td>
                   </tr>
@@ -304,7 +451,7 @@ export const UserTable = ({
             <button
               type="button"
               disabled={currentPage <= 1}
-              onClick={() => onPageChange(currentPage - 1)}
+              onClick={() => handlePageChange(currentPage - 1)}
               className="p-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
               title="Previous page"
             >
@@ -315,7 +462,7 @@ export const UserTable = ({
               <button
                 key={page}
                 type="button"
-                onClick={() => onPageChange(page)}
+                onClick={() => handlePageChange(page)}
                 className={`w-7 h-7 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
                   page === currentPage
                     ? 'bg-[#0055FF] text-white shadow-2xs'
@@ -329,7 +476,7 @@ export const UserTable = ({
             <button
               type="button"
               disabled={currentPage >= totalPages}
-              onClick={() => onPageChange(currentPage + 1)}
+              onClick={() => handlePageChange(currentPage + 1)}
               className="p-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
               title="Next page"
             >
@@ -346,7 +493,7 @@ export const UserTable = ({
         onClose={() => setUserToDelete(null)}
         onConfirm={() => {
           if (userToDelete) {
-            onDelete(userToDelete.id)
+            handleDelete(userToDelete.id)
             setUserToDelete(null)
           }
         }}
@@ -358,7 +505,7 @@ export const UserTable = ({
         bulkCount={selectedIds.length}
         onClose={() => setIsBulkDeleteModalOpen(false)}
         onConfirm={() => {
-          onBulkDelete(selectedIds)
+          handleBulkDelete(selectedIds)
           setIsBulkDeleteModalOpen(false)
         }}
       />

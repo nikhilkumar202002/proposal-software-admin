@@ -82,6 +82,14 @@ export const Sidebar = ({
     const navigate = useNavigate()
     const { user, logout } = useAuthStore()
 
+    const userRoleDisplay =
+        (Array.isArray(user?.roles) && user.roles.length > 0
+            ? (typeof user.roles[0] === 'object' ? user.roles[0]?.name : user.roles[0])
+            : null) ||
+        user?.role?.name ||
+        user?.role ||
+        'Administrator'
+
     const handleLinkClick = () => {
         if (isMobileOpen) {
             setIsMobileOpen(false)
@@ -326,7 +334,7 @@ export const Sidebar = ({
                                         {user?.name || 'User'}
                                     </div>
                                     <div className="text-[11px] text-gray-500 truncate">
-                                        {user?.role?.name || user?.role || 'Administrator'}
+                                        {userRoleDisplay}
                                     </div>
                                 </div>
                             )}
@@ -348,7 +356,7 @@ export const Sidebar = ({
                             ) : (
                                 /* Tooltip for user profile when collapsed */
                                 <div className="absolute left-[calc(100%+14px)] top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-md shadow-xl whitespace-nowrap opacity-0 group-hover/user:opacity-100 pointer-events-none transition-opacity duration-150 z-[100]">
-                                    {user?.name || 'User'} ({user?.role?.name || user?.role || 'Admin'})
+                                    {user?.name || 'User'} ({userRoleDisplay})
                                     <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45" />
                                 </div>
                             )}

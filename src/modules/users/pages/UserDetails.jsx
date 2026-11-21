@@ -1,13 +1,13 @@
 import { useMemo, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Loader2 } from 'lucide-react'
 import useUserStore from '../store/userStore'
 import UserDetailsCard from '../components/UserDetailsCard'
 
 export const UserDetails = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { getUserById, fetchUser, deleteUser, updateUserStatus } = useUserStore()
+  const { getUserById, fetchUser, deleteUser, updateUserStatus, isLoading } = useUserStore()
 
   useEffect(() => {
     if (id) {
@@ -16,6 +16,15 @@ export const UserDetails = () => {
   }, [id, fetchUser])
 
   const user = useMemo(() => getUserById(id), [id, getUserById])
+
+  if (isLoading && !user) {
+    return (
+      <div className="max-w-4xl mx-auto py-16 text-center">
+        <Loader2 className="w-8 h-8 text-[#0055FF] animate-spin mx-auto mb-3" />
+        <h2 className="text-sm font-semibold text-gray-700">Loading user details...</h2>
+      </div>
+    )
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-16">
