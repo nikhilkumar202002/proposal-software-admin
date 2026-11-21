@@ -32,6 +32,7 @@ export const ProposalList = () => {
     deleteProposal,
     duplicateProposal,
     downloadPdf,
+    updateProposalStatus,
     selectedProposalIds,
     setSelectedProposalIds,
     filters,
@@ -63,7 +64,7 @@ export const ProposalList = () => {
       if (['accepted', 'signed'].includes(p.status)) {
         acceptedVal += totals.grandTotal
         acceptedCount += 1
-      } else if (['draft', 'sent', 'viewed', 'under_review'].includes(p.status)) {
+      } else if (['draft', 'sent', 'proposal_sent', 'viewed', 'under_review', 'need_time'].includes(p.status)) {
         pendingCount += 1
       }
     })
@@ -218,6 +219,9 @@ export const ProposalList = () => {
         onDuplicate={handleDuplicate}
         onDelete={(p) => setProposalToDelete(p)}
         onDownloadPdf={(p) => downloadPdf(p.id)}
+        onStatusChange={async (id, newStatus) => {
+          await updateProposalStatus(id, newStatus)
+        }}
         loading={isLoading}
       />
 

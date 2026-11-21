@@ -113,7 +113,12 @@ export const ProposalTable = ({
       sortable: true,
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
-        return <StatusBadge status={r.status || 'draft'} />
+        return (
+          <ProposalStatusDropdown
+            status={r.status || 'proposal_sent'}
+            onChange={(newStatus) => onStatusChange(r.id, newStatus)}
+          />
+        )
       },
     },
     {
