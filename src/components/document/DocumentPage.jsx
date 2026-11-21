@@ -66,7 +66,7 @@ export const DocumentPage = ({
               company={company}
               proposal={proposal}
               template={headerSettings.template}
-              showDivider={headerSettings.showDivider}
+              showDivider={headerSettings.showDivider ?? false}
               height={headerHeightMm}
             />
           )}
@@ -94,8 +94,8 @@ export const DocumentPage = ({
               company={company}
               pageNumber={pageNumber}
               totalPages={totalPages}
-              showDivider={footerSettings.showDivider}
-              pageNumberFormat={footerSettings.pageNumberFormat}
+              showDivider={footerSettings.showDivider ?? false}
+              pageNumberFormat={footerSettings.pageNumberFormat || 'counts'}
               template={footerSettings.template}
               height={footerHeightMm}
             />

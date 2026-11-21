@@ -13,14 +13,14 @@ export const DEFAULT_DOCUMENT_SETTINGS = {
     visible: true,
     height: A4_CONFIG.header.height, // 22mm
     template: 'modern', // 'modern' | 'corporate' | 'minimal'
-    showDivider: true,
+    showDivider: false,
   },
   footer: {
     visible: true,
     height: A4_CONFIG.footer.height, // 16mm
     template: 'standard', // 'standard' | 'minimal' | 'detailed'
-    showDivider: true,
-    pageNumberFormat: 'pageOfTotal', // 'pageOfTotal' | 'number' | 'fraction' | 'pageNumber'
+    showDivider: false,
+    pageNumberFormat: 'counts', // 'counts' | 'fraction' | 'number' | 'pageNumber'
   },
   watermark: {
     enabled: false,

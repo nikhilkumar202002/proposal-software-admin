@@ -5,15 +5,15 @@ function padZero(num) {
 export const DocumentPageNumber = ({
   pageNumber = 1,
   totalPages = 1,
-  format = 'pageOfTotal', // 'pageOfTotal' | 'number' | 'fraction' | 'pageNumber'
-  alignment = 'right', // 'left' | 'center' | 'right'
+  format = 'counts', // 'counts' | 'fraction' | 'number' | 'pageNumber'
+  alignment = 'center',
   className = '',
 }) => {
   const alignClass = {
     left: 'text-left',
     center: 'text-center',
     right: 'text-right',
-  }[alignment] || 'text-right'
+  }[alignment] || 'text-center'
 
   let text
   switch (format) {
@@ -26,15 +26,16 @@ export const DocumentPageNumber = ({
     case 'pageNumber':
       text = `Page ${pageNumber}`
       break
+    case 'counts':
     case 'pageOfTotal':
     default:
-      text = `Page ${padZero(pageNumber)} of ${padZero(totalPages)}`
+      text = `${padZero(pageNumber)} / ${padZero(totalPages)}`
       break
   }
 
   return (
     <div
-      className={`text-[11px] font-medium text-gray-400 select-none ${alignClass} ${className}`}
+      className={`text-[10px] font-semibold text-gray-500 select-none ${alignClass} ${className}`}
       aria-label={`Page ${pageNumber} of ${totalPages}`}
     >
       {text}

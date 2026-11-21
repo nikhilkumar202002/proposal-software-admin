@@ -603,7 +603,7 @@ export function convertProposalToDocumentCanvasProps(proposal) {
       rows: pricingRows,
       summaryRow: [
         'Total',
-        `Net Investment (Subtotal: ${formatCurrency(totals.subtotal, currency)} | Tax: ${formatCurrency(totals.totalTax, currency)})`,
+        '',
         '',
         '',
         '',

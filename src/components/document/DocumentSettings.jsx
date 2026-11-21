@@ -90,46 +90,55 @@ export const DocumentSettings = ({
           </div>
         </div>
 
-        {/* Page Margins (mm) */}
+        {/* Page Margins (mm) - Locked to Calibrated A4 Standard */}
         <div>
-          <label className="block font-semibold text-gray-900 mb-2">
-            Page Margins (mm)
-          </label>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block font-semibold text-gray-900 text-xs">
+              Page Margins (mm)
+            </label>
+            <span className="text-[10px] font-semibold text-[#0055FF] bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+              Standard Default (Fixed)
+            </span>
+          </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <span className="text-gray-400 text-[11px] block mb-1">Top</span>
+              <span className="text-gray-400 text-[11px] block mb-1">Top (Header Clearance)</span>
               <input
                 type="number"
-                value={settings.margins?.top ?? 35}
-                onChange={(e) => handleMarginChange('top', e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#0055FF] focus:outline-none"
+                value={35}
+                readOnly
+                disabled
+                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 bg-gray-50 text-gray-600 text-xs font-semibold cursor-default"
               />
             </div>
             <div>
-              <span className="text-gray-400 text-[11px] block mb-1">Bottom</span>
+              <span className="text-gray-400 text-[11px] block mb-1">Bottom (Footer Clearance)</span>
               <input
                 type="number"
-                value={settings.margins?.bottom ?? 25}
-                onChange={(e) => handleMarginChange('bottom', e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#0055FF] focus:outline-none"
+                value={25}
+                readOnly
+                disabled
+                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 bg-gray-50 text-gray-600 text-xs font-semibold cursor-default"
               />
             </div>
             <div>
               <span className="text-gray-400 text-[11px] block mb-1">Left</span>
               <input
                 type="number"
-                value={settings.margins?.left ?? 18}
-                onChange={(e) => handleMarginChange('left', e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#0055FF] focus:outline-none"
+                value={18}
+                readOnly
+                disabled
+                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 bg-gray-50 text-gray-600 text-xs font-semibold cursor-default"
               />
             </div>
             <div>
               <span className="text-gray-400 text-[11px] block mb-1">Right</span>
               <input
                 type="number"
-                value={settings.margins?.right ?? 18}
-                onChange={(e) => handleMarginChange('right', e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium focus:border-[#0055FF] focus:outline-none"
+                value={18}
+                readOnly
+                disabled
+                className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 bg-gray-50 text-gray-600 text-xs font-semibold cursor-default"
               />
             </div>
           </div>
@@ -208,7 +217,7 @@ export const DocumentSettings = ({
               <div>
                 <span className="text-gray-400 text-[11px] block mb-1">Page Number Format</span>
                 <select
-                  value={settings.footer?.pageNumberFormat || 'pageOfTotal'}
+                  value={settings.footer?.pageNumberFormat || 'counts'}
                   onChange={(e) =>
                     onUpdate({
                       footer: { ...settings.footer, pageNumberFormat: e.target.value },
@@ -216,8 +225,8 @@ export const DocumentSettings = ({
                   }
                   className="w-full px-2.5 py-1.5 rounded-lg border border-gray-200 bg-white text-xs font-medium focus:border-[#0055FF] focus:outline-none"
                 >
-                  <option value="pageOfTotal">Page 01 of 05</option>
-                  <option value="fraction">1 / 5</option>
+                  <option value="counts">01 / 02 (Counts Only)</option>
+                  <option value="fraction">1 / 2</option>
                   <option value="number">01</option>
                   <option value="pageNumber">Page 1</option>
                 </select>
