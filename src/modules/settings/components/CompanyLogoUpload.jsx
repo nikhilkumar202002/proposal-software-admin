@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Upload, Trash2, RotateCcw, Image, Info } from 'lucide-react'
+import { Upload, Trash2, RotateCcw, Image } from 'lucide-react'
 import logoDefault from '../../../assets/Domine-Dude_black.png'
 
 export const CompanyLogoUpload = ({
@@ -132,19 +132,6 @@ export const CompanyLogoUpload = ({
           {uploadError && (
             <p className="text-xs text-red-600 font-medium">{uploadError}</p>
           )}
-        </div>
-      </div>
-
-      {/* Proposal Type Integration Info Banner */}
-      <div className="p-3.5 bg-blue-50/60 border border-blue-200/80 rounded-xl flex items-start gap-3 text-xs text-blue-900">
-        <Info className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-        <div className="space-y-0.5">
-          <p className="font-semibold text-blue-950">
-            Automatic Proposal Type Logo Routing
-          </p>
-          <p className="text-blue-800 text-[11px] leading-relaxed">
-            This logo will be displayed on <strong>Direct Client Proposals</strong>. When generating a <strong>B2B Proposal</strong>, the logo is automatically hidden while strictly preserving identical header height, typography, and page layout.
-          </p>
         </div>
       </div>
     </div>
