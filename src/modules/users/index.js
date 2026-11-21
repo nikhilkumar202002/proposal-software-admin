@@ -21,4 +21,5 @@ export { default as PermissionSelector } from './components/PermissionSelector'
 // Store, Service and Data
 export { default as useUserStore } from './store/userStore'
 export { default as userService, normalizeUser } from '../../services/user.service'
+export { default as roleService } from '../../services/role.service'
 export * from './data/usersData'

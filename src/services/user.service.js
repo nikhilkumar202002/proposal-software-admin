@@ -213,6 +213,86 @@ export const userService = {
     const response = await api.delete(`/admin/users/${id}`)
     return response.data
   },
+
+  // --- Role & Permission Endpoints ---
+
+  /**
+   * GET /admin/roles
+   * List all roles
+   */
+  async getRoles(params = {}) {
+    const response = await api.get('/admin/roles', { params })
+    const data = response.data?.data || response.data?.roles || response.data
+    return Array.isArray(data) ? data : []
+  },
+
+  /**
+   * GET /admin/roles/:id
+   * Fetch single role details
+   */
+  async getRole(id) {
+    const response = await api.get(`/admin/roles/${id}`)
+    return response.data?.data || response.data?.role || response.data
+  },
+
+  /**
+   * POST /admin/roles
+   * Create a role
+   * Payload: { name, permissions }
+   */
+  async createRole(data) {
+    const payload = {
+      name: data.name,
+      permissions: Array.isArray(data.permissions) ? data.permissions : [],
+    }
+    const response = await api.post('/admin/roles', payload)
+    return response.data?.data || response.data?.role || response.data
+  },
+
+  /**
+   * PUT /admin/roles/:id
+   * Update role
+   */
+  async updateRole(id, data) {
+    const payload = {
+      name: data.name,
+      ...(data.permissions ? { permissions: data.permissions } : {}),
+    }
+    const response = await api.put(`/admin/roles/${id}`, payload)
+    return response.data?.data || response.data?.role || response.data
+  },
+
+  /**
+   * DELETE /admin/roles/:id
+   * Delete role
+   */
+  async deleteRole(id) {
+    const response = await api.delete(`/admin/roles/${id}`)
+    return response.data
+  },
+
+  /**
+   * GET /admin/permissions
+   * List all permissions
+   */
+  async getPermissions() {
+    const response = await api.get('/admin/permissions')
+    const data = response.data?.data || response.data?.permissions || response.data
+    return Array.isArray(data) ? data : []
+  },
+
+  /**
+   * PUT /admin/roles/:id/permissions
+   * Update permissions for a role
+   * Payload: { permissions: [...] }
+   */
+  async updateRolePermissions(id, permissions) {
+    const payload = {
+      permissions: Array.isArray(permissions) ? permissions : [],
+    }
+    const response = await api.put(`/admin/roles/${id}/permissions`, payload)
+    return response.data?.data || response.data
+  },
 }
 
 export default userService
