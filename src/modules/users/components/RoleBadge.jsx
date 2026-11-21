@@ -1,5 +1,5 @@
 import { ShieldAlert, ShieldCheck, Briefcase, Edit3, Eye } from 'lucide-react'
-import { ROLES } from '../data/usersData'
+import { ROLES } from '../constants'
 
 const roleIcons = {
   super_admin: ShieldAlert,

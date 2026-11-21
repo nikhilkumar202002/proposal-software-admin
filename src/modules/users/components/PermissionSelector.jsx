@@ -11,7 +11,7 @@ import {
   UserCog,
   Settings,
 } from 'lucide-react'
-import { PERMISSION_MODULES } from '../data/usersData'
+import { PERMISSION_MODULES } from '../constants'
 
 const moduleIcons = {
   dashboard: LayoutDashboard,

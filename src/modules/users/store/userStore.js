@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { INITIAL_USERS, ROLES } from '../data/usersData'
+import { INITIAL_USERS, ROLES } from '../constants'
 import userService, { ROLE_DISPLAY_NAMES } from '../../../services/user.service'
 
 export const useUserStore = create((set, get) => ({
@@ -196,16 +196,17 @@ export const useUserStore = create((set, get) => ({
   // --- Update Status (PATCH /admin/users/:id/status) ---
   updateUserStatus: async (id, status) => {
     try {
-      await userService.updateUserStatus(id, status)
+      const response = await userService.updateUserStatus(id, status)
+      set((state) => ({
+        users: state.users.map((u) =>
+          String(u.id) === String(id) ? { ...u, status } : u
+        ),
+      }))
+      return response
     } catch (err) {
       console.warn(`Backend PATCH /admin/users/${id}/status failed:`, err.message)
+      throw err
     }
-
-    set((state) => ({
-      users: state.users.map((u) =>
-        String(u.id) === String(id) ? { ...u, status } : u
-      ),
-    }))
   },
 
   // --- Assign Roles (PUT /admin/users/:id/roles) ---
@@ -221,10 +222,10 @@ export const useUserStore = create((set, get) => ({
       users: state.users.map((u) =>
         String(u.id) === String(id)
           ? {
-              ...u,
-              role: String(firstRole).toLowerCase(),
-              roles: Array.isArray(roles) ? roles : [roles],
-            }
+            ...u,
+            role: String(firstRole).toLowerCase(),
+            roles: Array.isArray(roles) ? roles : [roles],
+          }
           : u
       ),
     }))

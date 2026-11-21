@@ -122,8 +122,14 @@ export const UserList = () => {
   }
 
   const handleToggleStatus = async (id, newStatus) => {
-    await updateUserStatus(id, newStatus)
-    showNotification(`User marked as ${newStatus}.`)
+    try {
+      await updateUserStatus(id, newStatus)
+      showNotification(`User marked as ${newStatus}.`)
+    } catch (err) {
+      const msg =
+        err.response?.data?.message || err.message || 'Failed to update user status.'
+      showNotification(`Error: ${msg}`)
+    }
   }
 
   return (

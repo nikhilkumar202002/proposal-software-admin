@@ -1,5 +1,5 @@
 import { RotateCcw, ArrowUpDown, Filter } from 'lucide-react'
-import { ROLES, USER_STATUSES } from '../data/usersData'
+import { ROLES, USER_STATUSES } from '../constants'
 
 export const UserFilters = ({
   role = 'all',
