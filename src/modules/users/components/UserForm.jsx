@@ -17,7 +17,7 @@ import {
   AlertCircle,
   Sparkles,
 } from 'lucide-react'
-import { ROLES, USER_STATUSES } from '../data/usersData'
+import { ROLES, USER_STATUSES } from '../constants'
 import PermissionSelector from './PermissionSelector'
 import UserAvatar from './UserAvatar'
 

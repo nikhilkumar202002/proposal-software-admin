@@ -64,7 +64,7 @@ export const useAuthStore = create((set, get) => ({
     }
     try {
       localStorage.removeItem('proposalos_session')
-    } catch {}
+    } catch { }
     set({ user: null })
   },
 }))

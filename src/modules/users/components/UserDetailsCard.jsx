@@ -16,7 +16,7 @@ import {
   Trash2,
   ExternalLink,
 } from 'lucide-react'
-import { ROLES, USER_STATUSES, PERMISSION_MODULES } from '../data/usersData'
+import { ROLES, USER_STATUSES, PERMISSION_MODULES } from '../constants'
 import UserAvatar from './UserAvatar'
 import RoleBadge from './RoleBadge'
 import UserStatusBadge from './UserStatusBadge'

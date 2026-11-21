@@ -14,7 +14,6 @@ import {
 } from 'lucide-react'
 import UserAvatar from './UserAvatar'
 import RoleBadge from './RoleBadge'
-import UserStatusBadge from './UserStatusBadge'
 import UserActions from './UserActions'
 import DeleteUserModal from './DeleteUserModal'
 import useUserStore from '../store/userStore'
@@ -47,6 +46,7 @@ export const UserTable = ({
   const [internalPage, setInternalPage] = useState(1)
   const [internalSelectedIds, setInternalSelectedIds] = useState([])
   const [internalLoading, setInternalLoading] = useState(false)
+  const [updatingUserIds, setUpdatingUserIds] = useState(new Set())
   const [userToDelete, setUserToDelete] = useState(null)
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false)
 
@@ -191,11 +191,22 @@ export const UserTable = ({
     }
   }
 
-  const handleToggleStatus = (id, newStatus) => {
-    if (propOnToggleStatus) {
-      propOnToggleStatus(id, newStatus)
-    } else if (store.updateUserStatus) {
-      store.updateUserStatus(id, newStatus)
+  const handleToggleStatus = async (id, newStatus) => {
+    setUpdatingUserIds((prev) => new Set(prev).add(id))
+    try {
+      if (propOnToggleStatus) {
+        await propOnToggleStatus(id, newStatus)
+      } else if (store.updateUserStatus) {
+        await store.updateUserStatus(id, newStatus)
+      } else {
+        await userService.updateUserStatus(id, newStatus)
+      }
+    } finally {
+      setUpdatingUserIds((prev) => {
+        const next = new Set(prev)
+        next.delete(id)
+        return next
+      })
     }
   }
 
@@ -360,9 +371,42 @@ export const UserTable = ({
                       <RoleBadge role={userRole} size="sm" />
                     </td>
 
-                    {/* Status */}
-                    <td className="px-4 py-3.5 whitespace-nowrap">
-                      <UserStatusBadge status={user.status} size="sm" />
+                    {/* Status with Toggle */}
+                    <td
+                      className="px-4 py-3.5 whitespace-nowrap"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="flex items-center">
+                        <button
+                          type="button"
+                          role="switch"
+                          aria-checked={user.status === 'active'}
+                          disabled={updatingUserIds.has(user.id)}
+                          onClick={() =>
+                            handleToggleStatus(
+                              user.id,
+                              user.status === 'active' ? 'inactive' : 'active'
+                            )
+                          }
+                          className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#0055FF]/20 ${
+                            user.status === 'active' ? 'bg-emerald-500' : 'bg-gray-300'
+                          } ${updatingUserIds.has(user.id) ? 'opacity-60 cursor-wait' : ''}`}
+                          title={`Click to set status to ${
+                            user.status === 'active' ? 'Inactive' : 'Active'
+                          }`}
+                        >
+                          <span
+                            aria-hidden="true"
+                            className={`pointer-events-none flex items-center justify-center h-4 w-4 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                              user.status === 'active' ? 'translate-x-4' : 'translate-x-0'
+                            }`}
+                          >
+                            {updatingUserIds.has(user.id) && (
+                              <Loader2 className="w-2.5 h-2.5 text-gray-500 animate-spin" />
+                            )}
+                          </span>
+                        </button>
+                      </div>
                     </td>
 
                     {/* Last Login */}
