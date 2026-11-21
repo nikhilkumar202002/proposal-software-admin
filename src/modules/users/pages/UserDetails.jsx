@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
 import useUserStore from '../store/userStore'
@@ -7,7 +7,13 @@ import UserDetailsCard from '../components/UserDetailsCard'
 export const UserDetails = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { getUserById, deleteUser, updateUser } = useUserStore()
+  const { getUserById, fetchUser, deleteUser, updateUserStatus } = useUserStore()
+
+  useEffect(() => {
+    if (id) {
+      fetchUser(id)
+    }
+  }, [id, fetchUser])
 
   const user = useMemo(() => getUserById(id), [id, getUserById])
 
@@ -28,12 +34,12 @@ export const UserDetails = () => {
       {/* User Details Card */}
       <UserDetailsCard
         user={user}
-        onDelete={(userId) => {
-          deleteUser(userId)
+        onDelete={async (userId) => {
+          await deleteUser(userId)
           navigate('/users')
         }}
-        onToggleStatus={(userId, newStatus) => {
-          updateUser(userId, { status: newStatus })
+        onToggleStatus={async (userId, newStatus) => {
+          await updateUserStatus(userId, newStatus)
         }}
       />
     </div>
