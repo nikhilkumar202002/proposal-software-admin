@@ -14,6 +14,12 @@ import {
   EditClient,
 } from './modules/clients'
 import {
+  UserList,
+  CreateUser,
+  EditUser,
+  UserDetails,
+} from './modules/users'
+import {
   SettingsPage,
   CompanyProfile,
   DocumentSettings,
@@ -74,6 +80,13 @@ export function App() {
           <Route path="/clients/new" element={<CreateClient />} />
           <Route path="/clients/create" element={<CreateClient />} />
           <Route path="/clients/:id/edit" element={<EditClient />} />
+
+          {/* User Management Module Routes */}
+          <Route path="/users" element={<UserList />} />
+          <Route path="/users/new" element={<CreateUser />} />
+          <Route path="/users/create" element={<CreateUser />} />
+          <Route path="/users/:id" element={<UserDetails />} />
+          <Route path="/users/:id/edit" element={<EditUser />} />
           {/* Workspace Settings Module Routes */}
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/settings/company" element={<CompanyProfile standalone={true} />} />

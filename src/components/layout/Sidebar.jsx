@@ -11,6 +11,7 @@ import {
     ChevronRight,
     X,
     Sparkles,
+    UserCog,
 } from 'lucide-react'
 import { RiChatAiFill } from 'react-icons/ri'
 import logoBlack from '../../assets/Domine-Dude_black.png'
@@ -33,6 +34,11 @@ const workspaceLinks = [
         name: 'Clients',
         to: '/clients',
         icon: Users,
+    },
+    {
+        name: 'Users',
+        to: '/users',
+        icon: UserCog,
     },
     {
         name: 'AI Chat',
