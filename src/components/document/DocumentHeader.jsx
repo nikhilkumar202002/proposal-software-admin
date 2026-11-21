@@ -3,7 +3,7 @@ import logoImg from '../../assets/Domine-Dude_black.png'
 export const DocumentHeader = ({
   company = {},
   proposal = {},
-  showDivider = false,
+  showDivider = true,
   height = 22, // in mm
   className = '',
 }) => {
@@ -11,6 +11,7 @@ export const DocumentHeader = ({
   const companyLogo = company.logoUrl || logoImg
   const website = company.website || 'www.domaindude.in'
   const proposalDate = proposal.date || new Date().toISOString().split('T')[0]
+  const validUntilDate = proposal.validUntil
 
   // Proposal Type logic:
   // "direct" (default) -> With Company Logo
@@ -37,11 +38,17 @@ export const DocumentHeader = ({
           )}
         </div>
 
-        {/* Right Side: Date & Website Domain */}
-        <div className="text-right shrink-0 flex flex-col items-end">
-          <span className="text-[11px] font-medium text-gray-700 tracking-tight">
-            {proposalDate}
-          </span>
+        {/* Right Side: Generated Date, Valid Date & Website Domain */}
+        <div className="text-right shrink-0 flex flex-col items-end leading-tight space-y-0.5">
+          <div className="text-[10px] text-gray-500 font-medium tracking-tight">
+            <span>Date: <strong className="text-gray-800 font-semibold">{proposalDate}</strong></span>
+            {validUntilDate && (
+              <>
+                <span className="mx-1.5 text-gray-300">•</span>
+                <span>Valid: <strong className="text-gray-800 font-semibold">{validUntilDate}</strong></span>
+              </>
+            )}
+          </div>
           <a
             href={website.startsWith('http') ? website : `https://${website}`}
             target="_blank"
@@ -54,7 +61,7 @@ export const DocumentHeader = ({
       </div>
 
       {showDivider && (
-        <div className="w-full h-px bg-gray-200/90 shrink-0" />
+        <div className="w-full h-px bg-gray-200 shrink-0" />
       )}
     </div>
   )

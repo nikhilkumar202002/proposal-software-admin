@@ -28,7 +28,7 @@ export const DocumentFooter = ({
   company = {},
   pageNumber = 1,
   totalPages = 1,
-  showDivider = false,
+  showDivider = true,
   pageNumberFormat = 'counts',
   height = 16, // in mm
   className = '',
@@ -51,7 +51,7 @@ export const DocumentFooter = ({
       className={`w-full flex flex-col justify-end select-none ${className}`}
     >
       {showDivider && (
-        <div className="w-full h-px bg-gray-200/90 mb-2 shrink-0" />
+        <div className="w-full h-px bg-gray-200 mb-2 shrink-0" />
       )}
 
       {/* 3 Equal Columns Footer Layout */}
