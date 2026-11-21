@@ -1,6 +1,5 @@
 import { api } from './api'
 
-// Role mapping helpers for Laravel backend
 export const ROLE_DISPLAY_NAMES = {
   super_admin: 'Super Admin',
   admin: 'Admin',
@@ -53,9 +52,7 @@ function formatDate(dateStr) {
   }
 }
 
-/**
- * Normalizes user record from API responses so frontend components work seamlessly
- */
+
 export function normalizeUser(apiUser) {
   if (!apiUser) return null
 
@@ -281,8 +278,13 @@ export const userService = {
    */
   async getRoles(params = {}) {
     const response = await api.get('/admin/roles', { params })
-    const data = response.data?.data || response.data?.roles || response.data
-    return Array.isArray(data) ? data : []
+    const resData = response.data
+    const list =
+      resData?.data?.roles ||
+      (Array.isArray(resData?.data) ? resData.data : null) ||
+      resData?.roles ||
+      (Array.isArray(resData) ? resData : [])
+    return Array.isArray(list) ? list : []
   },
 
   /**
@@ -291,7 +293,12 @@ export const userService = {
    */
   async getRole(id) {
     const response = await api.get(`/admin/roles/${id}`)
-    return response.data?.data || response.data?.role || response.data
+    return (
+      response.data?.data?.role ||
+      response.data?.data ||
+      response.data?.role ||
+      response.data
+    )
   },
 
   /**
@@ -336,8 +343,13 @@ export const userService = {
    */
   async getPermissions() {
     const response = await api.get('/admin/permissions')
-    const data = response.data?.data || response.data?.permissions || response.data
-    return Array.isArray(data) ? data : []
+    const resData = response.data
+    const list =
+      resData?.data?.permissions ||
+      (Array.isArray(resData?.data) ? resData.data : null) ||
+      resData?.permissions ||
+      (Array.isArray(resData) ? resData : [])
+    return Array.isArray(list) ? list : []
   },
 
   /**

@@ -55,6 +55,26 @@ export const UserForm = ({
   const [errors, setErrors] = useState({})
   const [showPermissionsSection, setShowPermissionsSection] = useState(true)
 
+  // Sync state if initialData is loaded asynchronously from API
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        name: initialData.name || '',
+        email: initialData.email || '',
+        phone: initialData.phone || '',
+        avatar: initialData.avatar || '',
+        role: initialData.role || 'editor',
+        status: initialData.status || 'active',
+        password: '',
+        confirmPassword: '',
+        permissions:
+          initialData.permissions ||
+          ROLES[initialData.role]?.defaultPermissions ||
+          ROLES.editor.defaultPermissions,
+      })
+    }
+  }, [initialData])
+
   // When role changes, if permissions haven't been manually detached, update default permissions
   const handleRoleSelect = (newRole) => {
     const defaultPerms = ROLES[newRole]?.defaultPermissions || []

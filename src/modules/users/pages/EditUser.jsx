@@ -1,13 +1,13 @@
 import { useState, useMemo, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, CheckCircle2, AlertCircle } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
 import useUserStore from '../store/userStore'
 import UserForm from '../components/UserForm'
 
 export const EditUser = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { getUserById, fetchUser, updateUser } = useUserStore()
+  const { getUserById, fetchUser, updateUser, isLoading } = useUserStore()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [successMessage, setSuccessMessage] = useState(null)
@@ -43,6 +43,15 @@ export const EditUser = () => {
       const errorMsg = err.response?.data?.message || err.message || 'Failed to save changes. Please try again.'
       setErrorMessage(errorMsg)
     }
+  }
+
+  if (isLoading && !user) {
+    return (
+      <div className="max-w-2xl mx-auto py-16 text-center">
+        <Loader2 className="w-8 h-8 text-[#0055FF] animate-spin mx-auto mb-3" />
+        <h2 className="text-sm font-semibold text-gray-700">Loading user profile...</h2>
+      </div>
+    )
   }
 
   if (!user) {

@@ -11,7 +11,20 @@ export const authService = {
    */
   async login(credentials) {
     const response = await api.post('/auth/login', credentials)
-    const { token, user } = response.data || {}
+    const resData = response.data || {}
+
+    // Unpack token from various backend formats
+    const token =
+      resData.token ||
+      resData.data?.token ||
+      resData.data?.access_token ||
+      resData.access_token
+
+    // Unpack user from various backend formats
+    const user =
+      resData.data?.user ||
+      (resData.data && !resData.data.token && typeof resData.data === 'object' ? resData.data : null) ||
+      resData.user
 
     if (token) {
       authService.setToken(token)
@@ -42,11 +55,17 @@ export const authService = {
    */
   async getCurrentUser() {
     const response = await api.get('/user')
-    const user = response.data?.user || response.data
+    const resData = response.data || {}
+    const user =
+      resData.data?.user ||
+      (resData.data && typeof resData.data === 'object' ? resData.data : null) ||
+      resData.user ||
+      resData
+
     if (user) {
       authService.setUser(user)
     }
-    return response.data
+    return user
   },
 
   /**
@@ -56,7 +75,13 @@ export const authService = {
    */
   async updateProfile(data) {
     const response = await api.put('/auth/profile', data)
-    const updatedUser = response.data?.user || response.data
+    const resData = response.data || {}
+    const updatedUser =
+      resData.data?.user ||
+      (resData.data && typeof resData.data === 'object' ? resData.data : null) ||
+      resData.user ||
+      resData
+
     if (updatedUser) {
       authService.setUser(updatedUser)
     }
@@ -97,16 +122,24 @@ export const authService = {
   // --- Local Storage Helpers ---
   setToken(token) {
     if (token) {
-      localStorage.setItem(TOKEN_KEY, token)
+      const clean = token.startsWith('Bearer ') ? token.slice(7) : token
+      localStorage.setItem(TOKEN_KEY, clean)
+      localStorage.setItem('token', clean)
     }
   },
 
   getToken() {
-    return localStorage.getItem(TOKEN_KEY)
+    return (
+      localStorage.getItem(TOKEN_KEY) ||
+      localStorage.getItem('token') ||
+      localStorage.getItem('access_token')
+    )
   },
 
   removeToken() {
     localStorage.removeItem(TOKEN_KEY)
+    localStorage.removeItem('token')
+    localStorage.removeItem('access_token')
   },
 
   setUser(user) {
@@ -129,7 +162,7 @@ export const authService = {
   },
 
   isAuthenticated() {
-    return Boolean(localStorage.getItem(TOKEN_KEY))
+    return Boolean(authService.getToken())
   },
 }
 

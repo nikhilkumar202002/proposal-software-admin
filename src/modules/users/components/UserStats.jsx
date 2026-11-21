@@ -4,10 +4,22 @@ export const UserStats = ({ users = [] }) => {
   const safeUsers = Array.isArray(users) ? users : []
 
   const totalUsers = safeUsers.length
-  const activeUsers = safeUsers.filter((u) => u.status === 'active').length
-  const inactiveUsers = safeUsers.filter((u) => u.status === 'inactive').length
-  const pendingUsers = safeUsers.filter((u) => u.status === 'pending').length
-  const adminUsers = safeUsers.filter((u) => ['super_admin', 'admin'].includes(u.role)).length
+  const activeUsers = safeUsers.filter((u) => (u.status || '').toLowerCase() === 'active').length
+  const inactiveUsers = safeUsers.filter((u) => (u.status || '').toLowerCase() === 'inactive').length
+  const pendingUsers = safeUsers.filter((u) => (u.status || '').toLowerCase() === 'pending').length
+  const adminUsers = safeUsers.filter((u) => {
+    const roleKey = (u.role || '').toLowerCase()
+    if (['super_admin', 'admin', 'superadmin', 'administrator'].includes(roleKey)) {
+      return true
+    }
+    if (Array.isArray(u.roles)) {
+      return u.roles.some((r) => {
+        const str = String(typeof r === 'object' ? r.name : r).toLowerCase().replace(/\s+/g, '_')
+        return ['super_admin', 'admin', 'superadmin', 'administrator'].includes(str)
+      })
+    }
+    return false
+  }).length
 
   const activePercent = totalUsers > 0 ? Math.round((activeUsers / totalUsers) * 100) : 0
 
