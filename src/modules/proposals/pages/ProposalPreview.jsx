@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import {
   ArrowLeft,
   Edit3,
@@ -15,6 +15,9 @@ import { convertProposalToDocumentCanvasProps } from '../utils/proposalHelpers'
 export const ProposalPreview = () => {
   const { id } = useParams()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const shouldAutoPrint = searchParams.get('print') === 'true'
+
   const {
     currentProposal,
     loadProposal,
@@ -29,6 +32,16 @@ export const ProposalPreview = () => {
       loadProposal(id)
     }
   }, [id, loadProposal])
+
+  // Trigger print once proposal data and layout are fully ready
+  useEffect(() => {
+    if (shouldAutoPrint && !isLoading && currentProposal) {
+      const timer = setTimeout(() => {
+        window.print()
+      }, 400)
+      return () => clearTimeout(timer)
+    }
+  }, [shouldAutoPrint, isLoading, currentProposal])
 
   const handleDuplicate = async () => {
     if (!currentProposal) return
@@ -129,7 +142,7 @@ export const ProposalPreview = () => {
       </div>
 
       {/* Main Document Canvas Render */}
-      <div className="w-full flex justify-center">
+      <div className="w-full flex justify-center print:block print:p-0 print:m-0">
         <DocumentCanvas
           content={canvasProps.content}
           company={canvasProps.company}

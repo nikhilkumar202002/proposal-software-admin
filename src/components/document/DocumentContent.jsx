@@ -236,10 +236,30 @@ function renderBlock(block) {
         />
       )
 
+    case 'custom':
+      if (block.attrs?.type === 'info') {
+        return (
+          <div
+            key={id}
+            data-block-id={id}
+            className="my-3 p-3.5 bg-gray-50/80 rounded-xl border border-gray-200/80 text-xs"
+          >
+            {block.attrs.title && (
+              <p className="font-bold text-gray-900 mb-1 text-xs text-[#0055FF]">
+                {block.attrs.title}
+              </p>
+            )}
+            <p className="text-gray-600 leading-relaxed">{block.attrs.body}</p>
+          </div>
+        )
+      }
+      return null
+
     default:
+      if (!block.text) return null
       return (
         <div key={id} data-block-id={id} className="my-2 text-xs text-gray-500">
-          {block.text || JSON.stringify(block)}
+          {block.text}
         </div>
       )
   }

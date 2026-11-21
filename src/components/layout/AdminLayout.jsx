@@ -50,7 +50,7 @@ export const AdminLayout = ({ children }) => {
 
       {/* Main Content Container: adjusts left margin when desktop sidebar collapses */}
       <div
-        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ease-in-out ${
+        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ease-in-out print:ml-0 print:m-0 ${
           isCollapsed ? 'lg:ml-[72px]' : 'lg:ml-[250px]'
         }`}
       >
@@ -63,7 +63,7 @@ export const AdminLayout = ({ children }) => {
         />
 
         {/* Dynamic Main Workspace Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 print:p-0 print:m-0">
           <div className="w-full">
             {children || <Outlet />}
           </div>

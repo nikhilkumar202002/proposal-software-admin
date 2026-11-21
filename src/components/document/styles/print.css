@@ -1,5 +1,6 @@
 /**
  * Print & Browsershot (Chromium) PDF Output Styles
+ * Formatted for standard ISO 216 A4 (210mm x 297mm)
  */
 
 @page {
@@ -13,19 +14,22 @@
 }
 
 @media print {
-  /* Reset document background for printing */
+  /* 1. Reset document background and typography for physical printing */
   html,
   body {
     background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
     margin: 0 !important;
     padding: 0 !important;
+    width: 100% !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     color-adjust: exact !important;
   }
 
-  /* Hide navigation, sidebar, editor headers and canvas controls */
+  /* 2. Hide navigation, sidebar, editor headers, toolbars, and action buttons */
   .no-print,
+  .print\:hidden,
   nav,
   aside,
   header,
@@ -35,53 +39,145 @@
     display: none !important;
   }
 
-  /* Reset outer container */
-  .document-canvas-container {
-    padding: 0 !important;
+  /* 3. Strip layout offsets from AdminLayout, #root, and intermediate wrappers */
+  #root,
+  #root > div,
+  main,
+  div[class*="ml-"],
+  .space-y-6,
+  .document-workspace,
+  .document-canvas-container,
+  .document-pagination-wrapper,
+  .document-pages-list {
     margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
     background: transparent !important;
+    background-color: transparent !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    position: static !important;
+    float: none !important;
+    display: block !important;
+    box-shadow: none !important;
+  }
+
+  /* 4. Reset zoom scaling transform to maintain 1:1 physical A4 dimensions */
+  .document-canvas-container > div {
+    transform: none !important;
+    transform-origin: unset !important;
+    transition: none !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
     display: block !important;
     width: 100% !important;
   }
 
-  /* A4 Page print rules */
+  /* 5. A4 Physical Document Page Boundaries */
   .document-page {
-    margin: 0 !important;
+    position: relative !important;
+    margin: 0 auto !important;
     box-shadow: none !important;
     border: none !important;
     width: 210mm !important;
-    height: 297mm !important;
-    min-height: 297mm !important;
-    max-height: 297mm !important;
+    min-width: 210mm !important;
+    max-width: 210mm !important;
+    /* Use 296.8mm to prevent Chromium subpixel blank page overflow */
+    height: 296.8mm !important;
+    min-height: 296.8mm !important;
+    max-height: 296.8mm !important;
+    overflow: hidden !important;
+    page-break-before: auto !important;
+    break-before: auto !important;
     page-break-after: always !important;
     break-after: page !important;
+    page-break-inside: avoid !important;
     break-inside: avoid !important;
+    box-sizing: border-box !important;
+    background: #FFFFFF !important;
   }
 
+  /* First page should never force a break before itself */
+  .document-page:first-child,
+  .document-page:first-of-type {
+    page-break-before: avoid !important;
+    break-before: avoid !important;
+  }
+
+  /* Prevent trailing blank page on last child */
+  .document-page:last-child,
+  .document-page:last-of-type {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Landscape Orientation */
   .document-page.landscape {
     width: 297mm !important;
-    height: 210mm !important;
-    min-height: 210mm !important;
-    max-height: 210mm !important;
+    min-width: 297mm !important;
+    max-width: 297mm !important;
+    height: 209.8mm !important;
+    min-height: 209.8mm !important;
+    max-height: 209.8mm !important;
   }
 
-  /* Ensure the last page does not generate an empty trailing blank page */
-  .document-page:last-child {
-    page-break-after: auto !important;
-    break-after: auto !important;
+  /* Fixed Header Area */
+  .document-header-area {
+    position: absolute !important;
+    left: 18mm !important;
+    right: 18mm !important;
+    z-index: 10 !important;
+  }
+
+  /* Fixed Footer Area */
+  .document-footer-area {
+    position: absolute !important;
+    left: 18mm !important;
+    right: 18mm !important;
+    z-index: 10 !important;
+  }
+
+  /* Content Container */
+  .document-content-area {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
   }
 
   /* Table print optimization */
+  .doc-table-container {
+    border: 1px solid #E5E7EB !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
   .doc-table {
-    page-break-inside: auto;
+    width: 100% !important;
+    page-break-inside: auto !important;
   }
 
   .doc-table tr {
-    page-break-inside: avoid;
-    page-break-after: auto;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: auto !important;
   }
 
   .doc-table thead {
-    display: table-header-group;
+    display: table-header-group !important;
+  }
+
+  /* Signatures block protection */
+  [data-block-id*="signatures"],
+  [data-block-id*="acceptance"] {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 }

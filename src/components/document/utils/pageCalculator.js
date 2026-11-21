@@ -55,12 +55,16 @@ export function calculatePages(blocks = [], settings = {}, measurements = {}) {
     const remainingSpacePx = maxPageHeightPx - currentUsedHeightPx
 
     // 2. Heading keep-with-next protection
-    // If heading doesn't leave enough room for at least one follow-up paragraph (~60px), move it to next page
-    if (block.type === 'heading' && remainingSpacePx < blockHeightPx + 60 && currentPageBlocks.length > 0) {
-      pushCurrentPage()
-      currentPageBlocks.push(block)
-      currentUsedHeightPx += blockHeightPx
-      continue
+    // Prevent orphan headings at the bottom of a page
+    if (block.type === 'heading' && currentPageBlocks.length > 0) {
+      const nextBlock = blocks[i + 1]
+      const minFollowUpPx = nextBlock?.type === 'table' ? 120 : nextBlock?.type === 'signatures' ? 140 : 60
+      if (remainingSpacePx < blockHeightPx + minFollowUpPx) {
+        pushCurrentPage()
+        currentPageBlocks.push(block)
+        currentUsedHeightPx += blockHeightPx
+        continue
+      }
     }
 
     // 3. Block fits comfortably on current page

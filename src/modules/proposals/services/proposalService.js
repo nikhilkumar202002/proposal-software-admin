@@ -309,7 +309,13 @@ export const proposalService = {
       return { success: true }
     } catch (err) {
       console.warn('Backend PDF endpoint unavailable, falling back to print dialog:', err.message)
-      window.print()
+      if (typeof window !== 'undefined') {
+        if (window.location.pathname.includes(`/proposals/${id}/preview`)) {
+          window.print()
+        } else {
+          window.location.href = `/proposals/${id}/preview?print=true`
+        }
+      }
       return { success: true, method: 'print' }
     }
   },

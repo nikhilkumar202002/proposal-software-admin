@@ -545,18 +545,6 @@ export function convertProposalToDocumentCanvasProps(proposal) {
     lead: `Project: ${proposal.projectName || proposal.title || 'Enterprise Engagement'} | Valid until ${proposal.validUntil || '30 days from date'}`,
   })
 
-  // Add client info summary block
-  contentBlocks.push({
-    id: 'blk-client-card',
-    type: 'custom',
-    render: () => null, // fallback
-    attrs: {
-      type: 'info',
-      title: 'Client Information',
-      body: `${proposal.client?.companyName || ''} - ${proposal.client?.name || ''} (${proposal.client?.email || ''}) | ${proposal.client?.address || ''}`,
-    },
-  })
-
   // Parse TipTap content nodes
   if (proposal.content?.content && Array.isArray(proposal.content.content)) {
     proposal.content.content.forEach((node, i) => {

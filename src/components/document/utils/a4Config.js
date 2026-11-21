@@ -86,7 +86,12 @@ export function getUsableContentArea(settings = {}) {
     : 0
 
   const usableWidthMm = dims.width - (margins.left + margins.right)
-  const usableHeightMm = dims.height - (margins.top + margins.bottom + headerHeight + footerHeight)
+  // Top padding (margins.top) already reserves space for header (with top clearance)
+  // Bottom padding (margins.bottom) already reserves space for footer (with bottom clearance)
+  // Only deduct extra height if header or footer exceeds the page margin.
+  const topClearance = Math.max(margins.top, headerHeight > 0 ? headerHeight + 6 : 0)
+  const bottomClearance = Math.max(margins.bottom, footerHeight > 0 ? footerHeight + 6 : 0)
+  const usableHeightMm = dims.height - (topClearance + bottomClearance)
 
   return {
     widthMm: usableWidthMm,
