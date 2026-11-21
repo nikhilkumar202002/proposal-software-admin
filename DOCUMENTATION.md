@@ -28,6 +28,7 @@ graph TD
         Views --> ModClients[Clients CRM Module]
         Views --> ModDashboard[Dashboard Analytics]
         Views --> ModSettings[System & Company Settings]
+        Views --> ModAI[AI Copilot & Proposal Generator]
     end
 
     subgraph Document Engine [Physical A4 Engine]
@@ -743,3 +744,43 @@ dist/assets/index-CrnLA80_.js               1,231.48 kB │ gzip: 356.89 kB
 2. **Isolation of Printing Layers**: Always mark interactive controls and toolbars with `.no-print` to ensure they never leak into printed or exported PDFs.
 3. **Named Tailwind Groups**: When nesting hover interactions (such as sidebar links inside a collapsible sidebar), always use named groups (e.g., `group/sidebar`, `group/item`, `group/user`) to prevent style collisions.
 4. **Stop Event Propagation**: Interactive elements inside table rows (such as status dropdowns and action buttons) must call `e.stopPropagation()` to prevent triggering parent row click handlers.
+
+
+---
+
+## 10. AI Module Architecture & Laravel Integration
+
+The **ProposalOS AI Module** (`src/modules/ai`) brings enterprise-grade AI proposal generation, streaming conversational assistance, and contextual CRM knowledge into ProposalOS without replacing or duplicating existing TipTap or A4 engines.
+
+### 10.1 Module Organization
+
+```
+src/modules/ai/
+├── components/
+│   ├── assistant/      # AIAssistantPanel, AIActionMenu, AIContextSelector, AIConfirmationModal
+│   ├── chat/           # ChatLayout, ChatSidebar, ChatHeader, ChatMessages, ChatMessage,
+│   │                   # ChatInput, ChatWelcome, TypingIndicator, SuggestedPrompts, MessageActions
+│   ├── common/         # AIModelSelector, AIErrorMessage, AIUsageIndicator, AIEmptyState
+│   └── proposal/       # ProposalGenerationForm, ProposalPreview, ProposalSectionCard,
+│                       # ProposalImportModal, ProposalGenerationStatus
+├── hooks/              # useAIChat, useAIProposal, useAIStreaming, useAIContext
+├── pages/              # AIChatPage, AIProposalGenerator, AISettingsPage
+├── services/           # aiService, chatService, proposalAIService
+├── store/              # aiStore, chatStore
+└── utils/              # aiHelpers, promptBuilder, proposalConverter, responseParser
+```
+
+### 10.2 Core Features & Integration Rules
+
+1. **TipTap & Proposal Compatibility**:
+   - AI outputs are parsed directly into standard ProposalOS `ProposalModel` schemas (`proposalHelpers.js`).
+   - Markdown documents are converted into ProseMirror AST (`markdownToTipTapDoc`) for instant preview and editing in TipTap without schema drift.
+2. **Pricing Safeguards**:
+   - Milestone commercials are returned as structured arrays (`description`, `quantity`, `unit`, `unitPrice`, `tax`).
+   - Interactive milestone approval toggles require user signoff before applying amounts to the live ProposalOS pricing engine.
+3. **Context Awareness**:
+   - User can attach client CRM profiles, existing proposals, and company settings.
+   - All prompts are sanitized via `promptBuilder.js` to ensure zero database credentials, session cookies, or backend API keys are passed to LLMs.
+4. **Backend Architecture**:
+   - Provider-independent interface (`AIProviderInterface`) supporting OpenAI (`gpt-4o`), Google Gemini (`gemini-2.0-flash`), and Anthropic Claude (`claude-3-7-sonnet`).
+   - Ready-to-deploy Laravel files available in `laravel-ai-backend/` with database migrations for `ai_conversations`, `ai_messages`, and `ai_usage_logs`.

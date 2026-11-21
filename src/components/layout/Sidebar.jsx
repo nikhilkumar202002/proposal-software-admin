@@ -12,6 +12,7 @@ import {
     X,
     Sparkles,
 } from 'lucide-react'
+import { RiChatAiFill } from 'react-icons/ri'
 import logoBlack from '../../assets/Domine-Dude_black.png'
 import favIcon from '../../assets/fav-icon.png'
 
@@ -36,8 +37,13 @@ const workspaceLinks = [
     {
         name: 'AI Chat',
         to: '/ai',
-        icon: Sparkles,
+        icon: RiChatAiFill,
         badge: 'New',
+    },
+    {
+        name: 'AI Generator',
+        to: '/ai/generator',
+        icon: Sparkles,
     },
 ]
 
