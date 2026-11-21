@@ -9,7 +9,8 @@ import {
 } from 'lucide-react'
 import useProposalStore from '../store/proposalStore'
 import { DocumentCanvas } from '../../../components/document'
-import { Button, StatusBadge } from '../../../components/common'
+import { Button } from '../../../components/common'
+import { ProposalStatusDropdown } from '../components/ProposalStatusDropdown'
 import { convertProposalToDocumentCanvasProps } from '../utils/proposalHelpers'
 
 export const ProposalPreview = () => {
@@ -23,6 +24,7 @@ export const ProposalPreview = () => {
     loadProposal,
     duplicateProposal,
     downloadPdf,
+    updateProposalStatus,
     isLoading,
     isGeneratingPdf,
   } = useProposalStore()
