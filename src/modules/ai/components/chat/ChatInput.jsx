@@ -6,7 +6,6 @@ import {
   Globe,
   X,
   FileText,
-  Sparkles,
 } from 'lucide-react'
 
 export default function ChatInput({
@@ -14,7 +13,6 @@ export default function ChatInput({
   onStopGeneration,
   isGenerating = false,
   placeholder = 'Ask ProposalOS AI to draft proposals, pricing, or scopes...',
-  onQuickAction,
 }) {
   const [input, setInput] = useState('')
   const [attachments, setAttachments] = useState([])
@@ -69,11 +67,11 @@ export default function ChatInput({
     <div className="w-full max-w-4xl mx-auto px-4 pb-4">
       {/* Attachments preview row */}
       {attachments.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-2 p-2 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+        <div className="flex flex-wrap gap-2 mb-2 p-2 rounded-xl bg-slate-50 border border-slate-200">
           {attachments.map((file, idx) => (
             <div
               key={idx}
-              className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 shadow-2xs"
+              className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-xs text-slate-700 shadow-2xs"
             >
               <FileText className="w-3.5 h-3.5 text-[#FB6C00]" />
               <span className="font-medium truncate max-w-[140px]">{file.name}</span>
@@ -81,7 +79,7 @@ export default function ChatInput({
               <button
                 type="button"
                 onClick={() => removeAttachment(idx)}
-                className="hover:text-rose-500 transition-colors ml-1"
+                className="hover:text-rose-500 transition-colors ml-1 cursor-pointer"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -90,8 +88,8 @@ export default function ChatInput({
         </div>
       )}
 
-      {/* Main floating input box */}
-      <div className="relative rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-lg shadow-slate-200/50 dark:shadow-none focus-within:border-[#FB6C00] dark:focus-within:border-[#FB6C00] focus-within:ring-2 focus-within:ring-orange-500/20 transition-all">
+      {/* Main floating input box - Clean Light Theme */}
+      <div className="relative rounded-2xl bg-white border border-slate-200 shadow-md shadow-slate-100 focus-within:border-[#FB6C00] focus-within:ring-2 focus-within:ring-orange-500/20 transition-all">
         <textarea
           ref={textareaRef}
           value={input}
@@ -99,7 +97,7 @@ export default function ChatInput({
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           rows={1}
-          className="w-full px-4 pt-3.5 pb-2 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 bg-transparent resize-none outline-none leading-relaxed"
+          className="w-full px-4 pt-3.5 pb-2 text-sm text-slate-900 placeholder-slate-400 bg-transparent resize-none outline-none leading-relaxed"
           style={{ minHeight: '48px', maxHeight: '180px' }}
         />
 
@@ -117,7 +115,7 @@ export default function ChatInput({
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="p-1.5 rounded-lg hover:text-slate-700 hover:bg-slate-100 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+              className="p-1.5 rounded-lg hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
               title="Attach RFP, specification, or notes"
             >
               <Paperclip className="w-4 h-4" />
@@ -127,10 +125,10 @@ export default function ChatInput({
             <button
               type="button"
               onClick={() => setWebSearchEnabled(!webSearchEnabled)}
-              className={`p-1.5 rounded-lg transition-colors flex items-center gap-1 text-xs ${
+              className={`p-1.5 rounded-lg transition-colors flex items-center gap-1 text-xs cursor-pointer ${
                 webSearchEnabled
-                  ? 'text-[#FB6C00] bg-orange-50 dark:bg-orange-950/40 font-medium'
-                  : 'hover:text-slate-700 hover:bg-slate-100 dark:hover:text-slate-200 dark:hover:bg-slate-800'
+                  ? 'text-[#FB6C00] bg-orange-50 font-medium'
+                  : 'hover:text-slate-700 hover:bg-slate-100'
               }`}
               title="Toggle Live Web & Market Intelligence"
             >
@@ -144,7 +142,7 @@ export default function ChatInput({
               <button
                 type="button"
                 onClick={onStopGeneration}
-                className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-slate-900 shadow-sm transition-all"
+                className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-rose-500 hover:bg-rose-600 text-white shadow-xs transition-all cursor-pointer"
                 title="Stop generation"
               >
                 <Square className="w-3.5 h-3.5 fill-current" />
@@ -157,7 +155,7 @@ export default function ChatInput({
                 className={`inline-flex items-center justify-center w-8 h-8 rounded-xl transition-all shadow-sm ${
                   input.trim() || attachments.length > 0
                     ? 'bg-[#FB6C00] hover:bg-[#e05f00] text-white cursor-pointer shadow-orange-500/20'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-300 dark:text-slate-600 cursor-not-allowed'
+                    : 'bg-slate-100 text-slate-300 cursor-not-allowed'
                 }`}
                 title="Send message (Enter)"
               >
@@ -168,7 +166,7 @@ export default function ChatInput({
         </div>
       </div>
 
-      <p className="text-[11px] text-slate-400 dark:text-slate-500 text-center mt-2 font-medium">
+      <p className="text-[11px] text-slate-400 text-center mt-2 font-medium">
         ProposalOS AI generates structured commercial drafts. Always review scope and tax compliance before client delivery.
       </p>
     </div>

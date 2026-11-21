@@ -23,9 +23,9 @@ export default function MessageActions({
 
   const handleCopy = () => {
     if (onCopy) {
-      onCopy(message.content)
+      onCopy(message.content || message.text || '')
     } else {
-      navigator.clipboard.writeText(message.content)
+      navigator.clipboard.writeText(message.content || message.text || '')
     }
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
@@ -34,11 +34,12 @@ export default function MessageActions({
   const isAssistant = message.role === 'assistant' || message.sender === 'assistant'
 
   return (
-    <div className="flex items-center gap-1 mt-2 text-slate-400 opacity-90 transition-opacity duration-200">
+    <div className="flex items-center gap-1.5 mt-2 text-slate-400">
       {/* Copy button */}
       <button
+        type="button"
         onClick={handleCopy}
-        className="p-1.5 rounded-lg hover:text-slate-700 hover:bg-slate-100 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+        className="p-1.5 rounded-lg hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
         title={copied ? 'Copied!' : 'Copy to clipboard'}
       >
         {copied ? (
@@ -51,8 +52,9 @@ export default function MessageActions({
       {/* Edit button for user messages */}
       {!isAssistant && onEdit && (
         <button
+          type="button"
           onClick={() => onEdit(message)}
-          className="p-1.5 rounded-lg hover:text-slate-700 hover:bg-slate-100 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+          className="p-1.5 rounded-lg hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
           title="Edit and resend"
         >
           <Edit2 className="w-3.5 h-3.5" />
@@ -64,8 +66,9 @@ export default function MessageActions({
         <>
           {onRegenerate && (
             <button
+              type="button"
               onClick={() => onRegenerate(message.id)}
-              className="p-1.5 rounded-lg hover:text-slate-700 hover:bg-slate-100 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+              className="p-1.5 rounded-lg hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
               title="Regenerate response"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -73,11 +76,12 @@ export default function MessageActions({
           )}
 
           <button
+            type="button"
             onClick={() => setFeedback(feedback === 'up' ? null : 'up')}
-            className={`p-1.5 rounded-lg transition-colors ${
+            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               feedback === 'up'
-                ? 'text-emerald-500 bg-emerald-50 dark:bg-emerald-950/30'
-                : 'hover:text-slate-700 hover:bg-slate-100 dark:hover:text-slate-200 dark:hover:bg-slate-800'
+                ? 'text-emerald-600 bg-emerald-50'
+                : 'hover:text-slate-800 hover:bg-slate-100'
             }`}
             title="Good response"
           >
@@ -85,11 +89,12 @@ export default function MessageActions({
           </button>
 
           <button
+            type="button"
             onClick={() => setFeedback(feedback === 'down' ? null : 'down')}
-            className={`p-1.5 rounded-lg transition-colors ${
+            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               feedback === 'down'
-                ? 'text-rose-500 bg-rose-50 dark:bg-rose-950/30'
-                : 'hover:text-slate-700 hover:bg-slate-100 dark:hover:text-slate-200 dark:hover:bg-slate-800'
+                ? 'text-rose-600 bg-rose-50'
+                : 'hover:text-slate-800 hover:bg-slate-100'
             }`}
             title="Bad response"
           >
@@ -98,8 +103,9 @@ export default function MessageActions({
 
           {onUseInProposal && (
             <button
+              type="button"
               onClick={() => onUseInProposal(message)}
-              className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-[#FB6C00] bg-orange-50 hover:bg-orange-100 dark:bg-orange-950/40 dark:hover:bg-orange-900/40 rounded-md transition-colors ml-1"
+              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-[#FB6C00] bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors ml-1 cursor-pointer"
               title="Convert this response into a draft proposal"
             >
               <FilePlus className="w-3.5 h-3.5" />
@@ -111,8 +117,9 @@ export default function MessageActions({
 
       {onDelete && (
         <button
+          type="button"
           onClick={() => onDelete(message.id)}
-          className="p-1.5 rounded-lg hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors ml-auto"
+          className="p-1.5 rounded-lg hover:text-rose-600 hover:bg-rose-50 transition-colors ml-auto cursor-pointer"
           title="Delete message"
         >
           <Trash2 className="w-3.5 h-3.5" />

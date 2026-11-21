@@ -1,15 +1,6 @@
 import { useState } from 'react'
-import {
-  RiChatAiFill,
-} from 'react-icons/ri'
-import {
-  X,
-  Sparkles,
-  ArrowRight,
-  Check,
-  RotateCcw,
-  SlidersHorizontal,
-} from 'lucide-react'
+import { RiChatAiFill } from 'react-icons/ri'
+import { X, Check } from 'lucide-react'
 import AIActionMenu from './AIActionMenu'
 import AIUsageIndicator from '../common/AIUsageIndicator'
 import proposalAIService from '../../services/proposalAIService'
@@ -19,17 +10,14 @@ export default function AIAssistantPanel({
   onClose,
   targetContent = '',
   onApplyContent,
-  activeContext,
 }) {
   const [isProcessing, setIsProcessing] = useState(false)
   const [resultText, setResultText] = useState('')
-  const [actionTitle, setActionTitle] = useState('')
 
   if (!isOpen) return null
 
   const handleAction = async (actionId, options = {}) => {
     setIsProcessing(true)
-    setActionTitle(actionId)
 
     try {
       let response
@@ -67,15 +55,15 @@ export default function AIAssistantPanel({
   }
 
   return (
-    <div className="w-80 sm:w-96 bg-white dark:bg-slate-900 border-l border-slate-200/80 dark:border-slate-800 flex flex-col h-full shadow-lg z-20">
+    <div className="w-80 sm:w-96 bg-white border-l border-slate-200 flex flex-col h-full shadow-lg z-20">
       {/* Header */}
-      <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+      <div className="p-4 border-b border-slate-100 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-lg bg-[#FB6C00] flex items-center justify-center text-white shadow-xs">
             <RiChatAiFill className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+            <h3 className="text-sm font-bold text-slate-900">
               AI Document Assistant
             </h3>
             <p className="text-[10px] text-slate-400">Contextual writing companion</p>
@@ -86,7 +74,7 @@ export default function AIAssistantPanel({
           <button
             type="button"
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
+            className="p-1 rounded-lg text-slate-400 hover:text-slate-700 cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -100,7 +88,7 @@ export default function AIAssistantPanel({
 
         {/* Generated Result Preview */}
         {resultText && (
-          <div className="p-3.5 rounded-2xl bg-orange-50/50 dark:bg-orange-950/20 border border-orange-200/80 dark:border-orange-900/60 animate-in fade-in">
+          <div className="p-3.5 rounded-2xl bg-orange-50/60 border border-orange-200 animate-in fade-in">
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#FB6C00]">
                 AI Recommendation
@@ -108,12 +96,12 @@ export default function AIAssistantPanel({
               <button
                 type="button"
                 onClick={() => setResultText('')}
-                className="text-[10px] text-slate-400 hover:text-slate-700"
+                className="text-[10px] text-slate-400 hover:text-slate-700 cursor-pointer"
               >
                 Dismiss
               </button>
             </div>
-            <div className="text-xs text-slate-700 dark:text-slate-200 leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
+            <div className="text-xs text-slate-700 leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
               {resultText}
             </div>
 
@@ -121,7 +109,7 @@ export default function AIAssistantPanel({
               <button
                 type="button"
                 onClick={handleApply}
-                className="w-full mt-3 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-[#FB6C00] hover:bg-[#e05f00] text-white text-xs font-bold transition-all shadow-xs"
+                className="w-full mt-3 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-[#FB6C00] hover:bg-[#e05f00] text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
               >
                 <Check className="w-3.5 h-3.5" />
                 <span>Apply to Document</span>
@@ -132,7 +120,7 @@ export default function AIAssistantPanel({
       </div>
 
       {/* Footer */}
-      <div className="p-3 border-t border-slate-100 dark:border-slate-800">
+      <div className="p-3 border-t border-slate-100 bg-white">
         <AIUsageIndicator compact />
       </div>
     </div>

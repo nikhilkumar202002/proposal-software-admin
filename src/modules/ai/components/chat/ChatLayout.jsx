@@ -45,7 +45,7 @@ export default function ChatLayout({
   onUseInProposal,
 }) {
   return (
-    <div className="flex h-screen w-full bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 overflow-hidden font-sans">
+    <div className="flex h-screen w-full bg-[#F8FAFC] text-slate-800 overflow-hidden font-sans">
       {/* Collapsible Sidebar */}
       <ChatSidebar
         conversations={conversations}
@@ -61,7 +61,7 @@ export default function ChatLayout({
       />
 
       {/* Main Chat Workspace */}
-      <div className="flex-1 flex flex-col h-full min-w-0 bg-white dark:bg-slate-900/40 relative">
+      <div className="flex-1 flex flex-col h-full min-w-0 bg-white relative">
         {/* Top Header */}
         <ChatHeader
           selectedModel={selectedModel}
@@ -75,7 +75,7 @@ export default function ChatLayout({
 
         {/* Global Error Banner if any */}
         {error && (
-          <div className="px-4 py-2 border-b border-rose-200 dark:border-rose-900/60 bg-rose-50/80 dark:bg-rose-950/40">
+          <div className="px-4 py-2 border-b border-rose-200 bg-rose-50/80">
             <AIErrorMessage
               message={error}
               onDismiss={onClearError}

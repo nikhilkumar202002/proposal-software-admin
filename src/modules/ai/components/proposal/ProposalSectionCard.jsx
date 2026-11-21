@@ -5,9 +5,7 @@ import {
   CheckCircle,
   Circle,
   Edit2,
-  Check,
   RotateCcw,
-  FileText,
 } from 'lucide-react'
 
 export default function ProposalSectionCard({
@@ -35,10 +33,10 @@ export default function ProposalSectionCard({
 
   return (
     <div
-      className={`rounded-2xl border transition-all duration-200 bg-white dark:bg-slate-900 ${
+      className={`rounded-2xl border transition-all duration-200 bg-white ${
         approved
-          ? 'border-slate-200 dark:border-slate-800 shadow-sm'
-          : 'border-slate-200/60 dark:border-slate-800/60 opacity-60 bg-slate-50/50 dark:bg-slate-900/30'
+          ? 'border-slate-200 shadow-xs'
+          : 'border-slate-200/60 opacity-60 bg-slate-50/50'
       }`}
     >
       {/* Header */}
@@ -51,22 +49,22 @@ export default function ProposalSectionCard({
               e.stopPropagation()
               onToggleApproval?.(sectionKey)
             }}
-            className="p-0.5 rounded text-[#FB6C00] hover:scale-110 transition-transform"
+            className="p-0.5 rounded text-[#FB6C00] hover:scale-110 transition-transform cursor-pointer"
             title={approved ? 'Approved for import' : 'Excluded from import'}
           >
             {approved ? (
-              <CheckCircle className="w-5 h-5 fill-orange-50 dark:fill-orange-950/40 text-[#FB6C00]" />
+              <CheckCircle className="w-5 h-5 fill-orange-50 text-[#FB6C00]" />
             ) : (
-              <Circle className="w-5 h-5 text-slate-300 dark:text-slate-600" />
+              <Circle className="w-5 h-5 text-slate-300" />
             )}
           </button>
 
           <div>
             <div className="flex items-center gap-2">
-              <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+              <h4 className="text-sm font-bold text-slate-900">
                 {title}
               </h4>
-              <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500">
+              <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
                 {wordCount} words
               </span>
             </div>
@@ -81,7 +79,7 @@ export default function ProposalSectionCard({
                 e.stopPropagation()
                 setIsEditing(!isEditing)
               }}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
               title="Edit section content"
             >
               <Edit2 className="w-3.5 h-3.5" />
@@ -96,7 +94,7 @@ export default function ProposalSectionCard({
                 e.stopPropagation()
                 onRegenerateSection(sectionKey)
               }}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors disabled:opacity-50"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors disabled:opacity-50 cursor-pointer"
               title="Regenerate this section"
             >
               <RotateCcw className={`w-3.5 h-3.5 ${isRegenerating ? 'animate-spin' : ''}`} />
@@ -106,7 +104,7 @@ export default function ProposalSectionCard({
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
           >
             {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
@@ -115,34 +113,34 @@ export default function ProposalSectionCard({
 
       {/* Body Content */}
       {isOpen && (
-        <div className="p-4 pt-0 border-t border-slate-100 dark:border-slate-800">
+        <div className="p-4 pt-0 border-t border-slate-100">
           {isEditing ? (
             <div className="mt-3 space-y-2">
               <textarea
                 value={editValue}
                 onChange={(e) => setEditValue(e.target.value)}
                 rows={6}
-                className="w-full p-3 text-xs rounded-xl border border-[#FB6C00] bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-200 font-sans outline-none leading-relaxed"
+                className="w-full p-3 text-xs rounded-xl border border-[#FB6C00] bg-white text-slate-800 font-sans outline-none leading-relaxed"
               />
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="px-2.5 py-1 text-xs rounded-lg text-slate-500 hover:bg-slate-100"
+                  className="px-2.5 py-1 text-xs rounded-lg text-slate-500 hover:bg-slate-100 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleSave}
-                  className="px-3 py-1 text-xs font-semibold rounded-lg bg-[#FB6C00] hover:bg-[#e05f00] text-white"
+                  className="px-3 py-1 text-xs font-semibold rounded-lg bg-[#FB6C00] hover:bg-[#e05f00] text-white cursor-pointer"
                 >
                   Save Section
                 </button>
               </div>
             </div>
           ) : (
-            <div className="mt-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300 whitespace-pre-wrap font-sans">
+            <div className="mt-3 text-xs leading-relaxed text-slate-600 whitespace-pre-wrap font-sans">
               {content || <span className="italic text-slate-400">No content generated.</span>}
             </div>
           )}
