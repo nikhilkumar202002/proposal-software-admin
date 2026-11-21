@@ -94,7 +94,12 @@ export const ProposalPreview = () => {
                 {currentProposal.number}
               </span>
               <span className="text-gray-300">•</span>
-              <StatusBadge status={currentProposal.status || 'draft'} />
+              <ProposalStatusDropdown
+                status={currentProposal.status || 'proposal_sent'}
+                onChange={async (newStatus) => {
+                  await updateProposalStatus(currentProposal.id, newStatus)
+                }}
+              />
             </div>
 
             <div className="flex items-center gap-2">
