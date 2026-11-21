@@ -55,7 +55,7 @@ export default function AIConfirmationModal({
             className={`px-4 py-2 text-xs font-bold rounded-xl text-white shadow-xs cursor-pointer ${
               isDestructive
                 ? 'bg-rose-600 hover:bg-rose-700'
-                : 'bg-[#FB6C00] hover:bg-[#e05f00]'
+                : 'bg-[#0055FF] hover:bg-[#0044CC]'
             }`}
           >
             {confirmLabel}

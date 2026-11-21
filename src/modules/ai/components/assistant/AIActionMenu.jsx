@@ -68,20 +68,20 @@ export default function AIActionMenu({ onSelectAction, isProcessing = false }) {
             type="button"
             disabled={isProcessing}
             onClick={() => handleAction(action.id)}
-            className="w-full flex items-center justify-between p-2.5 rounded-xl text-left hover:bg-orange-50 group transition-colors disabled:opacity-50 cursor-pointer"
+            className="w-full flex items-center justify-between p-2.5 rounded-xl text-left hover:bg-blue-50 group transition-colors disabled:opacity-50 cursor-pointer"
           >
             <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-lg bg-slate-100 text-slate-600 group-hover:bg-[#FB6C00] group-hover:text-white flex items-center justify-center transition-colors">
+              <div className="w-7 h-7 rounded-lg bg-slate-100 text-slate-600 group-hover:bg-[#0055FF] group-hover:text-white flex items-center justify-center transition-colors">
                 <Icon className="w-3.5 h-3.5" />
               </div>
               <div>
-                <div className="text-xs font-semibold text-slate-800 group-hover:text-[#FB6C00]">
+                <div className="text-xs font-semibold text-slate-800 group-hover:text-[#0055FF]">
                   {action.name}
                 </div>
                 <div className="text-[10px] text-slate-400">{action.desc}</div>
               </div>
             </div>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#FB6C00] group-hover:translate-x-0.5 transition-all" />
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#0055FF] group-hover:translate-x-0.5 transition-all" />
           </button>
         )
       })}
@@ -92,14 +92,14 @@ export default function AIActionMenu({ onSelectAction, isProcessing = false }) {
           type="button"
           disabled={isProcessing}
           onClick={() => setShowLanguagePicker(!showLanguagePicker)}
-          className="w-full flex items-center justify-between p-2.5 rounded-xl text-left hover:bg-orange-50 group transition-colors disabled:opacity-50 cursor-pointer"
+          className="w-full flex items-center justify-between p-2.5 rounded-xl text-left hover:bg-blue-50 group transition-colors disabled:opacity-50 cursor-pointer"
         >
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-slate-100 text-slate-600 group-hover:bg-[#FB6C00] group-hover:text-white flex items-center justify-center transition-colors">
+            <div className="w-7 h-7 rounded-lg bg-slate-100 text-slate-600 group-hover:bg-[#0055FF] group-hover:text-white flex items-center justify-center transition-colors">
               <Languages className="w-3.5 h-3.5" />
             </div>
             <div>
-              <div className="text-xs font-semibold text-slate-800 group-hover:text-[#FB6C00]">
+              <div className="text-xs font-semibold text-slate-800 group-hover:text-[#0055FF]">
                 Translate Content
               </div>
               <div className="text-[10px] text-slate-400">Selected: {selectedLanguage}</div>
@@ -125,7 +125,7 @@ export default function AIActionMenu({ onSelectAction, isProcessing = false }) {
             <button
               type="button"
               onClick={() => handleAction('translate')}
-              className="px-2.5 py-1 text-xs font-bold rounded-lg bg-[#FB6C00] text-white hover:bg-[#e05f00] cursor-pointer"
+              className="px-2.5 py-1 text-xs font-bold rounded-lg bg-[#0055FF] text-white hover:bg-[#0044CC] cursor-pointer"
             >
               Translate
             </button>

@@ -1,13 +1,14 @@
 /**
  * ProposalOS AI Module - General AI Helpers & Model Configurations
- * Brand: ProposalOS (Primary Color: #FB6C00)
+ * Brand: ProposalOS (Primary Color: #0055FF)
  */
 
 export const BRAND_CONFIG = {
   name: 'ProposalOS',
-  primaryColor: '#FB6C00',
-  secondaryColor: '#E05D00',
-  accentColor: '#FF8833',
+  primaryColor: '#0055FF',
+  secondaryColor: '#0044CC',
+  accentColor: '#00AAFF',
+  lightColor: '#EFF6FF',
 }
 
 export const AI_MODELS = [

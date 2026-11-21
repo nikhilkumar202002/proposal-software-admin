@@ -27,7 +27,7 @@ export default function ProposalImportModal({
 
         {/* Header */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-2xl bg-orange-50 text-[#FB6C00] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-2xl bg-blue-50 text-[#0055FF] flex items-center justify-center">
             <CheckCircle2 className="w-5 h-5" />
           </div>
           <div>
@@ -56,7 +56,7 @@ export default function ProposalImportModal({
           </div>
           <div className="flex justify-between">
             <span className="text-slate-500">Type:</span>
-            <span className="font-semibold text-[#FB6C00] uppercase text-[11px]">
+            <span className="font-semibold text-[#0055FF] uppercase text-[11px]">
               {proposalType === 'b2b' ? 'B2B Partner' : 'Direct Client'}
             </span>
           </div>
@@ -81,7 +81,7 @@ export default function ProposalImportModal({
             type="button"
             disabled={isImporting}
             onClick={() => onConfirmImport('editor')}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#FB6C00] hover:bg-[#e05f00] text-white text-xs font-bold shadow-sm shadow-orange-500/20 transition-all disabled:opacity-50 cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#0055FF] hover:bg-[#0044CC] text-white text-xs font-bold shadow-sm shadow-blue-500/20 transition-all disabled:opacity-50 cursor-pointer"
           >
             <FileEdit className="w-4 h-4" />
             <span>Import & Open TipTap Editor</span>

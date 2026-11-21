@@ -76,7 +76,7 @@ export default function ChatSidebar({
       <div className="p-3.5 pb-2">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#FB6C00] to-orange-400 flex items-center justify-center text-white shadow-xs">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#0055FF] to-blue-400 flex items-center justify-center text-white shadow-xs">
               <RiChatAiFill className="w-4 h-4" />
             </div>
             <span className="text-sm font-bold text-slate-900 tracking-tight">
@@ -98,10 +98,10 @@ export default function ChatSidebar({
         <button
           type="button"
           onClick={onNewChat}
-          className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white hover:border-[#FB6C00] text-slate-800 hover:text-[#FB6C00] font-semibold text-xs shadow-2xs transition-all duration-150 cursor-pointer"
+          className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white hover:border-[#0055FF] text-slate-800 hover:text-[#0055FF] font-semibold text-xs shadow-2xs transition-all duration-150 cursor-pointer"
         >
           <span className="flex items-center gap-2">
-            <Plus className="w-4 h-4 text-[#FB6C00]" />
+            <Plus className="w-4 h-4 text-[#0055FF]" />
             New Proposal Chat
           </span>
           <span className="text-[10px] text-slate-400 font-mono">⌘N</span>
@@ -115,7 +115,7 @@ export default function ChatSidebar({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search conversations..."
-            className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#FB6C00]"
+            className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0055FF]"
           />
         </div>
       </div>
@@ -140,7 +140,7 @@ export default function ChatSidebar({
                       onClick={() => onSelectConversation(conv.id)}
                       className={`group relative flex items-center justify-between px-3 py-2 rounded-xl text-xs cursor-pointer transition-all duration-150 ${
                         isActive
-                          ? 'bg-orange-50 text-[#FB6C00] font-semibold shadow-2xs'
+                          ? 'bg-blue-50 text-[#0055FF] font-semibold shadow-2xs'
                           : 'text-slate-600 hover:bg-slate-200/60 hover:text-slate-900'
                       }`}
                     >
@@ -157,7 +157,7 @@ export default function ChatSidebar({
                               if (e.key === 'Enter') saveRename(conv.id, e)
                               if (e.key === 'Escape') cancelRename(e)
                             }}
-                            className="flex-1 px-1.5 py-0.5 text-xs rounded border border-[#FB6C00] bg-white text-slate-900 outline-none"
+                            className="flex-1 px-1.5 py-0.5 text-xs rounded border border-[#0055FF] bg-white text-slate-900 outline-none"
                             autoFocus
                           />
                           <button

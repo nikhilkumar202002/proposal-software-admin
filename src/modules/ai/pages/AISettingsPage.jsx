@@ -43,7 +43,7 @@ export default function AISettingsPage() {
           </button>
           <div>
             <h1 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-2">
-              <Settings className="w-4 h-4 text-[#FB6C00]" />
+              <Settings className="w-4 h-4 text-[#0055FF]" />
               AI Intelligence & Provider Settings
             </h1>
           </div>
@@ -62,8 +62,8 @@ export default function AISettingsPage() {
       {/* Main Container */}
       <main className="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-8 space-y-6">
         {/* Security Alert Callout */}
-        <div className="p-4 rounded-2xl bg-orange-50 border border-orange-200/80 flex items-start gap-3">
-          <ShieldCheck className="w-5 h-5 text-[#FB6C00] shrink-0 mt-0.5" />
+        <div className="p-4 rounded-2xl bg-blue-50/80 border border-blue-200/80 flex items-start gap-3">
+          <ShieldCheck className="w-5 h-5 text-[#0055FF] shrink-0 mt-0.5" />
           <div className="text-xs leading-relaxed text-slate-700">
             <span className="font-bold text-slate-900">
               Zero-Trust Key Management Architecture:
@@ -96,7 +96,7 @@ export default function AISettingsPage() {
                     onClick={() => setProvider(prov.id)}
                     className={`p-4 rounded-2xl border cursor-pointer transition-all ${
                       isSelected
-                        ? 'border-[#FB6C00] bg-orange-50/50 ring-2 ring-orange-500/10'
+                        ? 'border-[#0055FF] bg-blue-50/50 ring-2 ring-blue-500/10'
                         : 'border-slate-200 hover:border-slate-300 bg-white'
                     }`}
                   >
@@ -133,7 +133,7 @@ export default function AISettingsPage() {
                   type="text"
                   value={tokenBudget}
                   onChange={(e) => setTokenBudget(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:border-[#FB6C00]"
+                  className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:border-[#0055FF]"
                 />
               </div>
 
@@ -145,7 +145,7 @@ export default function AISettingsPage() {
                   type="number"
                   value={maxMonthlySpend}
                   onChange={(e) => setMaxMonthlySpend(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:border-[#FB6C00]"
+                  className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:border-[#0055FF]"
                 />
               </div>
             </div>
@@ -179,7 +179,7 @@ export default function AISettingsPage() {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-[#FB6C00] hover:bg-[#e05f00] text-white text-xs font-bold shadow-md shadow-orange-500/20 transition-all cursor-pointer"
+              className="px-6 py-2.5 rounded-xl bg-[#0055FF] hover:bg-[#0044CC] text-white text-xs font-bold shadow-md shadow-blue-500/20 transition-all cursor-pointer"
             >
               Save Configuration
             </button>

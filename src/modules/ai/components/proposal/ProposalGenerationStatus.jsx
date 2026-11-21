@@ -15,7 +15,7 @@ export default function ProposalGenerationStatus({
     <div className="w-full bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-orange-50 text-[#FB6C00] flex items-center justify-center">
+          <div className="w-7 h-7 rounded-lg bg-blue-50 text-[#0055FF] flex items-center justify-center">
             {isGenerating ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
@@ -26,7 +26,7 @@ export default function ProposalGenerationStatus({
             Proposal Generation Workflow
           </h3>
         </div>
-        <span className="text-xs font-semibold text-[#FB6C00] bg-orange-50 px-2.5 py-1 rounded-full">
+        <span className="text-xs font-semibold text-[#0055FF] bg-blue-50 px-2.5 py-1 rounded-full">
           Step {Math.min(currentStep, steps.length)} of {steps.length}
         </span>
       </div>
@@ -44,7 +44,7 @@ export default function ProposalGenerationStatus({
                 isDone
                   ? 'bg-emerald-50/50 border-emerald-200 text-emerald-900'
                   : isActive
-                  ? 'bg-orange-50/60 border-[#FB6C00] text-[#FB6C00] ring-2 ring-orange-500/10'
+                  ? 'bg-blue-50/60 border-[#0055FF] text-[#0055FF] ring-2 ring-blue-500/10'
                   : 'bg-slate-50 border-slate-200/80 text-slate-400'
               }`}
             >
@@ -55,7 +55,7 @@ export default function ProposalGenerationStatus({
                 {isDone ? (
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                 ) : isActive ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-[#FB6C00]" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-[#0055FF]" />
                 ) : (
                   <span className="w-2 h-2 rounded-full bg-slate-300" />
                 )}

@@ -68,7 +68,7 @@ export default function AIContextSelector({
         </button>
 
         <div className="flex items-center gap-3 mb-5">
-          <div className="w-10 h-10 rounded-2xl bg-orange-50 text-[#FB6C00] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-2xl bg-blue-50 text-[#0055FF] flex items-center justify-center">
             <Sparkles className="w-5 h-5" />
           </div>
           <div>
@@ -85,13 +85,13 @@ export default function AIContextSelector({
           {/* Client Selector */}
           <div>
             <label className="flex items-center gap-2 font-semibold text-slate-700 mb-1.5">
-              <UserCheck className="w-4 h-4 text-[#FB6C00]" />
+              <UserCheck className="w-4 h-4 text-[#0055FF]" />
               <span>Target Client Profile</span>
             </label>
             <select
               value={selectedClientId}
               onChange={(e) => setSelectedClientId(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 outline-none focus:border-[#FB6C00]"
+              className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 outline-none focus:border-[#0055FF]"
             >
               <option value="">None (Generic Prompt)</option>
               {clients.map((c) => (
@@ -105,13 +105,13 @@ export default function AIContextSelector({
           {/* Proposal Selector */}
           <div>
             <label className="flex items-center gap-2 font-semibold text-slate-700 mb-1.5">
-              <FileCheck className="w-4 h-4 text-[#FB6C00]" />
+              <FileCheck className="w-4 h-4 text-[#0055FF]" />
               <span>Existing Proposal Reference</span>
             </label>
             <select
               value={selectedProposalId}
               onChange={(e) => setSelectedProposalId(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 outline-none focus:border-[#FB6C00]"
+              className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-900 outline-none focus:border-[#0055FF]"
             >
               <option value="">None (Start Fresh)</option>
               {proposals.map((p) => (
@@ -129,11 +129,11 @@ export default function AIContextSelector({
                 type="checkbox"
                 checked={includeCompanyInfo}
                 onChange={(e) => setIncludeCompanyInfo(e.target.checked)}
-                className="w-4 h-4 rounded text-[#FB6C00] focus:ring-orange-500"
+                className="w-4 h-4 rounded text-[#0055FF] focus:ring-blue-500"
               />
               <div className="flex-1">
                 <div className="font-semibold text-slate-800 flex items-center gap-1.5">
-                  <Building2 className="w-3.5 h-3.5 text-[#FB6C00]" />
+                  <Building2 className="w-3.5 h-3.5 text-[#0055FF]" />
                   Include Company Profile & Branding
                 </div>
                 <div className="text-[11px] text-slate-400 mt-0.5">
@@ -172,7 +172,7 @@ export default function AIContextSelector({
             <button
               type="button"
               onClick={handleSave}
-              className="px-4 py-2 text-xs font-bold rounded-xl bg-[#FB6C00] hover:bg-[#e05f00] text-white shadow-xs cursor-pointer"
+              className="px-4 py-2 text-xs font-bold rounded-xl bg-[#0055FF] hover:bg-[#0044CC] text-white shadow-xs cursor-pointer"
             >
               Apply Context
             </button>

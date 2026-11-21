@@ -190,7 +190,7 @@ export function renderCleanContent(rawText = '', onCopyCode) {
         if (block.type === 'numbered_heading') {
           return (
             <div key={idx} className="flex items-center gap-2.5 pt-3 pb-1 border-b border-slate-100">
-              <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-orange-100 text-[#FB6C00] font-bold text-xs shrink-0">
+              <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-blue-50 border border-blue-200 text-[#0055FF] font-bold text-xs shrink-0">
                 {block.number}
               </span>
               <h3 className="text-sm font-bold text-slate-900 tracking-tight">
@@ -215,7 +215,7 @@ export function renderCleanContent(rawText = '', onCopyCode) {
             <div key={idx} className="my-2 space-y-2">
               {block.items.map((item, itemIdx) => (
                 <div key={itemIdx} className="flex items-start gap-2.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#FB6C00] mt-1.5 shrink-0" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#0055FF] mt-1.5 shrink-0" />
                   <div className="flex-1 text-slate-700 leading-relaxed text-xs">
                     {formatInlineText(item)}
                   </div>
@@ -231,7 +231,7 @@ export function renderCleanContent(rawText = '', onCopyCode) {
             <div key={idx} className="my-2 space-y-2">
               {block.items.map((item, itemIdx) => (
                 <div key={itemIdx} className="flex items-start gap-2.5">
-                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-orange-50 border border-orange-200 text-[#FB6C00] font-bold text-[10px] shrink-0 mt-0.5">
+                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-50 border border-blue-200 text-[#0055FF] font-bold text-[10px] shrink-0 mt-0.5">
                     {item.number}
                   </span>
                   <div className="flex-1 text-slate-700 leading-relaxed text-xs pt-0.5">

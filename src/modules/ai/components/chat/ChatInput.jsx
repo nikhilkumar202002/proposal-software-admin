@@ -73,7 +73,7 @@ export default function ChatInput({
               key={idx}
               className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-xs text-slate-700 shadow-2xs"
             >
-              <FileText className="w-3.5 h-3.5 text-[#FB6C00]" />
+              <FileText className="w-3.5 h-3.5 text-[#0055FF]" />
               <span className="font-medium truncate max-w-[140px]">{file.name}</span>
               <span className="text-[10px] text-slate-400">({file.size})</span>
               <button
@@ -89,7 +89,7 @@ export default function ChatInput({
       )}
 
       {/* Main floating input box - Clean Light Theme */}
-      <div className="relative rounded-2xl bg-white border border-slate-200 shadow-md shadow-slate-100 focus-within:border-[#FB6C00] focus-within:ring-2 focus-within:ring-orange-500/20 transition-all">
+      <div className="relative rounded-2xl bg-white border border-slate-200 shadow-md shadow-slate-100 focus-within:border-[#0055FF] focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
         <textarea
           ref={textareaRef}
           value={input}
@@ -127,7 +127,7 @@ export default function ChatInput({
               onClick={() => setWebSearchEnabled(!webSearchEnabled)}
               className={`p-1.5 rounded-lg transition-colors flex items-center gap-1 text-xs cursor-pointer ${
                 webSearchEnabled
-                  ? 'text-[#FB6C00] bg-orange-50 font-medium'
+                  ? 'text-[#0055FF] bg-blue-50 font-medium'
                   : 'hover:text-slate-700 hover:bg-slate-100'
               }`}
               title="Toggle Live Web & Market Intelligence"
@@ -154,7 +154,7 @@ export default function ChatInput({
                 disabled={!input.trim() && attachments.length === 0}
                 className={`inline-flex items-center justify-center w-8 h-8 rounded-xl transition-all shadow-sm ${
                   input.trim() || attachments.length > 0
-                    ? 'bg-[#FB6C00] hover:bg-[#e05f00] text-white cursor-pointer shadow-orange-500/20'
+                    ? 'bg-[#0055FF] hover:bg-[#0044CC] text-white cursor-pointer shadow-blue-500/20'
                     : 'bg-slate-100 text-slate-300 cursor-not-allowed'
                 }`}
                 title="Send message (Enter)"

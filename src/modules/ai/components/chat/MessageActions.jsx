@@ -105,7 +105,7 @@ export default function MessageActions({
             <button
               type="button"
               onClick={() => onUseInProposal(message)}
-              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-[#FB6C00] bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors ml-1 cursor-pointer"
+              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-[#0055FF] bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors ml-1 cursor-pointer"
               title="Convert this response into a draft proposal"
             >
               <FilePlus className="w-3.5 h-3.5" />

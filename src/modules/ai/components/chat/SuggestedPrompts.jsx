@@ -38,19 +38,19 @@ export default function SuggestedPrompts({ onSelectPrompt, suggestions = PROPOSA
             key={index}
             type="button"
             onClick={() => onSelectPrompt(item.prompt)}
-            className="group relative flex flex-col items-start p-4 text-left rounded-2xl bg-white border border-slate-200/90 hover:border-[#FB6C00] shadow-xs hover:shadow-md hover:shadow-orange-500/10 transition-all duration-200 cursor-pointer"
+            className="group relative flex flex-col items-start p-4 text-left rounded-2xl bg-white border border-slate-200/90 hover:border-[#0055FF] shadow-xs hover:shadow-md hover:shadow-blue-500/10 transition-all duration-200 cursor-pointer"
           >
             <div className="flex items-center justify-between w-full mb-2">
-              <div className="w-8 h-8 rounded-lg bg-orange-50 text-[#FB6C00] flex items-center justify-center group-hover:scale-105 transition-transform">
+              <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0055FF] flex items-center justify-center group-hover:scale-105 transition-transform">
                 <Icon className="w-4 h-4" />
               </div>
               {item.badge && (
-                <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-orange-100 text-[#FB6C00]">
+                <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-100 text-[#0055FF]">
                   {item.badge}
                 </span>
               )}
             </div>
-            <h4 className="text-sm font-semibold text-slate-800 group-hover:text-[#FB6C00] transition-colors mb-1 line-clamp-1">
+            <h4 className="text-sm font-semibold text-slate-800 group-hover:text-[#0055FF] transition-colors mb-1 line-clamp-1">
               {item.title}
             </h4>
             <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">

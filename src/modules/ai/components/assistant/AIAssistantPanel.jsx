@@ -59,7 +59,7 @@ export default function AIAssistantPanel({
       {/* Header */}
       <div className="p-4 border-b border-slate-100 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-[#FB6C00] flex items-center justify-center text-white shadow-xs">
+          <div className="w-7 h-7 rounded-lg bg-[#0055FF] flex items-center justify-center text-white shadow-xs">
             <RiChatAiFill className="w-4 h-4" />
           </div>
           <div>
@@ -88,9 +88,9 @@ export default function AIAssistantPanel({
 
         {/* Generated Result Preview */}
         {resultText && (
-          <div className="p-3.5 rounded-2xl bg-orange-50/60 border border-orange-200 animate-in fade-in">
+          <div className="p-3.5 rounded-2xl bg-blue-50/60 border border-blue-200 animate-in fade-in">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#FB6C00]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#0055FF]">
                 AI Recommendation
               </span>
               <button
@@ -109,7 +109,7 @@ export default function AIAssistantPanel({
               <button
                 type="button"
                 onClick={handleApply}
-                className="w-full mt-3 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-[#FB6C00] hover:bg-[#e05f00] text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
+                className="w-full mt-3 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-[#0055FF] hover:bg-[#0044CC] text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
               >
                 <Check className="w-3.5 h-3.5" />
                 <span>Apply to Document</span>

@@ -61,7 +61,7 @@ export default function ProposalPreview({
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-orange-100 text-[#FB6C00]">
+              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-100 text-[#0055FF]">
                 {proposalType === 'b2b' ? 'B2B Partner Proposal' : 'Direct Client Proposal'}
               </span>
               <span className="text-xs text-slate-400">•</span>
@@ -78,7 +78,7 @@ export default function ProposalPreview({
           <div className="flex items-center gap-3">
             <div className="px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-right shadow-2xs">
               <div className="text-[10px] uppercase font-bold text-slate-400">Total Estimate</div>
-              <div className="text-base font-extrabold text-[#FB6C00]">{formatCurrency(grandTotal)}</div>
+              <div className="text-base font-extrabold text-[#0055FF]">{formatCurrency(grandTotal)}</div>
             </div>
           </div>
         </div>
@@ -90,7 +90,7 @@ export default function ProposalPreview({
             onClick={() => setActiveTab('sections')}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeTab === 'sections'
-                ? 'bg-[#FB6C00] text-white shadow-xs'
+                ? 'bg-[#0055FF] text-white shadow-xs'
                 : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
             }`}
           >
@@ -103,7 +103,7 @@ export default function ProposalPreview({
             onClick={() => setActiveTab('pricing')}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeTab === 'pricing'
-                ? 'bg-[#FB6C00] text-white shadow-xs'
+                ? 'bg-[#0055FF] text-white shadow-xs'
                 : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
             }`}
           >
@@ -182,7 +182,7 @@ export default function ProposalPreview({
             <button
               type="button"
               onClick={onApproveAllPricing}
-              className="text-xs font-semibold text-[#FB6C00] hover:underline cursor-pointer"
+              className="text-xs font-semibold text-[#0055FF] hover:underline cursor-pointer"
             >
               Approve All Milestones
             </button>
@@ -218,10 +218,10 @@ export default function ProposalPreview({
                         <button
                           type="button"
                           onClick={() => onTogglePricingItemApproval?.(item.id || idx)}
-                          className="p-1 rounded text-[#FB6C00] cursor-pointer"
+                          className="p-1 rounded text-[#0055FF] cursor-pointer"
                         >
                           {isApproved ? (
-                            <CheckCircle className="w-4 h-4 fill-orange-50 text-[#FB6C00]" />
+                            <CheckCircle className="w-4 h-4 fill-blue-50 text-[#0055FF]" />
                           ) : (
                             <Circle className="w-4 h-4 text-slate-300" />
                           )}
@@ -264,7 +264,7 @@ export default function ProposalPreview({
             </div>
             <div className="flex justify-between w-64 pt-2 border-t border-slate-200 text-sm font-bold text-slate-900">
               <span>Grand Total:</span>
-              <span className="text-[#FB6C00]">{formatCurrency(grandTotal)}</span>
+              <span className="text-[#0055FF]">{formatCurrency(grandTotal)}</span>
             </div>
           </div>
         </div>
@@ -295,7 +295,7 @@ export default function ProposalPreview({
             <button
               type="button"
               onClick={onOpenInEditor}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-orange-50 hover:bg-orange-100 text-[#FB6C00] text-xs font-semibold cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#0055FF] text-xs font-semibold cursor-pointer"
             >
               <ExternalLink className="w-3.5 h-3.5" />
               <span>Open in TipTap Editor</span>
@@ -305,7 +305,7 @@ export default function ProposalPreview({
           <button
             type="button"
             onClick={onImportToProposalOS}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#FB6C00] hover:bg-[#e05f00] text-white text-xs font-bold shadow-sm shadow-orange-500/20 cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0055FF] hover:bg-[#0044CC] text-white text-xs font-bold shadow-sm shadow-blue-500/20 cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Save & Import Proposal</span>

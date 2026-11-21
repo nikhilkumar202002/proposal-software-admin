@@ -120,7 +120,7 @@ export default function AIProposalGenerator() {
           </button>
           <div>
             <h1 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#FB6C00]" />
+              <Sparkles className="w-4 h-4 text-[#0055FF]" />
               ProposalOS AI Generator
             </h1>
           </div>

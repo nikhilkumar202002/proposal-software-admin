@@ -7,15 +7,15 @@ export default function ChatWelcome({ onSelectPrompt, activeContext }) {
     <div className="flex-1 flex flex-col items-center justify-center p-6 text-center max-w-4xl mx-auto w-full animate-in fade-in duration-300">
       {/* 3D Orb Graphic */}
       <div className="relative mb-6 group">
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-amber-400 rounded-full blur-2xl opacity-30 group-hover:opacity-40 transition-opacity" />
-        <div className="relative w-20 h-20 rounded-full bg-gradient-to-tr from-[#FB6C00] via-orange-500 to-amber-400 p-[2px] shadow-lg shadow-orange-500/20 flex items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full blur-2xl opacity-30 group-hover:opacity-40 transition-opacity" />
+        <div className="relative w-20 h-20 rounded-full bg-gradient-to-tr from-[#0055FF] via-blue-500 to-indigo-400 p-[2px] shadow-lg shadow-blue-500/20 flex items-center justify-center">
           <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
-            <RiChatAiFill className="w-10 h-10 text-[#FB6C00] transition-transform duration-300 group-hover:scale-105" />
+            <RiChatAiFill className="w-10 h-10 text-[#0055FF] transition-transform duration-300 group-hover:scale-105" />
           </div>
         </div>
       </div>
 
-      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-orange-200 text-[#FB6C00] text-xs font-semibold mb-3">
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0055FF] text-xs font-semibold mb-3">
         <Sparkles className="w-3.5 h-3.5" />
         <span>Enterprise Proposal Intelligence</span>
       </div>
@@ -32,13 +32,13 @@ export default function ChatWelcome({ onSelectPrompt, activeContext }) {
         <div className="flex items-center justify-center flex-wrap gap-2 mb-6">
           {activeContext.client && (
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 border border-slate-200 text-xs font-medium text-slate-700">
-              <UserCheck className="w-3.5 h-3.5 text-[#FB6C00]" />
+              <UserCheck className="w-3.5 h-3.5 text-[#0055FF]" />
               <span>Client: {activeContext.client.name || activeContext.client.companyName}</span>
             </div>
           )}
           {activeContext.proposal && (
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 border border-slate-200 text-xs font-medium text-slate-700">
-              <FileCheck className="w-3.5 h-3.5 text-[#FB6C00]" />
+              <FileCheck className="w-3.5 h-3.5 text-[#0055FF]" />
               <span>Target: {activeContext.proposal.title || activeContext.proposal.number}</span>
             </div>
           )}

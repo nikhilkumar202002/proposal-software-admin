@@ -49,11 +49,11 @@ export default function ProposalSectionCard({
               e.stopPropagation()
               onToggleApproval?.(sectionKey)
             }}
-            className="p-0.5 rounded text-[#FB6C00] hover:scale-110 transition-transform cursor-pointer"
+            className="p-0.5 rounded text-[#0055FF] hover:scale-110 transition-transform cursor-pointer"
             title={approved ? 'Approved for import' : 'Excluded from import'}
           >
             {approved ? (
-              <CheckCircle className="w-5 h-5 fill-orange-50 text-[#FB6C00]" />
+              <CheckCircle className="w-5 h-5 fill-blue-50 text-[#0055FF]" />
             ) : (
               <Circle className="w-5 h-5 text-slate-300" />
             )}
@@ -120,7 +120,7 @@ export default function ProposalSectionCard({
                 value={editValue}
                 onChange={(e) => setEditValue(e.target.value)}
                 rows={6}
-                className="w-full p-3 text-xs rounded-xl border border-[#FB6C00] bg-white text-slate-800 font-sans outline-none leading-relaxed"
+                className="w-full p-3 text-xs rounded-xl border border-[#0055FF] bg-white text-slate-800 font-sans outline-none leading-relaxed"
               />
               <div className="flex justify-end gap-2">
                 <button
@@ -133,7 +133,7 @@ export default function ProposalSectionCard({
                 <button
                   type="button"
                   onClick={handleSave}
-                  className="px-3 py-1 text-xs font-semibold rounded-lg bg-[#FB6C00] hover:bg-[#e05f00] text-white cursor-pointer"
+                  className="px-3 py-1 text-xs font-semibold rounded-lg bg-[#0055FF] hover:bg-[#0044CC] text-white cursor-pointer"
                 >
                   Save Section
                 </button>

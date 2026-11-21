@@ -28,10 +28,10 @@ export const AIModelSelector = ({ className = '' }) => {
         className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-50 hover:bg-gray-100/80 border border-gray-200/80 text-xs font-bold text-gray-900 transition-all cursor-pointer shadow-2xs"
         title="Select AI Model"
       >
-        <Sparkles className="w-3.5 h-3.5 text-[#FB6C00]" />
+        <Sparkles className="w-3.5 h-3.5 text-[#0055FF]" />
         <span className="tracking-tight">{activeModel.name}</span>
         {activeModel.badge && (
-          <span className="text-[10px] font-semibold px-1.5 py-0.2 rounded bg-orange-100 text-[#FB6C00]">
+          <span className="text-[10px] font-semibold px-1.5 py-0.2 rounded bg-blue-100 text-[#0055FF]">
             {activeModel.badge}
           </span>
         )}
@@ -61,12 +61,12 @@ export const AIModelSelector = ({ className = '' }) => {
                     setIsOpen(false)
                   }}
                   className={`w-full flex items-start gap-2.5 px-3.5 py-2.5 text-left text-xs transition-colors cursor-pointer ${
-                    isSelected ? 'bg-orange-50/70 text-[#FB6C00]' : 'hover:bg-gray-50 text-gray-800'
+                    isSelected ? 'bg-blue-50/70 text-[#0055FF]' : 'hover:bg-gray-50 text-gray-800'
                   }`}
                 >
                   <Sparkles
                     className={`w-4 h-4 shrink-0 mt-0.5 ${
-                      isSelected ? 'text-[#FB6C00]' : 'text-gray-400'
+                      isSelected ? 'text-[#0055FF]' : 'text-gray-400'
                     }`}
                   />
                   <div className="flex-1 min-w-0">
@@ -82,7 +82,7 @@ export const AIModelSelector = ({ className = '' }) => {
                       {model.recommendedFor}
                     </p>
                   </div>
-                  {isSelected && <Check className="w-3.5 h-3.5 text-[#FB6C00] shrink-0 mt-0.5" />}
+                  {isSelected && <Check className="w-3.5 h-3.5 text-[#0055FF] shrink-0 mt-0.5" />}
                 </button>
               )
             })}

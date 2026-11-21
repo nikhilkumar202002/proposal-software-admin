@@ -66,7 +66,7 @@ export default function ProposalGenerationForm({
       {/* Header */}
       <div className="flex items-center justify-between pb-4 border-b border-slate-100">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-orange-50 text-[#FB6C00] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-2xl bg-blue-50 text-[#0055FF] flex items-center justify-center">
             <Sparkles className="w-5 h-5" />
           </div>
           <div>
@@ -86,7 +86,7 @@ export default function ProposalGenerationForm({
             onClick={() => setFormData({ ...formData, proposalType: 'direct' })}
             className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
               formData.proposalType === 'direct'
-                ? 'bg-[#FB6C00] text-white shadow-xs'
+                ? 'bg-[#0055FF] text-white shadow-xs'
                 : 'text-slate-600'
             }`}
           >
@@ -97,7 +97,7 @@ export default function ProposalGenerationForm({
             onClick={() => setFormData({ ...formData, proposalType: 'b2b' })}
             className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
               formData.proposalType === 'b2b'
-                ? 'bg-[#FB6C00] text-white shadow-xs'
+                ? 'bg-[#0055FF] text-white shadow-xs'
                 : 'text-slate-600'
             }`}
           >
@@ -119,7 +119,7 @@ export default function ProposalGenerationForm({
               onClick={() => handlePresetSelect(preset)}
               className={`px-3 py-1.5 text-xs rounded-xl border transition-all cursor-pointer ${
                 formData.serviceType === preset
-                  ? 'border-[#FB6C00] bg-orange-50 text-[#FB6C00] font-semibold'
+                  ? 'border-[#0055FF] bg-blue-50 text-[#0055FF] font-semibold'
                   : 'border-slate-200 hover:border-slate-300 text-slate-600'
               }`}
             >
@@ -141,7 +141,7 @@ export default function ProposalGenerationForm({
             required
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:border-[#FB6C00]"
+            className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:border-[#0055FF]"
           />
         </div>
 
@@ -153,7 +153,7 @@ export default function ProposalGenerationForm({
           <select
             value={formData.clientId}
             onChange={handleClientChange}
-            className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:border-[#FB6C00]"
+            className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:border-[#0055FF]"
           >
             {clients.map((c) => (
               <option key={c.id} value={c.id}>
@@ -175,7 +175,7 @@ export default function ProposalGenerationForm({
               type="text"
               value={formData.budgetEstimate}
               onChange={(e) => setFormData({ ...formData, budgetEstimate: e.target.value })}
-              className="w-full pl-9 pr-3.5 py-2.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:border-[#FB6C00]"
+              className="w-full pl-9 pr-3.5 py-2.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:border-[#0055FF]"
             />
           </div>
         </div>
@@ -191,7 +191,7 @@ export default function ProposalGenerationForm({
               type="text"
               value={formData.timeline}
               onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-              className="w-full pl-9 pr-3.5 py-2.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:border-[#FB6C00]"
+              className="w-full pl-9 pr-3.5 py-2.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:border-[#0055FF]"
             />
           </div>
         </div>
@@ -208,7 +208,7 @@ export default function ProposalGenerationForm({
           value={formData.requirements}
           onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
           placeholder="Specify deliverables, tech stack preferences, compliance requirements, and specific client pain points..."
-          className="w-full p-3.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:border-[#FB6C00] leading-relaxed"
+          className="w-full p-3.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:border-[#0055FF] leading-relaxed"
         />
       </div>
 
@@ -217,7 +217,7 @@ export default function ProposalGenerationForm({
         <button
           type="submit"
           disabled={isGenerating}
-          className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#FB6C00] hover:bg-[#e05f00] text-white font-bold text-xs shadow-md shadow-orange-500/25 transition-all disabled:opacity-50 cursor-pointer"
+          className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#0055FF] hover:bg-[#0044CC] text-white font-bold text-xs shadow-md shadow-blue-500/25 transition-all disabled:opacity-50 cursor-pointer"
         >
           <Sparkles className="w-4 h-4" />
           <span>{isGenerating ? 'Generating Structured Proposal...' : 'Generate Full Proposal Blueprint'}</span>

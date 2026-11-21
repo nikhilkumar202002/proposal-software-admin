@@ -35,10 +35,10 @@ export default function ChatMessage({
         isUser ? 'justify-end' : 'justify-start'
       }`}
     >
-      {/* Assistant Avatar - Clean ProposalOS Gradient */}
+      {/* Assistant Avatar - Clean App Brand Gradient */}
       {!isUser && (
         <div className="shrink-0 mt-0.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#FB6C00] to-orange-400 flex items-center justify-center text-white shadow-xs">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#0055FF] to-blue-400 flex items-center justify-center text-white shadow-xs">
             <RiChatAiFill className="w-4 h-4" />
           </div>
         </div>
@@ -59,7 +59,7 @@ export default function ChatMessage({
               value={editText}
               onChange={(e) => setEditText(e.target.value)}
               rows={3}
-              className="w-full p-3 text-xs rounded-xl border border-[#FB6C00] bg-white text-slate-900 outline-none ring-2 ring-orange-500/20"
+              className="w-full p-3 text-xs rounded-xl border border-[#0055FF] bg-white text-slate-900 outline-none ring-2 ring-blue-500/20"
               autoFocus
             />
             <div className="flex items-center justify-end gap-2">
@@ -73,7 +73,7 @@ export default function ChatMessage({
               <button
                 type="button"
                 onClick={handleEditSave}
-                className="px-3.5 py-1.5 text-xs rounded-lg font-semibold bg-[#FB6C00] hover:bg-[#e05f00] text-white shadow-xs transition-colors"
+                className="px-3.5 py-1.5 text-xs rounded-lg font-semibold bg-[#0055FF] hover:bg-[#0044CC] text-white shadow-xs transition-colors"
               >
                 Save & Resend
               </button>
@@ -89,7 +89,7 @@ export default function ChatMessage({
                     key={idx}
                     className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 text-[11px] font-medium text-slate-700"
                   >
-                    <FileText className="w-3.5 h-3.5 text-[#FB6C00]" />
+                    <FileText className="w-3.5 h-3.5 text-[#0055FF]" />
                     <span className="truncate max-w-[160px]">{att.name}</span>
                   </div>
                 ))}

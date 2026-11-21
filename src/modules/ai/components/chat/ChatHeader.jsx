@@ -41,10 +41,10 @@ export default function ChatHeader({
         <button
           type="button"
           onClick={onOpenContextSelector}
-          className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border border-slate-200 hover:border-[#FB6C00] text-slate-600 hover:text-[#FB6C00] transition-colors cursor-pointer"
+          className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium border border-slate-200 hover:border-[#0055FF] text-slate-600 hover:text-[#0055FF] transition-colors cursor-pointer"
           title="Attach client or proposal context"
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#FB6C00]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#0055FF]" />
           <span>
             {activeContext?.client
               ? `Client: ${activeContext.client.name?.slice(0, 15)}...`
@@ -60,7 +60,7 @@ export default function ChatHeader({
         <button
           type="button"
           onClick={() => navigate('/ai/generator')}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-50 hover:bg-orange-100 text-[#FB6C00] text-xs font-semibold transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#0055FF] text-xs font-semibold transition-colors cursor-pointer"
           title="Open Guided AI Proposal Generator"
         >
           <Sparkles className="w-3.5 h-3.5" />
@@ -79,7 +79,7 @@ export default function ChatHeader({
         <button
           type="button"
           onClick={onNewChat}
-          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#FB6C00] hover:bg-[#e05f00] text-white text-xs font-semibold shadow-xs shadow-orange-500/20 transition-all cursor-pointer"
+          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#0055FF] hover:bg-[#0044CC] text-white text-xs font-semibold shadow-xs shadow-blue-500/20 transition-all cursor-pointer"
         >
           <Plus className="w-3.5 h-3.5" />
           <span className="hidden sm:inline">New Chat</span>
