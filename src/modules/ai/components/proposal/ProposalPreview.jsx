@@ -6,9 +6,7 @@ import {
   Circle,
   Sparkles,
   ExternalLink,
-  Sliders,
   Eye,
-  Check,
 } from 'lucide-react'
 import ProposalSectionCard from './ProposalSectionCard'
 
@@ -26,7 +24,7 @@ export default function ProposalPreview({
 
   if (!proposalData) {
     return (
-      <div className="p-8 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+      <div className="p-8 text-center bg-white rounded-2xl border border-slate-200">
         <Sparkles className="w-8 h-8 text-slate-300 mx-auto mb-2" />
         <p className="text-xs text-slate-400">Generate a proposal to preview structured content and commercials.</p>
       </div>
@@ -57,28 +55,28 @@ export default function ProposalPreview({
   }
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+    <div className="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
       {/* Top Header Card */}
-      <div className="p-6 border-b border-slate-200/80 dark:border-slate-800 bg-gradient-to-b from-slate-50/50 to-white dark:from-slate-950 dark:to-slate-900">
+      <div className="p-6 border-b border-slate-200 bg-slate-50/50">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950/60 text-[#FB6C00]">
+              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-orange-100 text-[#FB6C00]">
                 {proposalType === 'b2b' ? 'B2B Partner Proposal' : 'Direct Client Proposal'}
               </span>
               <span className="text-xs text-slate-400">•</span>
-              <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+              <span className="text-xs font-semibold text-slate-700">
                 Client: {clientName || 'Valued Client'}
               </span>
             </div>
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">
+            <h2 className="text-xl font-bold text-slate-900 tracking-tight">
               {title || 'AI Generated Commercial Proposal'}
             </h2>
           </div>
 
           {/* Quick Metrics */}
           <div className="flex items-center gap-3">
-            <div className="px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 text-right">
+            <div className="px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-right shadow-2xs">
               <div className="text-[10px] uppercase font-bold text-slate-400">Total Estimate</div>
               <div className="text-base font-extrabold text-[#FB6C00]">{formatCurrency(grandTotal)}</div>
             </div>
@@ -90,10 +88,10 @@ export default function ProposalPreview({
           <button
             type="button"
             onClick={() => setActiveTab('sections')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeTab === 'sections'
                 ? 'bg-[#FB6C00] text-white shadow-xs'
-                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
             }`}
           >
             <FileText className="w-3.5 h-3.5" />
@@ -103,10 +101,10 @@ export default function ProposalPreview({
           <button
             type="button"
             onClick={() => setActiveTab('pricing')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeTab === 'pricing'
                 ? 'bg-[#FB6C00] text-white shadow-xs'
-                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
             }`}
           >
             <IndianRupee className="w-3.5 h-3.5" />
@@ -174,7 +172,7 @@ export default function ProposalPreview({
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+              <h3 className="text-sm font-bold text-slate-900">
                 Itemized Milestone Breakdown
               </h3>
               <p className="text-xs text-slate-500">
@@ -184,16 +182,16 @@ export default function ProposalPreview({
             <button
               type="button"
               onClick={onApproveAllPricing}
-              className="text-xs font-semibold text-[#FB6C00] hover:underline"
+              className="text-xs font-semibold text-[#FB6C00] hover:underline cursor-pointer"
             >
               Approve All Milestones
             </button>
           </div>
 
           {/* Pricing Table */}
-          <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
-            <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-800 text-xs">
-              <thead className="bg-slate-50 dark:bg-slate-800/80 font-bold text-slate-700 dark:text-slate-300">
+          <div className="overflow-x-auto rounded-xl border border-slate-200">
+            <table className="min-w-full divide-y divide-slate-200 text-xs">
+              <thead className="bg-slate-50 font-bold text-slate-700">
                 <tr>
                   <th className="w-10 px-3 py-2.5 text-center">Approve</th>
                   <th className="px-3 py-2.5 text-left">Description / Milestone</th>
@@ -204,7 +202,7 @@ export default function ProposalPreview({
                   <th className="w-32 px-3 py-2.5 text-right">Total</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900">
+              <tbody className="divide-y divide-slate-200 bg-white">
                 {pricingItems.map((item, idx) => {
                   const isApproved = item.approved !== false
                   const lineTotal = item.quantity * item.unitPrice * (1 + (item.tax || 0) / 100)
@@ -212,39 +210,39 @@ export default function ProposalPreview({
                   return (
                     <tr
                       key={item.id || idx}
-                      className={`hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors ${
-                        !isApproved ? 'opacity-40 bg-slate-50/30' : ''
+                      className={`hover:bg-slate-50 transition-colors ${
+                        !isApproved ? 'opacity-40 bg-slate-50/50' : ''
                       }`}
                     >
                       <td className="px-3 py-2.5 text-center">
                         <button
                           type="button"
                           onClick={() => onTogglePricingItemApproval?.(item.id || idx)}
-                          className="p-1 rounded text-[#FB6C00]"
+                          className="p-1 rounded text-[#FB6C00] cursor-pointer"
                         >
                           {isApproved ? (
-                            <CheckCircle className="w-4 h-4 fill-orange-50 dark:fill-orange-950/40 text-[#FB6C00]" />
+                            <CheckCircle className="w-4 h-4 fill-orange-50 text-[#FB6C00]" />
                           ) : (
                             <Circle className="w-4 h-4 text-slate-300" />
                           )}
                         </button>
                       </td>
-                      <td className="px-3 py-2.5 font-medium text-slate-800 dark:text-slate-200">
+                      <td className="px-3 py-2.5 font-medium text-slate-800">
                         {item.description}
                       </td>
-                      <td className="px-3 py-2.5 text-right text-slate-600 dark:text-slate-400">
+                      <td className="px-3 py-2.5 text-right text-slate-600">
                         {item.quantity}
                       </td>
                       <td className="px-3 py-2.5 text-slate-500 uppercase text-[11px]">
                         {item.unit || 'Milestone'}
                       </td>
-                      <td className="px-3 py-2.5 text-right font-medium text-slate-800 dark:text-slate-200">
+                      <td className="px-3 py-2.5 text-right font-medium text-slate-800">
                         {formatCurrency(item.unitPrice)}
                       </td>
                       <td className="px-3 py-2.5 text-right text-slate-500">
                         {item.tax || 18}%
                       </td>
-                      <td className="px-3 py-2.5 text-right font-bold text-slate-900 dark:text-white">
+                      <td className="px-3 py-2.5 text-right font-bold text-slate-900">
                         {formatCurrency(lineTotal)}
                       </td>
                     </tr>
@@ -255,16 +253,16 @@ export default function ProposalPreview({
           </div>
 
           {/* Pricing Totals Box */}
-          <div className="mt-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 flex flex-col items-end gap-1.5 text-xs">
+          <div className="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-end gap-1.5 text-xs">
             <div className="flex justify-between w-64 text-slate-500">
               <span>Subtotal:</span>
-              <span className="font-semibold text-slate-800 dark:text-slate-200">{formatCurrency(subtotal)}</span>
+              <span className="font-semibold text-slate-800">{formatCurrency(subtotal)}</span>
             </div>
             <div className="flex justify-between w-64 text-slate-500">
               <span>GST / Taxes:</span>
-              <span className="font-semibold text-slate-800 dark:text-slate-200">{formatCurrency(taxTotal)}</span>
+              <span className="font-semibold text-slate-800">{formatCurrency(taxTotal)}</span>
             </div>
-            <div className="flex justify-between w-64 pt-2 border-t border-slate-200 dark:border-slate-700 text-sm font-bold text-slate-900 dark:text-white">
+            <div className="flex justify-between w-64 pt-2 border-t border-slate-200 text-sm font-bold text-slate-900">
               <span>Grand Total:</span>
               <span className="text-[#FB6C00]">{formatCurrency(grandTotal)}</span>
             </div>
@@ -273,9 +271,9 @@ export default function ProposalPreview({
       )}
 
       {/* Bottom Sticky Action Bar */}
-      <div className="p-4 border-t border-slate-200/80 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex flex-wrap items-center justify-between gap-3">
+      <div className="p-4 border-t border-slate-200 bg-slate-50 flex flex-wrap items-center justify-between gap-3">
         <div className="text-xs text-slate-500">
-          <span className="font-semibold text-slate-700 dark:text-slate-300">
+          <span className="font-semibold text-slate-700">
             {approvedPricing.length} of {pricingItems.length}
           </span>{' '}
           pricing items approved.
@@ -286,7 +284,7 @@ export default function ProposalPreview({
             <button
               type="button"
               onClick={onOpenInA4Preview}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 text-xs font-semibold"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 text-xs font-semibold cursor-pointer shadow-2xs"
             >
               <Eye className="w-3.5 h-3.5" />
               <span>A4 Document Preview</span>
@@ -297,7 +295,7 @@ export default function ProposalPreview({
             <button
               type="button"
               onClick={onOpenInEditor}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-orange-50 hover:bg-orange-100 text-[#FB6C00] text-xs font-semibold"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-orange-50 hover:bg-orange-100 text-[#FB6C00] text-xs font-semibold cursor-pointer"
             >
               <ExternalLink className="w-3.5 h-3.5" />
               <span>Open in TipTap Editor</span>
@@ -307,7 +305,7 @@ export default function ProposalPreview({
           <button
             type="button"
             onClick={onImportToProposalOS}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#FB6C00] hover:bg-[#e05f00] text-white text-xs font-bold shadow-sm shadow-orange-500/20"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#FB6C00] hover:bg-[#e05f00] text-white text-xs font-bold shadow-sm shadow-orange-500/20 cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Save & Import Proposal</span>

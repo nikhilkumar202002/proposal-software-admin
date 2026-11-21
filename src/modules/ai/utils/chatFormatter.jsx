@@ -155,7 +155,6 @@ export function renderCleanContent(rawText = '', onCopyCode) {
       continue
     }
 
-    // 6. Numbered List Items (1. or 1) )
     if (/^\d+[\.\)]\s+/.test(trimmed)) {
       const items = []
       while (i < lines.length && /^\d+[\.\)]\s+/.test(lines[i].trim())) {
@@ -175,7 +174,6 @@ export function renderCleanContent(rawText = '', onCopyCode) {
       continue
     }
 
-    // 7. Regular Paragraph or Empty line
     if (trimmed) {
       blocks.push({
         type: 'paragraph',
@@ -186,11 +184,9 @@ export function renderCleanContent(rawText = '', onCopyCode) {
     i++
   }
 
-  // Render the structured blocks in 100% clean LIGHT THEME
   return (
     <div className="space-y-3.5 text-slate-800 leading-relaxed text-xs">
       {blocks.map((block, idx) => {
-        // Numbered Heading (e.g. 1. Executive Summary)
         if (block.type === 'numbered_heading') {
           return (
             <div key={idx} className="flex items-center gap-2.5 pt-3 pb-1 border-b border-slate-100">
