@@ -18,41 +18,41 @@ export function estimateBlockHeight(block, contentWidthPx = 650) {
       return 24
 
     case 'hero':
-      return 180
+      return 120
 
     case 'heading': {
       const level = block.level || 1
-      if (level === 1) return 56
-      if (level === 2) return 46
-      if (level === 3) return 38
-      return 32
+      if (level === 1) return 38
+      if (level === 2) return 32
+      if (level === 3) return 28
+      return 26
     }
 
     case 'paragraph': {
       const text = block.text || ''
-      if (!text.trim()) return 16
-      // Average ~75 characters per line at 14px font on 650px width
-      const charsPerLine = Math.max(40, Math.floor(contentWidthPx / 8.5))
+      if (!text.trim()) return 14
+      // Average characters per line at 12px font on ~650px width
+      const charsPerLine = Math.max(45, Math.floor(contentWidthPx / 7.5))
       const lines = Math.ceil(text.length / charsPerLine) || 1
-      const lineHeight = 24 // 1.5rem
-      const marginBottom = 14
+      const lineHeight = 20
+      const marginBottom = 10
       return lines * lineHeight + marginBottom
     }
 
     case 'bulletList':
     case 'orderedList': {
       const items = block.items || []
-      const itemHeight = 32
-      return items.length * itemHeight + 16
+      const itemHeight = 24
+      return items.length * itemHeight + 12
     }
 
     case 'table': {
-      const headerHeight = 44
-      const rowHeight = 44
+      const headerHeight = 38
+      const rowHeight = 38
       const rowCount = (block.rows || []).length
-      const summaryHeight = block.summaryRow ? 44 : 0
+      const summaryHeight = block.summaryRow ? 38 : 0
       const captionHeight = block.caption ? 24 : 0
-      return headerHeight + rowCount * rowHeight + summaryHeight + captionHeight + 20
+      return headerHeight + rowCount * rowHeight + summaryHeight + captionHeight + 16
     }
 
     case 'signatures':

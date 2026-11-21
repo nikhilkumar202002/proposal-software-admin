@@ -19,19 +19,19 @@ function renderBlock(block) {
   switch (type) {
     case 'hero':
       return (
-        <div key={id} data-block-id={id} className="mb-6 pt-2">
+        <div key={id} data-block-id={id} className="mb-4 pt-1">
           {block.title && (
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight leading-tight mb-2">
+            <h1 className="text-[16px] font-bold text-gray-900 tracking-tight leading-snug mb-1.5">
               {block.title}
             </h1>
           )}
           {block.subtitle && (
-            <p className="text-xs font-semibold text-[#0055FF] uppercase tracking-wider mb-3">
+            <p className="text-[12px] font-semibold text-[#0055FF] uppercase tracking-wider mb-2">
               {block.subtitle}
             </p>
           )}
           {block.lead && (
-            <p className="text-xs sm:text-sm text-gray-600 leading-relaxed max-w-2xl bg-gray-50/70 p-3.5 rounded-xl border border-gray-100">
+            <p className="text-[12px] text-gray-600 leading-relaxed max-w-2xl bg-gray-50/70 p-3 rounded-xl border border-gray-100">
               {block.lead}
             </p>
           )}
@@ -67,7 +67,7 @@ function renderBlock(block) {
         <ul
           key={id}
           data-block-id={id}
-          className="list-disc pl-5 mb-4 space-y-1.5 text-xs text-gray-600 leading-relaxed"
+          className="list-disc pl-5 mb-3.5 space-y-1 text-[12px] text-gray-600 leading-relaxed"
         >
           {(block.items || []).map((item, idx) => (
             <li key={idx} className="pl-1">
@@ -82,7 +82,7 @@ function renderBlock(block) {
         <ol
           key={id}
           data-block-id={id}
-          className="list-decimal pl-5 mb-4 space-y-1.5 text-xs text-gray-600 leading-relaxed"
+          className="list-decimal pl-5 mb-3.5 space-y-1 text-[12px] text-gray-600 leading-relaxed"
         >
           {(block.items || []).map((item, idx) => (
             <li key={idx} className="pl-1">
