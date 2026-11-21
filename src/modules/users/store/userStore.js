@@ -26,16 +26,20 @@ export const useUserStore = create((set, get) => ({
         ...customParams,
       }
       const apiUsers = await userService.getUsers(params)
-      if (Array.isArray(apiUsers) && apiUsers.length > 0) {
-        set({ users: apiUsers, isLoading: false })
+      if (Array.isArray(apiUsers)) {
+        set({
+          users: apiUsers,
+          pagination: apiUsers.pagination || null,
+          isLoading: false,
+        })
         return apiUsers
       }
-      set({ users: apiUsers, isLoading: false })
+      set({ users: apiUsers || [], isLoading: false })
       return apiUsers
     } catch (err) {
-      console.warn('Backend GET /admin/users unavailable, using local mock data:', err.message)
-      set({ isLoading: false, error: err.message })
-      return get().users
+      console.warn('Backend GET /admin/users unavailable:', err.message)
+      set({ isLoading: false, error: err.message, users: [] })
+      return []
     }
   },
 
@@ -293,10 +297,11 @@ export const useUserStore = create((set, get) => ({
   // Selection
   toggleSelectUser: (id) => {
     set((state) => {
-      const exists = state.selectedUserIds.includes(id)
+      const idStr = String(id)
+      const exists = state.selectedUserIds.some((uid) => String(uid) === idStr)
       return {
         selectedUserIds: exists
-          ? state.selectedUserIds.filter((uid) => uid !== id)
+          ? state.selectedUserIds.filter((uid) => String(uid) !== idStr)
           : [...state.selectedUserIds, id],
       }
     })

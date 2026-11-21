@@ -24,12 +24,7 @@ const getInitialUser = () => {
     // fallback
   }
 
-  return {
-    name: 'Nikhil Kumar',
-    email: 'admin@domaindude.in',
-    role: 'Administrator',
-    avatar: '',
-  }
+  return null
 }
 
 export const useAuthStore = create((set, get) => ({

@@ -20,6 +20,39 @@ export const ROLE_KEY_MAP = {
   viewer: 'viewer',
 }
 
+function formatDateTime(dateStr) {
+  if (!dateStr) return 'Never'
+  try {
+    const d = new Date(dateStr)
+    if (isNaN(d.getTime())) return dateStr
+    return d.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    })
+  } catch {
+    return dateStr
+  }
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return ''
+  try {
+    const d = new Date(dateStr)
+    if (isNaN(d.getTime())) return dateStr
+    return d.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    })
+  } catch {
+    return dateStr
+  }
+}
+
 /**
  * Normalizes user record from API responses so frontend components work seamlessly
  */
@@ -31,10 +64,10 @@ export function normalizeUser(apiUser) {
   if (Array.isArray(apiUser.roles) && apiUser.roles.length > 0) {
     const firstRole = apiUser.roles[0]
     const roleName = typeof firstRole === 'object' ? firstRole.name : firstRole
-    roleKey = ROLE_KEY_MAP[String(roleName).toLowerCase()] || String(roleName).toLowerCase()
+    roleKey = ROLE_KEY_MAP[String(roleName).toLowerCase()] || String(roleName).toLowerCase().replace(/\s+/g, '_')
   } else if (apiUser.role) {
     const roleName = typeof apiUser.role === 'object' ? apiUser.role.name : apiUser.role
-    roleKey = ROLE_KEY_MAP[String(roleName).toLowerCase()] || String(roleName).toLowerCase()
+    roleKey = ROLE_KEY_MAP[String(roleName).toLowerCase()] || String(roleName).toLowerCase().replace(/\s+/g, '_')
   }
 
   // Extract permissions
@@ -44,6 +77,14 @@ export function normalizeUser(apiUser) {
       typeof p === 'object' ? p.name || p.id : p
     )
   }
+
+  const lastLoginFormatted = apiUser.last_login_at
+    ? formatDateTime(apiUser.last_login_at)
+    : apiUser.lastLogin || 'Never'
+
+  const createdAtFormatted = apiUser.created_at
+    ? formatDate(apiUser.created_at)
+    : apiUser.createdAt || new Date().toISOString().split('T')[0]
 
   return {
     id: apiUser.id,
@@ -57,16 +98,14 @@ export function normalizeUser(apiUser) {
       : [ROLE_DISPLAY_NAMES[roleKey] || roleKey],
     status: (apiUser.status || 'active').toLowerCase(),
     emailVerified: Boolean(apiUser.email_verified_at || apiUser.emailVerified),
-    lastLogin: apiUser.last_login_at || apiUser.lastLogin || 'Never',
-    createdAt: apiUser.created_at
-      ? String(apiUser.created_at).split('T')[0]
-      : apiUser.createdAt || new Date().toISOString().split('T')[0],
+    lastLogin: lastLoginFormatted,
+    createdAt: createdAtFormatted,
     permissions,
     activityLog: apiUser.activity_log || apiUser.activityLog || [
       {
         id: `act-${apiUser.id}-init`,
         event: `User registered with role ${ROLE_DISPLAY_NAMES[roleKey] || roleKey}`,
-        timestamp: apiUser.created_at ? String(apiUser.created_at).split('T')[0] : 'Recent',
+        timestamp: createdAtFormatted || 'Recent',
         type: 'account',
       },
     ],
@@ -80,10 +119,26 @@ export const userService = {
    */
   async getUsers(params = {}) {
     const response = await api.get('/admin/users', { params })
-    // Laravel might return { data: [...] } or array directly
-    const rawData = response.data?.data || response.data?.users || response.data
-    const usersList = Array.isArray(rawData) ? rawData : []
-    return usersList.map(normalizeUser)
+
+    // Extract users array from response
+    // Supports { data: { users: [...], pagination: {...} } }, { data: [...] }, etc.
+    let rawUsers = []
+    if (Array.isArray(response.data?.data?.users)) {
+      rawUsers = response.data.data.users
+    } else if (Array.isArray(response.data?.users)) {
+      rawUsers = response.data.users
+    } else if (Array.isArray(response.data?.data)) {
+      rawUsers = response.data.data
+    } else if (Array.isArray(response.data)) {
+      rawUsers = response.data
+    }
+
+    const pagination =
+      response.data?.data?.pagination || response.data?.pagination || null
+    const normalizedUsers = rawUsers.map(normalizeUser)
+    normalizedUsers.pagination = pagination
+
+    return normalizedUsers
   },
 
   /**
@@ -92,7 +147,11 @@ export const userService = {
    */
   async getUser(id) {
     const response = await api.get(`/admin/users/${id}`)
-    const rawUser = response.data?.data || response.data?.user || response.data
+    const rawUser =
+      response.data?.data?.user ||
+      response.data?.user ||
+      response.data?.data ||
+      response.data
     return normalizeUser(rawUser)
   },
 

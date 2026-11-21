@@ -15,6 +15,7 @@ export const UserList = () => {
     filters,
     currentPage,
     pageSize,
+    isLoading,
     setFilters,
     resetFilters,
     setCurrentPage,
@@ -192,6 +193,7 @@ export const UserList = () => {
         onPageChange={setCurrentPage}
         onResetFilters={resetFilters}
         hasActiveFilters={hasActiveFilters}
+        isLoading={isLoading}
       />
     </div>
   )
