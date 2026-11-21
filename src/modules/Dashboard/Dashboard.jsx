@@ -276,58 +276,6 @@ export const Dashboard = () => {
         })}
       </div>
 
-      {/* 3. Output Format Distribution Banner */}
-      <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-2xs flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-gray-900 uppercase tracking-wider">
-              Document Output Mode Split
-            </span>
-            <span className="text-xs text-gray-400">•</span>
-            <span className="text-xs text-gray-500">
-              One document engine with two visual branding options
-            </span>
-          </div>
-          <p className="text-xs text-gray-500">
-            Configure header logo visibility per proposal without altering margins or layout dimensions.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3 shrink-0 flex-wrap">
-          {/* Direct Client Proposals Badge */}
-          <div className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-blue-50/70 border border-blue-200/80 text-xs">
-            <Building2 className="w-4 h-4 text-[#0055FF]" />
-            <div>
-              <span className="font-bold text-gray-900 mr-1.5">
-                {metrics.directCount}
-              </span>
-              <span className="text-gray-600">Direct (With Logo)</span>
-            </div>
-          </div>
-
-          {/* B2B Partner Proposals Badge */}
-          <div className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-gray-50 border border-gray-200 text-xs">
-            <Briefcase className="w-4 h-4 text-gray-600" />
-            <div>
-              <span className="font-bold text-gray-900 mr-1.5">
-                {metrics.b2bCount}
-              </span>
-              <span className="text-gray-600">B2B (No Logo)</span>
-            </div>
-          </div>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate('/settings/documents')}
-            icon={ExternalLink}
-            className="text-xs"
-          >
-            Document Settings
-          </Button>
-        </div>
-      </div>
-
       {/* 4. Active Proposals Pipeline Section */}
       <div className="bg-white rounded-2xl border border-gray-200/80 shadow-2xs overflow-hidden">
         {/* Pipeline Header */}

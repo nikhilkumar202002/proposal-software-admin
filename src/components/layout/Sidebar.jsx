@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import {
     LayoutDashboard,
     FileText,
@@ -58,6 +58,7 @@ export const Sidebar = ({
     setIsMobileOpen = () => { },
 }) => {
     const location = useLocation()
+    const navigate = useNavigate()
 
     const handleLinkClick = () => {
         if (isMobileOpen) {
@@ -67,7 +68,7 @@ export const Sidebar = ({
 
     const handleLogout = () => {
         if (window.confirm('Are you sure you want to log out?')) {
-            console.log('Logging out...')
+            navigate('/login')
         }
     }
 

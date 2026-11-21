@@ -228,7 +228,7 @@ export const Header = ({
   const handleLogout = () => {
     setIsUserMenuOpen(false)
     if (window.confirm('Are you sure you want to log out?')) {
-      console.log('Logging out from ProposalOS...')
+      navigate('/login')
     }
   }
 
