@@ -13,6 +13,7 @@ import {
     Sparkles,
     UserCog,
 } from 'lucide-react'
+import useAuthStore, { getInitials } from '../../store/authStore'
 import { RiChatAiFill } from 'react-icons/ri'
 import logoBlack from '../../assets/Domine-Dude_black.png'
 import favIcon from '../../assets/fav-icon.png'
@@ -79,6 +80,7 @@ export const Sidebar = ({
 }) => {
     const location = useLocation()
     const navigate = useNavigate()
+    const { user, logout } = useAuthStore()
 
     const handleLinkClick = () => {
         if (isMobileOpen) {
@@ -86,8 +88,9 @@ export const Sidebar = ({
         }
     }
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         if (window.confirm('Are you sure you want to log out?')) {
+            await logout()
             navigate('/login')
         }
     }
@@ -293,14 +296,23 @@ export const Sidebar = ({
                     <div className="pt-4 mt-auto border-t border-gray-100/90 space-y-2">
                         {/* User Profile Card */}
                         <div
-                            className={`group/user relative rounded-xl border border-gray-100 bg-gray-50/70 p-2 transition-all cursor-pointer ${isCollapsed && !isMobileOpen ? 'flex justify-center p-1.5' : 'flex items-center gap-2.5'
+                            onClick={() => navigate('/settings/account')}
+                            className={`group/user relative rounded-xl border border-gray-100 bg-gray-50/70 hover:bg-gray-100/80 p-2 transition-all cursor-pointer ${isCollapsed && !isMobileOpen ? 'flex justify-center p-1.5' : 'flex items-center gap-2.5'
                                 }`}
                         >
                             {/* User Avatar */}
                             <div className="relative shrink-0">
-                                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#0055FF] to-[#00AAFF] text-white font-semibold text-xs flex items-center justify-center shadow-xs ring-2 ring-white">
-                                    AM
-                                </div>
+                                {user?.avatar ? (
+                                    <img
+                                        src={user.avatar}
+                                        alt={user?.name || 'User'}
+                                        className="w-9 h-9 rounded-full object-cover shadow-xs ring-2 ring-white border border-gray-200"
+                                    />
+                                ) : (
+                                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#0055FF] to-[#00AAFF] text-white font-semibold text-xs flex items-center justify-center shadow-xs ring-2 ring-white">
+                                        {getInitials(user?.name)}
+                                    </div>
+                                )}
                                 <span
                                     className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white ring-1 ring-emerald-500/20"
                                     title="Online"
@@ -311,10 +323,10 @@ export const Sidebar = ({
                             {(!isCollapsed || isMobileOpen) && (
                                 <div className="flex-1 min-w-0">
                                     <div className="text-xs font-semibold text-gray-900 truncate">
-                                        Alex Morgan
+                                        {user?.name || 'User'}
                                     </div>
                                     <div className="text-[11px] text-gray-500 truncate">
-                                        Workspace Admin
+                                        {user?.role?.name || user?.role || 'Administrator'}
                                     </div>
                                 </div>
                             )}
@@ -336,7 +348,7 @@ export const Sidebar = ({
                             ) : (
                                 /* Tooltip for user profile when collapsed */
                                 <div className="absolute left-[calc(100%+14px)] top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-md shadow-xl whitespace-nowrap opacity-0 group-hover/user:opacity-100 pointer-events-none transition-opacity duration-150 z-[100]">
-                                    Alex Morgan (Admin)
+                                    {user?.name || 'User'} ({user?.role?.name || user?.role || 'Admin'})
                                     <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45" />
                                 </div>
                             )}

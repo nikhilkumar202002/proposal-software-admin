@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, CheckCircle2, AlertCircle } from 'lucide-react'
 import useUserStore from '../store/userStore'
@@ -7,16 +7,24 @@ import UserForm from '../components/UserForm'
 export const EditUser = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { getUserById, updateUser } = useUserStore()
+  const { getUserById, fetchUser, updateUser } = useUserStore()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+
+  useEffect(() => {
+    if (id) {
+      fetchUser(id)
+    }
+  }, [id, fetchUser])
 
   const user = useMemo(() => getUserById(id), [id, getUserById])
 
-  const handleUpdateUser = (formData) => {
+  const handleUpdateUser = async (formData) => {
     setIsSubmitting(true)
-    setTimeout(() => {
+    setErrorMessage(null)
+    try {
       // Clean empty password if not changed
       const payload = { ...formData }
       if (!payload.password) {
@@ -24,13 +32,17 @@ export const EditUser = () => {
         delete payload.confirmPassword
       }
 
-      updateUser(id, payload)
+      await updateUser(id, payload)
       setIsSubmitting(false)
-      setSuccessMessage(`Changes for "${user.name}" saved successfully!`)
+      setSuccessMessage(`Changes for "${user?.name || formData.name}" saved successfully!`)
       setTimeout(() => {
         navigate(`/users/${id}`)
       }, 1000)
-    }, 400)
+    } catch (err) {
+      setIsSubmitting(false)
+      const errorMsg = err.response?.data?.message || err.message || 'Failed to save changes. Please try again.'
+      setErrorMessage(errorMsg)
+    }
   }
 
   if (!user) {
@@ -56,6 +68,14 @@ export const EditUser = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-16">
+      {/* Error Notification */}
+      {errorMessage && (
+        <div className="fixed top-20 right-6 z-50 flex items-center gap-2 px-4 py-3 bg-red-600 text-white rounded-xl shadow-xl text-xs font-semibold animate-in fade-in slide-in-from-top-2 duration-200">
+          <AlertCircle className="w-4 h-4 text-white shrink-0" />
+          <span>{errorMessage}</span>
+        </div>
+      )}
+
       {/* Success Notification */}
       {successMessage && (
         <div className="fixed top-20 right-6 z-50 flex items-center gap-2 px-4 py-3 bg-gray-900 text-white rounded-xl shadow-xl text-xs font-semibold animate-in fade-in slide-in-from-top-2 duration-200">

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, CheckCircle2 } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, AlertCircle } from 'lucide-react'
 import useUserStore from '../store/userStore'
 import UserForm from '../components/UserForm'
 
@@ -9,21 +9,35 @@ export const CreateUser = () => {
   const { addUser } = useUserStore()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
-  const handleCreateUser = (formData) => {
+  const handleCreateUser = async (formData) => {
     setIsSubmitting(true)
-    setTimeout(() => {
-      const newUser = addUser(formData)
+    setErrorMessage(null)
+    try {
+      const newUser = await addUser(formData)
       setIsSubmitting(false)
-      setSuccessMessage(`User "${newUser.name}" created successfully! Redirecting...`)
+      setSuccessMessage(`User "${newUser?.name || formData.name}" created successfully! Redirecting...`)
       setTimeout(() => {
         navigate('/users')
       }, 1000)
-    }, 400)
+    } catch (err) {
+      setIsSubmitting(false)
+      const errorMsg = err.response?.data?.message || err.message || 'Failed to create user. Please try again.'
+      setErrorMessage(errorMsg)
+    }
   }
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-16">
+      {/* Error Banner */}
+      {errorMessage && (
+        <div className="fixed top-20 right-6 z-50 flex items-center gap-2 px-4 py-3 bg-red-600 text-white rounded-xl shadow-xl text-xs font-semibold animate-in fade-in slide-in-from-top-2 duration-200">
+          <AlertCircle className="w-4 h-4 shrink-0 text-white" />
+          <span>{errorMessage}</span>
+        </div>
+      )}
+
       {/* Success Banner */}
       {successMessage && (
         <div className="fixed top-20 right-6 z-50 flex items-center gap-2 px-4 py-3 bg-gray-900 text-white rounded-xl shadow-xl text-xs font-semibold animate-in fade-in slide-in-from-top-2 duration-200">

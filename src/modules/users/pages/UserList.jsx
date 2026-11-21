@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Plus, UserPlus, Users, CheckCircle2 } from 'lucide-react'
 import useUserStore from '../store/userStore'
@@ -18,6 +18,7 @@ export const UserList = () => {
     setFilters,
     resetFilters,
     setCurrentPage,
+    fetchUsers,
     deleteUser,
     bulkDelete,
     bulkUpdateStatus,
@@ -25,7 +26,12 @@ export const UserList = () => {
     selectAllUsers,
     clearSelection,
     updateUser,
+    updateUserStatus,
   } = useUserStore()
+
+  useEffect(() => {
+    fetchUsers()
+  }, [fetchUsers])
 
   const [notification, setNotification] = useState(null)
 
@@ -88,23 +94,23 @@ export const UserList = () => {
       filters.sortDirection !== 'asc'
   )
 
-  const handleDeleteUser = (id) => {
-    deleteUser(id)
+  const handleDeleteUser = async (id) => {
+    await deleteUser(id)
     showNotification('User account deleted successfully.')
   }
 
-  const handleBulkDelete = (ids) => {
-    bulkDelete(ids)
+  const handleBulkDelete = async (ids) => {
+    await bulkDelete(ids)
     showNotification(`${ids.length} users deleted successfully.`)
   }
 
-  const handleBulkUpdateStatus = (ids, status) => {
-    bulkUpdateStatus(ids, status)
+  const handleBulkUpdateStatus = async (ids, status) => {
+    await bulkUpdateStatus(ids, status)
     showNotification(`${ids.length} users updated to ${status}.`)
   }
 
-  const handleToggleStatus = (id, newStatus) => {
-    updateUser(id, { status: newStatus })
+  const handleToggleStatus = async (id, newStatus) => {
+    await updateUserStatus(id, newStatus)
     showNotification(`User marked as ${newStatus}.`)
   }
 

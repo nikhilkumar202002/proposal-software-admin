@@ -18,6 +18,7 @@ export { default as DeleteUserModal } from './components/DeleteUserModal'
 export { default as UserDetailsCard } from './components/UserDetailsCard'
 export { default as PermissionSelector } from './components/PermissionSelector'
 
-// Store and Data
+// Store, Service and Data
 export { default as useUserStore } from './store/userStore'
+export { default as userService, normalizeUser } from '../../services/user.service'
 export * from './data/usersData'

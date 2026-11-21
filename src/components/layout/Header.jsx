@@ -18,6 +18,7 @@ import {
   LifeBuoy,
   X,
 } from 'lucide-react'
+import useAuthStore, { getInitials } from '../../store/authStore'
 
 // Route title & breadcrumb mapping
 const getRouteMeta = (pathname) => {
@@ -135,6 +136,11 @@ export const Header = ({
   const location = useLocation()
   const navigate = useNavigate()
   const { title, breadcrumbs } = getRouteMeta(location.pathname)
+  const { user, fetchCurrentUser, logout } = useAuthStore()
+
+  useEffect(() => {
+    fetchCurrentUser()
+  }, [fetchCurrentUser])
 
   // State
   const [searchQuery, setSearchQuery] = useState('')
@@ -225,9 +231,10 @@ export const Header = ({
     setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })))
   }
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setIsUserMenuOpen(false)
     if (window.confirm('Are you sure you want to log out?')) {
+      await logout()
       navigate('/login')
     }
   }
@@ -520,17 +527,25 @@ export const Header = ({
             aria-expanded={isUserMenuOpen}
           >
             <div className="relative">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#0055FF] to-[#00AAFF] text-white font-semibold text-xs flex items-center justify-center shadow-xs">
-                AM
-              </div>
+              {user?.avatar ? (
+                <img
+                  src={user.avatar}
+                  alt={user?.name || 'User'}
+                  className="w-8 h-8 rounded-full object-cover shadow-xs border border-gray-200"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#0055FF] to-[#00AAFF] text-white font-semibold text-xs flex items-center justify-center shadow-xs">
+                  {getInitials(user?.name)}
+                </div>
+              )}
               <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 border-2 border-white" />
             </div>
             <div className="hidden md:flex flex-col text-left">
               <span className="text-xs font-semibold text-gray-900 leading-none">
-                Alex Morgan
+                {user?.name || 'User'}
               </span>
               <span className="text-[10px] text-gray-400 leading-none mt-1">
-                Admin
+                {user?.role?.name || user?.role || 'Administrator'}
               </span>
             </div>
             <ChevronDown className="w-3.5 h-3.5 text-gray-400 transition-transform hidden sm:block" />
@@ -541,13 +556,15 @@ export const Header = ({
             <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-200/90 py-1.5 z-50 animate-in fade-in-50 zoom-in-95">
               {/* User Identity Header */}
               <div className="px-4 py-2.5 border-b border-gray-100">
-                <p className="text-xs font-semibold text-gray-900">Alex Morgan</p>
+                <p className="text-xs font-semibold text-gray-900 truncate">
+                  {user?.name || 'User'}
+                </p>
                 <p className="text-[11px] text-gray-400 truncate">
-                  alex@proposalos.com
+                  {user?.email || ''}
                 </p>
                 <div className="mt-1.5">
                   <span className="inline-block px-1.5 py-0.5 text-[10px] font-medium bg-[#EFF6FF] text-[#0055FF] rounded">
-                    Workspace Owner
+                    {user?.role?.name || user?.role || 'Administrator'}
                   </span>
                 </div>
               </div>
