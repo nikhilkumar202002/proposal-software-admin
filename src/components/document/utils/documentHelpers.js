@@ -15,6 +15,8 @@ export function generateBlockId(prefix = 'blk') {
  * Normalize any input format (TipTap JSON, raw blocks, or HTML string)
  * into a consistent array of measurable blocks
  */
+import { SIGNATURE_BASE64 } from '@/assets/signatureData.js'
+
 export function normalizeDocumentContent(content) {
   if (!content) return []
 
@@ -292,6 +294,7 @@ export const SAMPLE_PROPOSAL_DATA = {
         name: 'Alex Morgan',
         role: 'Director of Enterprise Engineering',
         date: '18 Nov 2026',
+        signatureImage: SIGNATURE_BASE64,
       },
       partyB: {
         title: 'Accepted & Agreed by Apex Global',
