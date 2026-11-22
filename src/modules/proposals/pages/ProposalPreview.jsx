@@ -66,9 +66,9 @@ export const ProposalPreview = () => {
   const canvasProps = convertProposalToDocumentCanvasProps(currentProposal)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 print:space-y-0">
       {/* Top Header Bar */}
-      <div className="space-y-3 print:hidden">
+      <div className="space-y-3 no-print print:hidden">
         {/* Back Button Top */}
         <div>
           <Button

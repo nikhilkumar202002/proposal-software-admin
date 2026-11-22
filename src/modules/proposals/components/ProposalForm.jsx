@@ -59,11 +59,11 @@ export const ProposalForm = ({
   const canvasProps = convertProposalToDocumentCanvasProps(proposal)
 
   return (
-    <div className={`space-y-6 ${className}`}>
+    <div className={`space-y-6 print:space-y-0 ${className}`}>
       {/* Toast / Notification Alert */}
       {saveFeedback && (
         <div
-          className={`p-3.5 rounded-xl border flex items-center gap-2.5 text-xs font-semibold shadow-2xs transition-all ${
+          className={`p-3.5 rounded-xl border flex items-center gap-2.5 text-xs font-semibold shadow-2xs transition-all no-print print:hidden ${
             saveFeedback.type === 'success'
               ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
               : 'bg-red-50 text-red-800 border-red-200'
@@ -79,7 +79,7 @@ export const ProposalForm = ({
       )}
 
       {/* Modern Multi-Step Wizard Progress Bar */}
-      <div className="bg-white p-4 rounded-2xl border border-gray-200/80 shadow-2xs overflow-x-auto">
+      <div className="bg-white p-4 rounded-2xl border border-gray-200/80 shadow-2xs overflow-x-auto no-print print:hidden">
         <div className="flex items-center justify-between min-w-[680px]">
           {STEPS.map((s, idx) => {
             const Icon = s.icon
@@ -164,8 +164,8 @@ export const ProposalForm = ({
         )}
 
         {activeStep === 4 && (
-          <div className="space-y-4">
-            <div className="bg-white p-4 rounded-2xl border border-gray-200/80 shadow-2xs flex items-center justify-between">
+          <div className="space-y-4 print:space-y-0">
+            <div className="bg-white p-4 rounded-2xl border border-gray-200/80 shadow-2xs flex items-center justify-between no-print print:hidden">
               <div>
                 <h4 className="text-sm font-bold text-gray-900">
                   A4 Physical Page Rendering & Pagination Preview
@@ -188,21 +188,23 @@ export const ProposalForm = ({
       </div>
 
       {/* Persistent Bottom Actions Bar */}
-      <ProposalActions
-        currentStep={activeStep}
-        totalSteps={STEPS.length}
-        onPrev={() => onStepChange(Math.max(1, activeStep - 1))}
-        onNext={() => onStepChange(Math.min(STEPS.length, activeStep + 1))}
-        onSaveDraft={() => handleSaveWithFeedback('draft')}
-        onPublish={() => handleSaveWithFeedback('sent')}
-        onPreview={() => onStepChange(4)}
-        onDownloadPdf={() => onDownloadPdf(proposal?.id)}
-        onDuplicate={onDuplicate}
-        onDelete={onDelete}
-        isSaving={isSaving}
-        isGeneratingPdf={isGeneratingPdf}
-        isEditMode={isEditMode}
-      />
+      <div className="no-print print:hidden">
+        <ProposalActions
+          currentStep={activeStep}
+          totalSteps={STEPS.length}
+          onPrev={() => onStepChange(Math.max(1, activeStep - 1))}
+          onNext={() => onStepChange(Math.min(STEPS.length, activeStep + 1))}
+          onSaveDraft={() => handleSaveWithFeedback('draft')}
+          onPublish={() => handleSaveWithFeedback('sent')}
+          onPreview={() => onStepChange(4)}
+          onDownloadPdf={() => onDownloadPdf(proposal?.id)}
+          onDuplicate={onDuplicate}
+          onDelete={onDelete}
+          isSaving={isSaving}
+          isGeneratingPdf={isGeneratingPdf}
+          isEditMode={isEditMode}
+        />
+      </div>
     </div>
   )
 }

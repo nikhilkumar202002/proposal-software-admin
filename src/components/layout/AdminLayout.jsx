@@ -61,39 +61,45 @@ export const AdminLayout = ({ children }) => {
   }, [isCollapsed])
 
   return (
-    <div className="min-h-screen bg-[#F8F9FB] text-[#171717] flex flex-col antialiased">
+    <div className="min-h-screen bg-[#F8F9FB] text-[#171717] flex flex-col antialiased print:bg-white print:min-h-0 print:p-0 print:m-0">
       {/* Fixed Left Sidebar */}
-      <Sidebar
-        isCollapsed={isCollapsed}
-        setIsCollapsed={setIsCollapsed}
-        isMobileOpen={isMobileOpen}
-        setIsMobileOpen={setIsMobileOpen}
-      />
-
-      {/* Main Content Container: adjusts left margin when desktop sidebar collapses */}
-      <div
-        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ease-in-out print:ml-0 print:m-0 ${
-          isCollapsed ? 'lg:ml-[72px]' : 'lg:ml-[250px]'
-        }`}
-      >
-        {/* Sticky Top Header */}
-        <Header
+      <div className="no-print print:hidden">
+        <Sidebar
           isCollapsed={isCollapsed}
           setIsCollapsed={setIsCollapsed}
           isMobileOpen={isMobileOpen}
           setIsMobileOpen={setIsMobileOpen}
         />
+      </div>
+
+      {/* Main Content Container: adjusts left margin when desktop sidebar collapses */}
+      <div
+        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ease-in-out print:ml-0 print:m-0 print:p-0 ${
+          isCollapsed ? 'lg:ml-[72px]' : 'lg:ml-[250px]'
+        }`}
+      >
+        {/* Sticky Top Header */}
+        <div className="no-print print:hidden">
+          <Header
+            isCollapsed={isCollapsed}
+            setIsCollapsed={setIsCollapsed}
+            isMobileOpen={isMobileOpen}
+            setIsMobileOpen={setIsMobileOpen}
+          />
+        </div>
 
         {/* Dynamic Main Workspace Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 print:p-0 print:m-0">
-          <div className="w-full">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 print:p-0 print:m-0 print:w-full">
+          <div className="w-full print:p-0 print:m-0">
             {children || <Outlet />}
           </div>
         </main>
       </div>
 
       {/* Floating AI Proposal Copilot Button */}
-      <AIButton />
+      <div className="no-print print:hidden">
+        <AIButton />
+      </div>
     </div>
   )
 }

@@ -64,9 +64,9 @@ export const EditProposal = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 print:space-y-0">
       {/* Top Header */}
-      <div className="space-y-3">
+      <div className="space-y-3 no-print print:hidden">
         {/* Back Button Top */}
         <div>
           <Button

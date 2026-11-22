@@ -33,10 +33,17 @@
   nav,
   aside,
   header,
+  footer:not(.document-footer-area),
   .document-canvas-toolbar,
   .document-measurement-sandbox,
   button:not(.allow-print) {
     display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
   }
 
   /* 3. Strip layout offsets from AdminLayout, #root, and intermediate wrappers */
@@ -45,6 +52,8 @@
   main,
   div[class*="ml-"],
   .space-y-6,
+  .space-y-4,
+  .space-y-3,
   .document-workspace,
   .document-canvas-container,
   .document-pagination-wrapper,
@@ -87,10 +96,10 @@
     width: 210mm !important;
     min-width: 210mm !important;
     max-width: 210mm !important;
-    /* Use 296.8mm to prevent Chromium subpixel blank page overflow */
-    height: 296.8mm !important;
-    min-height: 296.8mm !important;
-    max-height: 296.8mm !important;
+    /* Use 296.5mm to prevent Chromium subpixel blank page overflow */
+    height: 296.5mm !important;
+    min-height: 296.5mm !important;
+    max-height: 296.5mm !important;
     overflow: hidden !important;
     page-break-before: auto !important;
     break-before: auto !important;
@@ -112,8 +121,8 @@
   /* Prevent trailing blank page on last child */
   .document-page:last-child,
   .document-page:last-of-type {
-    page-break-after: avoid !important;
-    break-after: avoid !important;
+    page-break-after: auto !important;
+    break-after: auto !important;
   }
 
   /* Landscape Orientation */
