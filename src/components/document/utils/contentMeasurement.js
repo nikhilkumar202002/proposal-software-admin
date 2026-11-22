@@ -15,7 +15,7 @@ export function estimateBlockHeight(block, contentWidthPx = 650) {
       return 0 // Triggers page break, takes no vertical height
 
     case 'proposalMeta':
-      return 130
+      return 110
 
     case 'divider':
       return 24

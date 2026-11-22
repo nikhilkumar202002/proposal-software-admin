@@ -571,15 +571,39 @@ export function convertProposalToDocumentCanvasProps(proposal) {
   // Convert TipTap content doc into blocks
   const contentBlocks = []
 
+  // Format technology string
+  let technologyString = ''
+  if (Array.isArray(proposal.technologies) && proposal.technologies.length > 0) {
+    technologyString = proposal.technologies
+      .map((t) => (typeof t === 'object' && t !== null ? t.name : String(t)))
+      .filter(Boolean)
+      .join(', ')
+  } else if (typeof proposal.technologies === 'string') {
+    technologyString = proposal.technologies
+  }
+
+  // Format service type string
+  let serviceTypeString = proposal.serviceType || ''
+  if (!serviceTypeString && Array.isArray(proposal.service_types) && proposal.service_types.length > 0) {
+    serviceTypeString = proposal.service_types
+      .map((s) => (typeof s === 'object' && s !== null ? s.name : String(s)))
+      .filter(Boolean)
+      .join(', ')
+  }
+  if (!serviceTypeString && proposal.projectName) {
+    serviceTypeString = proposal.projectName
+  }
+
   // Add Client & Project Metadata Block before Main Heading
   contentBlocks.push({
     id: 'blk-proposal-meta',
     type: 'proposalMeta',
-    clientName: proposal.client?.name || '',
-    companyName: proposal.client?.companyName || '',
-    contactNumber: proposal.client?.phone || '',
+    clientName: proposal.client?.name || proposal.clientName || '',
+    companyName: proposal.client?.companyName || proposal.companyName || '',
     projectTotalCost: formatCurrency(totals.grandTotal, currency),
-    serviceType: proposal.serviceType || proposal.projectName || 'Enterprise Engagement',
+    serviceType: serviceTypeString,
+    technology: technologyString,
+    technologies: technologyString,
   })
 
   // Parse TipTap content nodes
