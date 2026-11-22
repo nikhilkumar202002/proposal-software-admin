@@ -444,9 +444,6 @@ export function createDefaultProposalDocJson(proposalTitle = 'Enterprise Softwar
         ],
       },
       {
-        type: 'pageBreak',
-      },
-      {
         type: 'heading',
         attrs: { level: 2 },
         content: [{ type: 'text', text: '3. Commercial Terms & SLA' }],
@@ -659,6 +656,11 @@ export function convertProposalToDocumentCanvasProps(proposal) {
         })
       }
     }
+  }
+
+  // Strip trailing pageBreak nodes so signatures follow naturally without creating an empty/stranded page
+  while (tipTapNodes.length > 0 && tipTapNodes[tipTapNodes.length - 1]?.type === 'pageBreak') {
+    tipTapNodes.pop()
   }
 
   // Parse TipTap content nodes including tables, lists, headings, paragraphs, and page breaks

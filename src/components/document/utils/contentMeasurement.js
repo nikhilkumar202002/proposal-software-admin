@@ -59,7 +59,7 @@ export function estimateBlockHeight(block, contentWidthPx = 650) {
     }
 
     case 'signatures':
-      return 140
+      return 110
 
     case 'image': {
       if (block.height) return Number(block.height) + 16

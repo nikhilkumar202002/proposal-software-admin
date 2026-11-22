@@ -263,7 +263,7 @@ function renderBlock(block) {
         <div
           key={id}
           data-block-id={id}
-          className="mt-6 pt-4 border-t border-gray-200 grid grid-cols-2 gap-8 text-xs select-none"
+          className="mt-5 grid grid-cols-2 gap-8 text-xs select-none"
         >
           {block.partyA && (
             <div>

@@ -243,11 +243,6 @@ export const SAMPLE_PROPOSAL_DATA = {
       ],
     },
     {
-      id: 'blk-pagebreak-1',
-      type: 'pageBreak', // Manual page break to start pricing on page 2
-      label: 'Manual Page Break — Pricing & Commercial Terms',
-    },
-    {
       id: 'blk-pricing-heading',
       type: 'heading',
       level: 2,

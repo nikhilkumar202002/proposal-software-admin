@@ -116,9 +116,6 @@ export const SAMPLE_PROPOSAL_DOC_JSON = {
       ],
     },
     {
-      type: 'pageBreak',
-    },
-    {
       type: 'heading',
       attrs: { level: 2 },
       content: [
