@@ -3,7 +3,6 @@ import {
   FileText,
   Users,
   BookOpen,
-  Calculator,
   Eye,
   CheckCircle2,
   AlertCircle,
@@ -11,7 +10,6 @@ import {
 import ProposalInformation from './ProposalInformation'
 import ClientDetailsForm from './ClientDetailsForm'
 import ProposalEditorPanel from './ProposalEditorPanel'
-import ProposalPricing from './ProposalPricing'
 import ProposalActions from './ProposalActions'
 import { DocumentCanvas } from '../../../components/document'
 import { convertProposalToDocumentCanvasProps } from '../utils/proposalHelpers'
@@ -20,8 +18,7 @@ const STEPS = [
   { step: 1, title: 'Proposal Info', icon: FileText, desc: 'Number & Dates' },
   { step: 2, title: 'Client Details', icon: Users, desc: 'Recipient Info' },
   { step: 3, title: 'Document Narrative', icon: BookOpen, desc: 'TipTap Editor' },
-  { step: 4, title: 'Pricing & Taxes', icon: Calculator, desc: 'Dynamic Schedule' },
-  { step: 5, title: 'A4 Document Preview', icon: Eye, desc: 'Print & PDF' },
+  { step: 4, title: 'A4 Document Preview', icon: Eye, desc: 'Print & PDF' },
 ]
 
 export const ProposalForm = ({
@@ -167,19 +164,6 @@ export const ProposalForm = ({
         )}
 
         {activeStep === 4 && (
-          <ProposalPricing
-            pricing={proposal?.pricing}
-            onAddItem={onAddPricingItem}
-            onUpdateItem={onUpdatePricingItem}
-            onRemoveItem={onRemovePricingItem}
-            onDuplicateItem={onDuplicatePricingItem}
-            onReorderItems={onReorderPricingItems}
-            onCurrencyChange={onCurrencyChange}
-            onGlobalDiscountChange={onGlobalDiscountChange}
-          />
-        )}
-
-        {activeStep === 5 && (
           <div className="space-y-4">
             <div className="bg-white p-4 rounded-2xl border border-gray-200/80 shadow-2xs flex items-center justify-between">
               <div>
@@ -211,7 +195,7 @@ export const ProposalForm = ({
         onNext={() => onStepChange(Math.min(STEPS.length, activeStep + 1))}
         onSaveDraft={() => handleSaveWithFeedback('draft')}
         onPublish={() => handleSaveWithFeedback('sent')}
-        onPreview={() => onStepChange(5)}
+        onPreview={() => onStepChange(4)}
         onDownloadPdf={() => onDownloadPdf(proposal?.id)}
         onDuplicate={onDuplicate}
         onDelete={onDelete}

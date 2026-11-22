@@ -10,7 +10,7 @@ export function useProposal() {
   const store = useProposalStore()
 
   const nextStep = useCallback(() => {
-    store.setActiveStep(Math.min(5, store.activeStep + 1))
+    store.setActiveStep(Math.min(4, store.activeStep + 1))
   }, [store])
 
   const prevStep = useCallback(() => {

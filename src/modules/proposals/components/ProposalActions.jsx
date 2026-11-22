@@ -14,7 +14,7 @@ import { Button, ConfirmDialog } from '../../../components/common'
 
 export const ProposalActions = ({
   currentStep = 1,
-  totalSteps = 6,
+  totalSteps = 4,
   onPrev = () => {},
   onNext = () => {},
   onSaveDraft = () => {},
