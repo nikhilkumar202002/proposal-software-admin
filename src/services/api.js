@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 export const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'
+  (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_API_BASE_URL) ||
+  'http://localhost:8000/api'
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -12,106 +13,90 @@ export const api = axios.create({
   timeout: 15000,
 })
 
-let isLoggingIn = false
-let loginPromise = null
-
-export async function ensureAuthenticated() {
-  const existingToken =
+/**
+ * Check if the current login occurred on or after today's 12:00 AM (midnight).
+ * Sessions expire daily at 12:00 AM.
+ * @returns {boolean}
+ */
+export function isDailySessionValid() {
+  const token =
     localStorage.getItem('proposalos_token') ||
     localStorage.getItem('token') ||
     localStorage.getItem('access_token')
 
-  if (existingToken) {
-    return existingToken
-  }
+  if (!token) return false
 
-  if (loginPromise) {
-    return loginPromise
-  }
+  const loginAt = localStorage.getItem('proposalos_login_at')
+  if (!loginAt) return false
 
-  isLoggingIn = true
-  loginPromise = axios
-    .post(`${API_BASE_URL}/auth/login`, {
-      email: 'nikhilkumars12343@gmail.com',
-      password: '123@Cisco###',
-    })
-    .then((res) => {
-      const token =
-        res.data?.data?.token ||
-        res.data?.token ||
-        res.data?.data?.access_token ||
-        res.data?.access_token
-      const user = res.data?.data?.user || res.data?.user
-      if (token) {
-        const clean = token.startsWith('Bearer ') ? token.slice(7) : token
-        localStorage.setItem('proposalos_token', clean)
-        localStorage.setItem('token', clean)
-      }
-      if (user) {
-        localStorage.setItem('proposalos_user', JSON.stringify(user))
-      }
-      return token
-    })
-    .catch((err) => {
-      console.warn('Auto-authentication attempt:', err.message)
-      return null
-    })
-    .finally(() => {
-      isLoggingIn = false
-      loginPromise = null
-    })
+  const loginTimestamp = new Date(loginAt).getTime()
+  if (isNaN(loginTimestamp)) return false
 
-  return loginPromise
+  // Start of today in local time (12:00:00 AM / 00:00:00.000)
+  const todayMidnight = new Date()
+  todayMidnight.setHours(0, 0, 0, 0)
+
+  return loginTimestamp >= todayMidnight.getTime()
 }
 
-// Request interceptor to attach Bearer token if available
-api.interceptors.request.use(
-  async (config) => {
-    let token =
-      localStorage.getItem('proposalos_token') ||
-      localStorage.getItem('token') ||
-      localStorage.getItem('access_token')
+/**
+ * Purge stored credentials and cached session
+ */
+export function purgeDailySession() {
+  localStorage.removeItem('proposalos_token')
+  localStorage.removeItem('token')
+  localStorage.removeItem('access_token')
+  localStorage.removeItem('proposalos_user')
+  localStorage.removeItem('proposalos_login_at')
+  localStorage.removeItem('proposalos_session')
+}
 
+// Request interceptor to attach Bearer token and enforce daily 12 AM expiration
+api.interceptors.request.use(
+  (config) => {
     const isPublicAuth =
       config.url?.includes('/auth/login') ||
       config.url?.includes('/auth/forgot-password') ||
       config.url?.includes('/auth/reset-password')
 
-    if (!token && !isPublicAuth) {
-      token = await ensureAuthenticated()
+    if (!isPublicAuth) {
+      // If session was established before today's 12:00 AM, invalidate it
+      if (!isDailySessionValid()) {
+        purgeDailySession()
+        const error = new Error('Daily session expired after 12:00 AM. Please sign in again.')
+        error.isDailyExpired = true
+        return Promise.reject(error)
+      }
+
+      const token =
+        localStorage.getItem('proposalos_token') ||
+        localStorage.getItem('token') ||
+        localStorage.getItem('access_token')
+
+      if (token) {
+        const cleanToken = token.startsWith('Bearer ') ? token.slice(7) : token
+        config.headers.Authorization = `Bearer ${cleanToken}`
+      }
     }
 
-    if (token) {
-      const cleanToken = token.startsWith('Bearer ') ? token.slice(7) : token
-      config.headers.Authorization = `Bearer ${cleanToken}`
-    }
     return config
   },
   (error) => Promise.reject(error)
 )
 
-// Response interceptor with auto-refresh on 401
+// Response interceptor to handle 401s and redirect to login
 api.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    const originalRequest = error.config
+  (error) => {
     const status = error.response?.status
 
-    if (
-      status === 401 &&
-      originalRequest &&
-      !originalRequest._retry &&
-      !originalRequest.url?.includes('/auth/login')
-    ) {
-      originalRequest._retry = true
-      localStorage.removeItem('proposalos_token')
-      localStorage.removeItem('token')
-      localStorage.removeItem('access_token')
-      const newToken = await ensureAuthenticated()
-      if (newToken) {
-        const cleanToken = newToken.startsWith('Bearer ') ? newToken.slice(7) : newToken
-        originalRequest.headers.Authorization = `Bearer ${cleanToken}`
-        return api(originalRequest)
+    if (status === 401) {
+      purgeDailySession()
+      if (
+        typeof window !== 'undefined' &&
+        !window.location.pathname.includes('/login')
+      ) {
+        window.location.href = '/login?reason=daily_expired'
       }
     }
 
