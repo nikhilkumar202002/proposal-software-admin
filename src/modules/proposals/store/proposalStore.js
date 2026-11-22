@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import proposalService from '../services/proposalService'
+import proposalService from '../../../services/proposal.service'
 import {
   createNewProposalModel,
   getStoredCompanyDetails,
