@@ -12,6 +12,7 @@ import {
     X,
     Sparkles,
     UserCog,
+    Layers,
 } from 'lucide-react'
 import useAuthStore, { getInitials } from '../../store/authStore'
 import { RiChatAiFill } from 'react-icons/ri'
@@ -40,6 +41,11 @@ const workspaceLinks = [
         name: 'Users',
         to: '/users',
         icon: UserCog,
+    },
+    {
+        name: 'Tech & Services',
+        to: '/services-technologies',
+        icon: Layers,
     },
     {
         name: 'AI Chat',

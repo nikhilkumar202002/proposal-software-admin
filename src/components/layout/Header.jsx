@@ -93,6 +93,17 @@ const getRouteMeta = (pathname) => {
       breadcrumbs: [{ label: 'Workspace', to: '/' }, { label: 'Clients' }],
     }
   }
+  if (
+    pathname.startsWith('/services-technologies') ||
+    pathname.startsWith('/tech-services') ||
+    pathname.startsWith('/technologies') ||
+    pathname.startsWith('/service-types')
+  ) {
+    return {
+      title: 'Services & Technologies',
+      breadcrumbs: [{ label: 'Workspace', to: '/' }, { label: 'Services & Technologies' }],
+    }
+  }
   if (pathname.startsWith('/templates')) {
     return {
       title: 'Proposal Templates',
