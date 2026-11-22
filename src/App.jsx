@@ -27,6 +27,7 @@ import {
   AccountSettings,
 } from './modules/settings'
 import { AIChatPage, AIProposalGenerator, AISettingsPage } from './modules/ai'
+import { TechServicesPage } from './modules/tech-services'
 import { FileText } from 'lucide-react'
 
 // Simple Page Placeholder for other routes
@@ -87,6 +88,12 @@ export function App() {
           <Route path="/users/create" element={<CreateUser />} />
           <Route path="/users/:id" element={<UserDetails />} />
           <Route path="/users/:id/edit" element={<EditUser />} />
+
+          {/* Services & Technologies Tabbed Management Module */}
+          <Route path="/services-technologies" element={<TechServicesPage />} />
+          <Route path="/tech-services" element={<TechServicesPage />} />
+          <Route path="/technologies" element={<TechServicesPage />} />
+          <Route path="/service-types" element={<TechServicesPage />} />
           {/* Workspace Settings Module Routes */}
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/settings/company" element={<CompanyProfile standalone={true} />} />
