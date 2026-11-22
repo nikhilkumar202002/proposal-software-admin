@@ -116,6 +116,7 @@ export function useClients() {
     initNewClient: store.initNewClient,
     createClient: store.createClient,
     updateClient: store.updateClient,
+    updateClientStatus: store.updateClientStatus,
     deleteClient: store.deleteClient,
   }
 }

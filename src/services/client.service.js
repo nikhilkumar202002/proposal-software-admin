@@ -1,4 +1,4 @@
-import { api } from './api'
+import { api } from './api.js'
 
 /**
  * Normalizes a client object to support both snake_case (API standard) and camelCase (UI standard)
@@ -12,8 +12,8 @@ export function normalizeClient(rawClient) {
     id: rawClient.id,
     clientCode: rawClient.client_code || rawClient.clientCode || '',
     client_code: rawClient.client_code || rawClient.clientCode || '',
-    name: rawClient.client_name || rawClient.name || '',
-    clientName: rawClient.client_name || rawClient.clientName || '',
+    name: rawClient.client_name || rawClient.clientName || rawClient.name || '',
+    clientName: rawClient.client_name || rawClient.clientName || rawClient.name || '',
     client_name: rawClient.client_name || rawClient.clientName || rawClient.name || '',
     companyName: rawClient.company_name || rawClient.companyName || '',
     company_name: rawClient.company_name || rawClient.companyName || '',
@@ -33,6 +33,16 @@ export function normalizeClient(rawClient) {
     createdBy: rawClient.created_by || rawClient.createdBy || null,
     created_by: rawClient.created_by || rawClient.createdBy || null,
     activity: rawClient.activity || null,
+    proposalsCount:
+      rawClient.activity?.total_proposals ??
+      rawClient.proposalsCount ??
+      rawClient.proposals_count ??
+      0,
+    totalRevenue:
+      rawClient.activity?.total_value ??
+      rawClient.totalRevenue ??
+      rawClient.total_value ??
+      0,
     createdAt: rawClient.created_at || rawClient.createdAt || null,
     created_at: rawClient.created_at || rawClient.createdAt || null,
     updatedAt: rawClient.updated_at || rawClient.updatedAt || null,
@@ -123,24 +133,6 @@ export const clientService = {
   /**
    * POST /clients
    * Create a new client record
-   * Payload:
-   * {
-   *   "client_name": "Nexus Dynamics Inc",
-   *   "company_name": "Nexus Group",
-   *   "email": "billing@nexusdynamics.com",
-   *   "phone": "+1 415-555-0142",
-   *   "website": "https://nexusdynamics.com",
-   *   "address": "450 Mission St, Suite 1200",
-   *   "city": "San Francisco",
-   *   "state": "CA",
-   *   "country": "United States",
-   *   "postal_code": "94105",
-   *   "tax_number": "US-44332211",
-   *   "notes": "Fast-growing cloud computing provider.",
-   *   "status": "active"
-   * }
-   * @param {Object} data - Client payload
-   * @returns {Promise<Object>}
    */
   async createClient(data) {
     const payload = {
@@ -168,9 +160,6 @@ export const clientService = {
   /**
    * PUT /clients/:id
    * Update client details
-   * @param {string|number} id - Client ID (e.g. 3)
-   * @param {Object} data - Fields to update
-   * @returns {Promise<Object>}
    */
   async updateClient(id, data) {
     const payload = {
@@ -206,9 +195,6 @@ export const clientService = {
   /**
    * PATCH /clients/:id/status
    * Update client status (active | inactive)
-   * @param {string|number} id - Client ID (e.g. 3)
-   * @param {string} status - New status ('active' or 'inactive')
-   * @returns {Promise<Object>}
    */
   async updateClientStatus(id, status) {
     const response = await api.patch(`/clients/${id}/status`, { status })
@@ -220,8 +206,6 @@ export const clientService = {
   /**
    * DELETE /clients/:id
    * Soft-delete client (with proposal association protection)
-   * @param {string|number} id - Client ID (e.g. 3)
-   * @returns {Promise<Object>}
    */
   async deleteClient(id) {
     const response = await api.delete(`/clients/${id}`)
@@ -231,8 +215,6 @@ export const clientService = {
   /**
    * POST /clients/:id/restore
    * Restore a soft-deleted client
-   * @param {string|number} id - Client ID (e.g. 3)
-   * @returns {Promise<Object>}
    */
   async restoreClient(id) {
     const response = await api.post(`/clients/${id}/restore`)
@@ -244,8 +226,6 @@ export const clientService = {
   /**
    * GET /clients/:id/proposals
    * Retrieve all proposals associated with the client
-   * @param {string|number} id - Client ID (e.g. 3)
-   * @returns {Promise<Array>}
    */
   async getClientProposals(id) {
     const response = await api.get(`/clients/${id}/proposals`)
@@ -261,8 +241,6 @@ export const clientService = {
   /**
    * GET /clients/:id/activity
    * Retrieve overview activity and proposal metrics for a client
-   * @param {string|number} id - Client ID (e.g. 4)
-   * @returns {Promise<Object>}
    */
   async getClientActivity(id) {
     const response = await api.get(`/clients/${id}/activity`)

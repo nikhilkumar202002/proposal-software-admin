@@ -36,6 +36,7 @@ export const ClientList = () => {
     stats,
     isLoading,
     deleteClient,
+    updateClientStatus,
     handleSort,
   } = useClients()
 
@@ -148,6 +149,7 @@ export const ClientList = () => {
           onView={(c) => setActiveClientModal(c)}
           onEdit={(c) => navigate(`/clients/${c.id}/edit`)}
           onDelete={(c) => setClientToDelete(c)}
+          onToggleStatus={(id, status) => updateClientStatus(id, status)}
           onCreateProposal={handleCreateProposalForClient}
           sortColumn={filters.sortBy}
           sortDirection={filters.sortDirection}
