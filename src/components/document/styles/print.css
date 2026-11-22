@@ -30,6 +30,8 @@
   /* 2. Hide navigation, sidebar, editor headers, toolbars, and action buttons */
   .no-print,
   .print\:hidden,
+  [class*="no-print"],
+  [class*="print:hidden"],
   nav,
   aside,
   header,
@@ -41,9 +43,33 @@
     visibility: hidden !important;
     height: 0 !important;
     max-height: 0 !important;
+    width: 0 !important;
+    max-width: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
+    border: none !important;
     overflow: hidden !important;
+  }
+
+  .document-measurement-sandbox {
+    display: none !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    visibility: hidden !important;
+    overflow: hidden !important;
+  }
+
+  /* Neutralize all Tailwind space-y-* sibling margins that cause phantom blank pages */
+  [class*="space-y-"] > * {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+  [class*="space-y-"] > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
   }
 
   /* 3. Strip layout offsets from AdminLayout, #root, and intermediate wrappers */
@@ -51,9 +77,6 @@
   #root > div,
   main,
   div[class*="ml-"],
-  .space-y-6,
-  .space-y-4,
-  .space-y-3,
   .document-workspace,
   .document-canvas-container,
   .document-pagination-wrapper,
@@ -74,6 +97,8 @@
     float: none !important;
     display: block !important;
     box-shadow: none !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
   }
 
   /* 4. Reset zoom scaling transform to maintain 1:1 physical A4 dimensions */
@@ -111,18 +136,26 @@
     break-inside: avoid !important;
     box-sizing: border-box !important;
     background: #FFFFFF !important;
+    font-size: var(--doc-base-size, 12px) !important;
+    line-height: normal !important;
   }
 
   /* First page should never force a break before itself */
   .document-page:first-child,
-  .document-page:first-of-type {
+  .document-page:first-of-type,
+  .document-page.portrait:first-child,
+  .document-page.portrait:first-of-type {
     page-break-before: avoid !important;
     break-before: avoid !important;
   }
 
   /* Prevent trailing blank page on last child */
   .document-page:last-child,
-  .document-page:last-of-type {
+  .document-page:last-of-type,
+  .document-page.portrait:last-child,
+  .document-page.portrait:last-of-type,
+  .document-page.landscape:last-child,
+  .document-page.landscape:last-of-type {
     page-break-after: auto !important;
     break-after: auto !important;
   }
