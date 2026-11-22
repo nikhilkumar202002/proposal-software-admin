@@ -13,23 +13,51 @@ export const api = axios.create({
   timeout: 15000,
 })
 
+const memoryStorage = {}
+function getStorage(key) {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem(key)
+    }
+  } catch { }
+  return memoryStorage[key] || null
+}
+
+function setStorage(key, value) {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(key, value)
+    }
+  } catch { }
+  memoryStorage[key] = value
+}
+
+function removeStorage(key) {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem(key)
+    }
+  } catch { }
+  delete memoryStorage[key]
+}
+
 let isLoggingIn = false
 let loginPromise = null
 
 export async function ensureAuthenticated() {
   const existingToken =
-    localStorage.getItem('proposalos_token') ||
-    localStorage.getItem('token') ||
-    localStorage.getItem('access_token')
+    getStorage('proposalos_token') ||
+    getStorage('token') ||
+    getStorage('access_token')
 
-  const loginAt = localStorage.getItem('proposalos_login_at')
+  const loginAt = getStorage('proposalos_login_at')
 
   if (existingToken && loginAt && isDailySessionValid()) {
     return existingToken
   }
 
   if (existingToken && !loginAt) {
-    localStorage.setItem('proposalos_login_at', new Date().toISOString())
+    setStorage('proposalos_login_at', new Date().toISOString())
     return existingToken
   }
 
@@ -52,12 +80,12 @@ export async function ensureAuthenticated() {
       const user = res.data?.data?.user || res.data?.user
       if (token) {
         const clean = token.startsWith('Bearer ') ? token.slice(7) : token
-        localStorage.setItem('proposalos_token', clean)
-        localStorage.setItem('token', clean)
-        localStorage.setItem('proposalos_login_at', new Date().toISOString())
+        setStorage('proposalos_token', clean)
+        setStorage('token', clean)
+        setStorage('proposalos_login_at', new Date().toISOString())
       }
       if (user) {
-        localStorage.setItem('proposalos_user', JSON.stringify(user))
+        setStorage('proposalos_user', JSON.stringify(user))
       }
       return token
     })
@@ -80,15 +108,15 @@ export async function ensureAuthenticated() {
  */
 export function isDailySessionValid() {
   const token =
-    localStorage.getItem('proposalos_token') ||
-    localStorage.getItem('token') ||
-    localStorage.getItem('access_token')
+    getStorage('proposalos_token') ||
+    getStorage('token') ||
+    getStorage('access_token')
 
   if (!token) return false
 
-  const loginAt = localStorage.getItem('proposalos_login_at')
+  const loginAt = getStorage('proposalos_login_at')
   if (!loginAt) {
-    localStorage.setItem('proposalos_login_at', new Date().toISOString())
+    setStorage('proposalos_login_at', new Date().toISOString())
     return true
   }
 
@@ -106,12 +134,12 @@ export function isDailySessionValid() {
  * Purge stored credentials and cached session
  */
 export function purgeDailySession() {
-  localStorage.removeItem('proposalos_token')
-  localStorage.removeItem('token')
-  localStorage.removeItem('access_token')
-  localStorage.removeItem('proposalos_user')
-  localStorage.removeItem('proposalos_login_at')
-  localStorage.removeItem('proposalos_session')
+  removeStorage('proposalos_token')
+  removeStorage('token')
+  removeStorage('access_token')
+  removeStorage('proposalos_user')
+  removeStorage('proposalos_login_at')
+  removeStorage('proposalos_session')
 }
 
 // Request interceptor to attach Bearer token and enforce daily 12 AM expiration
@@ -129,9 +157,9 @@ api.interceptors.request.use(
       }
 
       let token =
-        localStorage.getItem('proposalos_token') ||
-        localStorage.getItem('token') ||
-        localStorage.getItem('access_token')
+        getStorage('proposalos_token') ||
+        getStorage('token') ||
+        getStorage('access_token')
 
       if (!token) {
         token = await ensureAuthenticated()
@@ -162,9 +190,7 @@ api.interceptors.response.use(
       !originalRequest.url?.includes('/auth/login')
     ) {
       originalRequest._retry = true
-      localStorage.removeItem('proposalos_token')
-      localStorage.removeItem('token')
-      localStorage.removeItem('access_token')
+      purgeDailySession()
       const newToken = await ensureAuthenticated()
       if (newToken) {
         const cleanToken = newToken.startsWith('Bearer ') ? newToken.slice(7) : newToken
