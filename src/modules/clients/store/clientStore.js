@@ -41,7 +41,11 @@ export const useClientStore = create((set, get) => ({
   },
 
   setFilters: (newFilters) => {
-    const updated = { ...get().filters, ...newFilters }
+    const sanitized = { ...newFilters }
+    if (sanitized.search !== undefined && typeof sanitized.search !== 'string') {
+      sanitized.search = sanitized.search?.target?.value ?? ''
+    }
+    const updated = { ...get().filters, ...sanitized }
     set({ filters: updated, currentPage: 1 })
     get().fetchClients(updated)
   },
