@@ -15,27 +15,43 @@ export function useClients() {
       list = list.filter(
         (c) =>
           c.name?.toLowerCase().includes(q) ||
+          c.client_name?.toLowerCase().includes(q) ||
+          c.clientName?.toLowerCase().includes(q) ||
           c.companyName?.toLowerCase().includes(q) ||
+          c.company_name?.toLowerCase().includes(q) ||
           c.email?.toLowerCase().includes(q) ||
           c.city?.toLowerCase().includes(q) ||
-          c.taxNumber?.toLowerCase().includes(q)
+          c.taxNumber?.toLowerCase().includes(q) ||
+          c.tax_number?.toLowerCase().includes(q) ||
+          c.clientCode?.toLowerCase().includes(q) ||
+          c.client_code?.toLowerCase().includes(q)
       )
     }
 
     // Status filter
     if (status && status !== 'all') {
-      list = list.filter((c) => c.status === status)
+      list = list.filter((c) => (c.status || '').toLowerCase() === status.toLowerCase())
     }
 
     // Country filter
     if (country && country !== 'all') {
-      list = list.filter((c) => c.country === country)
+      list = list.filter((c) => (c.country || '').toLowerCase() === country.toLowerCase())
     }
 
     // Sorting
     list.sort((a, b) => {
-      let fieldA = a[sortBy] ?? ''
-      let fieldB = b[sortBy] ?? ''
+      let fieldA =
+        a[sortBy] ??
+        (sortBy === 'name'
+          ? (a.client_name || a.name || a.company_name || a.companyName)
+          : '') ??
+        ''
+      let fieldB =
+        b[sortBy] ??
+        (sortBy === 'name'
+          ? (b.client_name || b.name || b.company_name || b.companyName)
+          : '') ??
+        ''
 
       if (typeof fieldA === 'string') {
         fieldA = fieldA.toLowerCase()
@@ -70,10 +86,19 @@ export function useClients() {
     let totalRevenue = 0
 
     store.clients.forEach((c) => {
-      if (c.status === 'active') activeCount += 1
-      if (c.status === 'lead') leadCount += 1
-      totalProposals += c.proposalsCount || 0
-      totalRevenue += c.totalRevenue || 0
+      const s = (c.status || '').toLowerCase()
+      if (s === 'active') activeCount += 1
+      if (s === 'lead') leadCount += 1
+      totalProposals +=
+        c.activity?.total_proposals ??
+        c.proposalsCount ??
+        c.proposals_count ??
+        0
+      totalRevenue +=
+        c.activity?.total_value ??
+        c.totalRevenue ??
+        c.total_value ??
+        0
     })
 
     return {

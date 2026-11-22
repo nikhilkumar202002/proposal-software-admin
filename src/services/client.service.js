@@ -60,7 +60,44 @@ export const clientService = {
    * @returns {Promise<Array>}
    */
   async getClients(params = {}) {
-    const response = await api.get('/clients', { params })
+    const queryParams = {}
+
+    if (params.search && typeof params.search === 'string' && params.search.trim()) {
+      queryParams.search = params.search.trim()
+    }
+    if (params.status && params.status !== 'all') {
+      queryParams.status = params.status
+    }
+    if (params.country && params.country !== 'all') {
+      queryParams.country = params.country
+    }
+    if (params.page) {
+      queryParams.page = params.page
+    }
+    if (params.per_page || params.perPage) {
+      queryParams.per_page = params.per_page || params.perPage
+    }
+    if (params.sort_by || params.sortBy) {
+      const sortBy = params.sort_by || params.sortBy
+      const sortColumnMap = {
+        name: 'client_name',
+        companyName: 'company_name',
+        company_name: 'company_name',
+        client_name: 'client_name',
+        email: 'email',
+        city: 'city',
+        country: 'country',
+        status: 'status',
+        created_at: 'created_at',
+        createdAt: 'created_at',
+      }
+      queryParams.sort_by = sortColumnMap[sortBy] || sortBy
+    }
+    if (params.sort_order || params.sortDirection) {
+      queryParams.sort_order = params.sort_order || params.sortDirection
+    }
+
+    const response = await api.get('/clients', { params: queryParams })
     const resData = response.data || {}
 
     let rawList = []
