@@ -11,6 +11,11 @@ export const getInitials = (name = '') => {
 
 // Retrieve cached user from localStorage (auth.service or legacy session)
 const getInitialUser = () => {
+  if (!authService.isSessionValid()) {
+    authService.purgeSession()
+    return null
+  }
+
   const fromAuthService = authService.getUser()
   if (fromAuthService) return fromAuthService
 
