@@ -60,6 +60,24 @@ export default function AIChatPage() {
     setIsImportModalOpen(true)
   }
 
+  // Header Action: "Generate Proposal" from current conversation
+  const handleGenerateProposalFromChat = () => {
+    const conversationSummary = (messages || [])
+      .map((m) => `${m.sender === 'user' ? 'Client Requirements' : 'AI Proposal Consultant'}: ${m.text || m.content || ''}`)
+      .join('\n\n')
+
+    navigate('/ai/generator', {
+      state: {
+        fromChat: true,
+        initialPrompt: conversationSummary,
+        client: activeContext?.client || null,
+        title: activeConversation?.title && activeConversation.title !== 'New Proposal Chat'
+          ? activeConversation.title
+          : '',
+      },
+    })
+  }
+
   // Handle confirming import into ProposalOS
   const handleConfirmImport = async (destination) => {
     if (!importProposalData) return

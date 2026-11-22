@@ -1,12 +1,9 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useMemo } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import {
   ArrowLeft,
   Sparkles,
   RotateCcw,
-  ExternalLink,
-  Eye,
-  CheckCircle2,
 } from 'lucide-react'
 import ProposalGenerationForm from '../components/proposal/ProposalGenerationForm'
 import ProposalGenerationStatus from '../components/proposal/ProposalGenerationStatus'
@@ -15,23 +12,41 @@ import ProposalImportModal from '../components/proposal/ProposalImportModal'
 import AIModelSelector from '../components/common/AIModelSelector'
 import { useAIProposal } from '../hooks/useAIProposal'
 import { useAIStore } from '../store/aiStore'
-import { useProposalStore } from '../../proposals/store/proposalStore'
 
 export default function AIProposalGenerator() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { selectedModel, setModel } = useAIStore()
-  const { addProposal } = useProposalStore()
+
+  // Pre-fill from Chat state if user came from chat "Generate Proposal"
+  const chatState = location.state || {}
+  const initialFormValues = useMemo(() => ({
+    title: chatState.title || 'Enterprise Commercial Proposal',
+    requirements: chatState.initialPrompt || '',
+    clientId: chatState.client?.id || '',
+    clientName: chatState.client?.name || chatState.client?.companyName || '',
+    serviceType: chatState.serviceType || 'Full-Stack Custom SaaS Platform',
+  }), [chatState])
 
   const {
     isGenerating,
     currentStep,
     proposalData,
+    regeneratingSectionKey,
+    isSavingToBackend,
     error,
     generateProposal,
     toggleSectionApproval,
     updateSectionContent,
+    regenerateSection,
     togglePricingItemApproval,
     approveAllPricing,
+    updatePricingItem,
+    updateCurrency,
+    updateDeliverables,
+    updateTechnologies,
+    updateTimeline,
+    importIntoProposalOS,
     resetProposal,
   } = useAIProposal()
 
@@ -45,59 +60,9 @@ export default function AIProposalGenerator() {
   const handleConfirmImport = async (destination) => {
     if (!proposalData) return
     setIsImporting(true)
-
     try {
-      // Filter out unapproved pricing and assemble standard ProposalModel
-      const approvedPricing = (proposalData.pricingItems || []).filter(
-        (i) => i.approved !== false
-      )
-      const subtotal = approvedPricing.reduce(
-        (sum, item) => sum + item.quantity * item.unitPrice,
-        0
-      )
-      const taxTotal = approvedPricing.reduce(
-        (sum, item) =>
-          sum + (item.quantity * item.unitPrice * (item.tax || 0)) / 100,
-        0
-      )
-      const grandTotal = subtotal + taxTotal
-
-      const newProposalRecord = {
-        id: `prop-${Date.now()}`,
-        number: `PROP-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 900) + 100)}`,
-        title: proposalData.title || 'AI Generated Proposal',
-        projectName: proposalData.serviceType || 'Digital Transformation',
-        serviceType: proposalData.serviceType || 'Software Development',
-        date: new Date().toISOString().split('T')[0],
-        validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-          .toISOString()
-          .split('T')[0],
-        status: 'draft',
-        proposalType: proposalData.proposalType || 'direct',
-        currency: proposalData.currency || 'INR',
-        showCompanyLogo: true,
-        client: {
-          id: proposalData.clientId,
-          name: proposalData.clientName || 'Valued Client',
-        },
-        pricing: {
-          items: approvedPricing,
-          subtotal,
-          taxTotal,
-          total: grandTotal,
-          currency: proposalData.currency || 'INR',
-        },
-        content: proposalData.content, // TipTap ProseMirror AST tree
-      }
-
-      addProposal(newProposalRecord)
+      await importIntoProposalOS(destination)
       setIsImportModalOpen(false)
-
-      if (destination === 'preview') {
-        navigate(`/proposals/${newProposalRecord.id}/preview`)
-      } else {
-        navigate(`/proposals/${newProposalRecord.id}/edit`)
-      }
     } catch (err) {
       console.error('Import failure:', err)
     } finally {
@@ -160,17 +125,26 @@ export default function AIProposalGenerator() {
           <ProposalGenerationForm
             onSubmit={handleFormSubmit}
             isGenerating={isGenerating}
+            initialValues={initialFormValues}
           />
         ) : (
           <ProposalPreview
             proposalData={proposalData}
             onToggleSectionApproval={toggleSectionApproval}
             onUpdateSectionContent={updateSectionContent}
+            onRegenerateSection={regenerateSection}
+            regeneratingSectionKey={regeneratingSectionKey}
             onTogglePricingItemApproval={togglePricingItemApproval}
             onApproveAllPricing={approveAllPricing}
+            onUpdatePricingItem={updatePricingItem}
+            onUpdateCurrency={updateCurrency}
+            onUpdateDeliverables={updateDeliverables}
+            onUpdateTechnologies={updateTechnologies}
+            onUpdateTimeline={updateTimeline}
             onImportToProposalOS={() => setIsImportModalOpen(true)}
             onOpenInEditor={() => handleConfirmImport('editor')}
             onOpenInA4Preview={() => handleConfirmImport('preview')}
+            isSaving={isSavingToBackend || isImporting}
           />
         )}
       </main>
@@ -181,7 +155,7 @@ export default function AIProposalGenerator() {
         onClose={() => setIsImportModalOpen(false)}
         proposalData={proposalData}
         onConfirmImport={handleConfirmImport}
-        isImporting={isImporting}
+        isImporting={isImporting || isSavingToBackend}
       />
     </div>
   )

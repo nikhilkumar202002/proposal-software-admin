@@ -43,6 +43,7 @@ export default function ChatLayout({
   onEditSubmit,
   onDeleteMessage,
   onUseInProposal,
+  onGenerateProposal,
 }) {
   return (
     <div className="flex h-screen w-full bg-[#F8FAFC] text-slate-800 overflow-hidden font-sans">
@@ -71,6 +72,7 @@ export default function ChatLayout({
           onNewChat={onNewChat}
           activeContext={activeContext}
           onOpenContextSelector={onOpenContextSelector}
+          onGenerateProposal={onGenerateProposal}
         />
 
         {/* Global Error Banner if any */}

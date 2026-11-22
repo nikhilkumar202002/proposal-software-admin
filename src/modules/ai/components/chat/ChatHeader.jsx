@@ -15,8 +15,17 @@ export default function ChatHeader({
   onNewChat,
   activeContext,
   onOpenContextSelector,
+  onGenerateProposal,
 }) {
   const navigate = useNavigate()
+
+  const handleOpenGenerator = () => {
+    if (onGenerateProposal) {
+      onGenerateProposal()
+    } else {
+      navigate('/ai/generator')
+    }
+  }
 
   return (
     <header className="h-14 border-b border-slate-200 bg-white px-4 flex items-center justify-between shrink-0 z-10">
@@ -59,12 +68,12 @@ export default function ChatHeader({
       <div className="flex items-center gap-2">
         <button
           type="button"
-          onClick={() => navigate('/ai/generator')}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#0055FF] text-xs font-semibold transition-colors cursor-pointer"
-          title="Open Guided AI Proposal Generator"
+          onClick={handleOpenGenerator}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+          title="Generate full structured proposal from this conversation"
         >
-          <Sparkles className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Proposal Wizard</span>
+          <Sparkles className="w-3.5 h-3.5 text-blue-200" />
+          <span className="hidden sm:inline">Generate Proposal</span>
         </button>
 
         <button
