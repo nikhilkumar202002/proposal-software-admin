@@ -44,8 +44,16 @@ export const ClientList = () => {
   const [activeClientModal, setActiveClientModal] = useState(null)
   const [clientToDelete, setClientToDelete] = useState(null)
 
+  // Initial fetch and 5-second background refresh (without triggering table loading)
   useEffect(() => {
     fetchClients()
+
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && document.hidden) return
+      fetchClients({}, { silent: true })
+    }, 5000)
+
+    return () => clearInterval(interval)
   }, [fetchClients])
 
   const handleDeleteConfirm = async () => {

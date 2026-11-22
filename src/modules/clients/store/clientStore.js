@@ -25,18 +25,23 @@ export const useClientStore = create((set, get) => ({
   error: null,
 
   // --- Collection Actions ---
-  fetchClients: async (customParams = {}) => {
-    set({ isLoading: true, error: null })
+  fetchClients: async (customParams = {}, options = {}) => {
+    const isSilent = Boolean(options.silent)
+    if (!isSilent) {
+      set({ isLoading: true, error: null })
+    }
     try {
       const params = { ...get().filters, ...customParams }
       const data = await clientService.getClients(params)
       set({ clients: Array.isArray(data) ? data : [], isLoading: false })
     } catch (err) {
-      set({
-        error: err.message,
-        clients: Array.isArray(get().clients) ? get().clients : [],
-        isLoading: false,
-      })
+      if (!isSilent) {
+        set({
+          error: err.message,
+          clients: Array.isArray(get().clients) ? get().clients : [],
+          isLoading: false,
+        })
+      }
     }
   },
 

@@ -34,23 +34,33 @@ export const ClientTable = ({
   // Auto-fetch clients from API if propClients is not provided
   const shouldFetchSelf = propClients === undefined
 
-  const fetchLiveClients = useCallback(async () => {
-    setInternalLoading(true)
+  const fetchLiveClients = useCallback(async ({ silent = false } = {}) => {
+    if (!silent) setInternalLoading(true)
     try {
       const data = await clientService.getClients()
       setInternalClients(Array.isArray(data) ? data : [])
     } catch (err) {
-      console.error('Failed to load clients in ClientTable:', err)
-      setInternalClients([])
+      if (!silent) {
+        console.error('Failed to load clients in ClientTable:', err)
+        setInternalClients([])
+      }
     } finally {
-      setInternalLoading(false)
+      if (!silent) setInternalLoading(false)
     }
   }, [])
 
+  // Initial load and 5-second background refresh without triggering loading state
   useEffect(() => {
-    if (shouldFetchSelf) {
-      fetchLiveClients()
-    }
+    if (!shouldFetchSelf) return
+
+    fetchLiveClients()
+
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && document.hidden) return
+      fetchLiveClients({ silent: true })
+    }, 5000)
+
+    return () => clearInterval(interval)
   }, [shouldFetchSelf, fetchLiveClients])
 
   // Extract raw list whether prop is an array or API payload object
