@@ -18,5 +18,5 @@ export { default as ProposalActions } from './components/ProposalActions'
 // Hooks & Store & Services
 export { default as useProposal } from './hooks/useProposal'
 export { default as useProposalStore } from './store/proposalStore'
-export { default as proposalService } from './services/proposalService'
+export { default as proposalService } from '../../services/proposal.service'
 export * from './utils/proposalHelpers'
