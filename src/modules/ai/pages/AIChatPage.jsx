@@ -138,6 +138,7 @@ export default function AIChatPage() {
         onEditSubmit={editMessage}
         onDeleteMessage={deleteMessage}
         onUseInProposal={handleUseInProposal}
+        onGenerateProposal={handleGenerateProposalFromChat}
       />
 
       {/* AI Context Selector Modal */}
