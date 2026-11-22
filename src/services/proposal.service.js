@@ -130,18 +130,21 @@ export function normalizeProposal(raw) {
  * @returns {Object}
  */
 export function formatProposalPayload(data) {
+  const discountType = data.discount_type || data.discountType
   const payload = {
-    title: data.title || '',
+    title: (data.title || '').trim() || 'Untitled Proposal',
     proposal_type: data.proposal_type || data.proposalType || 'direct',
-    client_id: Number(data.client_id ?? data.clientId ?? data.client?.id ?? 1),
+    client_id: Math.max(1, Number(data.client_id ?? data.clientId ?? data.client?.id ?? 1)),
     currency: data.currency || 'USD',
-    discount_type: data.discount_type || data.discountType || 'percentage',
-    discount_value: Number(data.discount_value ?? data.discountValue ?? 0),
-    additional_charges: Number(data.additional_charges ?? data.additionalCharges ?? 0),
+    discount_type: ['percentage', 'fixed'].includes(discountType) ? discountType : 'percentage',
+    discount_value: Math.max(0, Number(data.discount_value ?? data.discountValue ?? 0)),
+    additional_charges: Math.max(0, Number(data.additional_charges ?? data.additionalCharges ?? 0)),
   }
 
   if (data.proposal_date || data.proposalDate || data.date) {
     payload.proposal_date = data.proposal_date || data.proposalDate || data.date
+  } else {
+    payload.proposal_date = new Date().toISOString().split('T')[0]
   }
   if (data.valid_until || data.validUntil) {
     payload.valid_until = data.valid_until || data.validUntil
@@ -172,24 +175,27 @@ export function formatProposalPayload(data) {
   // Items
   const items = data.items || data.pricing?.items
   if (Array.isArray(items)) {
-    payload.items = items.map((it) => ({
-      description: it.description || '',
-      quantity: Number(it.quantity || 1),
-      unit: it.unit || 'hours',
-      unit_price: Number(it.unit_price ?? it.unitPrice ?? 0),
-      discount_type: it.discount_type || it.discountType || null,
-      discount_value: Number(it.discount_value ?? it.discountValue ?? 0),
-      tax_rate: Number(it.tax_rate ?? it.taxRate ?? 0),
-    }))
+    payload.items = items.map((it) => {
+      const itemDiscountType = it.discount_type || it.discountType
+      return {
+        description: (it.description || '').trim() || 'Service Deliverable',
+        quantity: Math.max(0.01, Number(it.quantity || 1)),
+        unit: it.unit || 'Milestone',
+        unit_price: Math.max(0, Number(it.unit_price ?? it.unitPrice ?? 0)),
+        discount_type: ['percentage', 'fixed'].includes(itemDiscountType) ? itemDiscountType : null,
+        discount_value: Math.max(0, Number(it.discount_value ?? it.discountValue ?? it.discount ?? 0)),
+        tax_rate: Math.min(100, Math.max(0, Number(it.tax_rate ?? it.taxRate ?? it.tax ?? 0))),
+      }
+    })
   }
 
   // Payment Milestones
   const milestones = data.payment_milestones || data.paymentMilestones
-  if (Array.isArray(milestones)) {
+  if (Array.isArray(milestones) && milestones.length > 0) {
     payload.payment_milestones = milestones.map((m) => ({
-      title: m.title || '',
+      title: (m.title || '').trim() || 'Milestone Phase',
       description: m.description || null,
-      percentage: Number(m.percentage || 0),
+      percentage: Math.min(100, Math.max(0, Number(m.percentage || 0))),
       due_description: m.due_description || m.dueDescription || null,
     }))
   }

@@ -93,6 +93,9 @@ export const ClientDetailsForm = ({
     const found = allClients.find((c) => String(c.id) === String(clientId))
     if (found) {
       onChange({
+        id: found.id,
+        clientId: found.id,
+        client_id: found.id,
         name: found.name || '',
         companyName: found.companyName || '',
         email: found.email || '',
@@ -167,6 +170,9 @@ export const ClientDetailsForm = ({
 
       // Select this client into proposal
       onChange({
+        id: created.id,
+        clientId: created.id,
+        client_id: created.id,
         name: created.name,
         companyName: created.companyName,
         email: created.email,

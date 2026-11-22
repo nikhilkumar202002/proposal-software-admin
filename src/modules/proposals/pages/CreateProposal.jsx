@@ -50,7 +50,7 @@ export const CreateProposal = () => {
   const handleSave = async (status) => {
     const saved = await saveCurrentProposal(status)
     if (saved?.id) {
-      navigate(`/proposals/${saved.id}/edit`)
+      navigate('/proposals')
     }
     return saved
   }
