@@ -730,34 +730,6 @@ export function convertProposalToDocumentCanvasProps(proposal) {
     }
   })
 
-  // Add Commercial Investment / Pricing Table
-  if (pricingRows.length > 0) {
-    contentBlocks.push({
-      id: 'blk-pricing-title',
-      type: 'heading',
-      level: 2,
-      text: 'Commercial Investment & Pricing Summary',
-    })
-
-    const finalGrandTotal = totals.grandTotal || proposal.grandTotal || proposal.pricing?.grandTotal || 0
-
-    contentBlocks.push({
-      id: 'blk-pricing-table',
-      type: 'table',
-      caption: `Financial Schedule (${currency})`,
-      headers: pricingHeaders,
-      rows: pricingRows,
-      summaryRow: [
-        'Total',
-        '',
-        '',
-        '',
-        '',
-        formatCurrency(finalGrandTotal, currency),
-      ],
-    })
-  }
-
   // Add Payment Milestones Schedule if present
   const milestones = Array.isArray(proposal.paymentMilestones) && proposal.paymentMilestones.length > 0
     ? proposal.paymentMilestones
