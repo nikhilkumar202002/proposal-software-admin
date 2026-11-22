@@ -30,8 +30,16 @@ export const UserList = () => {
     updateUserStatus,
   } = useUserStore()
 
+  // Initial fetch and 5-second background refresh (without table loading spinner)
   useEffect(() => {
     fetchUsers()
+
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && document.hidden) return
+      fetchUsers({}, { silent: true })
+    }, 5000)
+
+    return () => clearInterval(interval)
   }, [fetchUsers])
 
   const [notification, setNotification] = useState(null)

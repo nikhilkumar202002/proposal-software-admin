@@ -50,11 +50,18 @@ export const UserTable = ({
   const [userToDelete, setUserToDelete] = useState(null)
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false)
 
-  // Direct API fetch to /admin/users if users prop is not provided
+  // Direct API fetch to /admin/users if users prop is not provided + 5s background refresh
   useEffect(() => {
     if (propUsers === undefined && autoFetch) {
       if (typeof store.fetchUsers === 'function') {
         store.fetchUsers()
+
+        const interval = setInterval(() => {
+          if (typeof document !== 'undefined' && document.hidden) return
+          store.fetchUsers({}, { silent: true })
+        }, 5000)
+
+        return () => clearInterval(interval)
       } else {
         setInternalLoading(true)
         userService
@@ -67,7 +74,7 @@ export const UserTable = ({
           })
       }
     }
-  }, [propUsers, autoFetch])
+  }, [propUsers, autoFetch, store])
 
   // Normalize and unpack users (supports { data: { users: [...] } }, { users: [...] }, or raw API array)
   const normalizedUsers = useMemo(() => {

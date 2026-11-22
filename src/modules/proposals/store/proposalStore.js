@@ -33,18 +33,23 @@ export const useProposalStore = create((set, get) => ({
   isGeneratingPdf: false,
   error: null,
 
-  fetchProposals: async (customParams = {}) => {
-    set({ isLoading: true, error: null })
+  fetchProposals: async (customParams = {}, options = {}) => {
+    const isSilent = Boolean(options.silent)
+    if (!isSilent) {
+      set({ isLoading: true, error: null })
+    }
     try {
       const params = { ...get().filters, ...customParams }
       const data = await proposalService.getProposals(params)
       set({ proposals: Array.isArray(data) ? data : [], isLoading: false })
     } catch (err) {
-      set({
-        error: err.message,
-        proposals: Array.isArray(get().proposals) ? get().proposals : [],
-        isLoading: false,
-      })
+      if (!isSilent) {
+        set({
+          error: err.message,
+          proposals: Array.isArray(get().proposals) ? get().proposals : [],
+          isLoading: false,
+        })
+      }
     }
   },
 

@@ -18,8 +18,11 @@ export const useUserStore = create((set, get) => ({
   error: null,
 
   // --- Fetch Users from Backend (GET /admin/users) ---
-  fetchUsers: async (customParams = {}) => {
-    set({ isLoading: true, error: null })
+  fetchUsers: async (customParams = {}, options = {}) => {
+    const isSilent = Boolean(options.silent)
+    if (!isSilent) {
+      set({ isLoading: true, error: null })
+    }
     try {
       const { search, role, status } = get().filters
       const queryParams = {}
@@ -40,8 +43,10 @@ export const useUserStore = create((set, get) => ({
       set({ users: apiUsers || [], isLoading: false })
       return apiUsers
     } catch (err) {
-      console.warn('Backend GET /admin/users unavailable:', err.message)
-      set({ isLoading: false, error: err.message, users: [] })
+      if (!isSilent) {
+        console.warn('Backend GET /admin/users unavailable:', err.message)
+        set({ isLoading: false, error: err.message, users: [] })
+      }
       return []
     }
   },

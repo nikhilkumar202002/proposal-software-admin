@@ -43,8 +43,16 @@ export const ProposalList = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 8
 
+  // Initial load and 5-second background refresh (without loading spinner)
   useEffect(() => {
     fetchProposals()
+
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && document.hidden) return
+      fetchProposals({}, { silent: true })
+    }, 5000)
+
+    return () => clearInterval(interval)
   }, [fetchProposals])
 
   // Ensure proposals is safely an array

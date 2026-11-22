@@ -37,9 +37,18 @@ export const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
 
+  // Initial load and 5-second background refresh (without loading spinner)
   useEffect(() => {
     fetchProposals()
     fetchClients()
+
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && document.hidden) return
+      fetchProposals({}, { silent: true })
+      fetchClients({}, { silent: true })
+    }, 5000)
+
+    return () => clearInterval(interval)
   }, [fetchProposals, fetchClients])
 
   // Computed metrics from real proposals
