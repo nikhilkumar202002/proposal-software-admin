@@ -179,10 +179,18 @@ function renderBlock(block) {
                 <tr key={rIdx} className="hover:bg-gray-50/50">
                   {Array.isArray(row)
                     ? row.map((cell, cIdx) => (
-                        <td key={cIdx}>{cell}</td>
+                        <td key={cIdx}>
+                          {typeof cell === 'object' && cell !== null
+                            ? cell.text ?? cell.value ?? ''
+                            : cell}
+                        </td>
                       ))
                     : Object.values(row).map((val, cIdx) => (
-                        <td key={cIdx}>{val}</td>
+                        <td key={cIdx}>
+                          {typeof val === 'object' && val !== null
+                            ? val.text ?? val.value ?? ''
+                            : val}
+                        </td>
                       ))}
                 </tr>
               ))}

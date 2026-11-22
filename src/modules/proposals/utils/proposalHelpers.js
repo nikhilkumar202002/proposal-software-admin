@@ -3,7 +3,7 @@ import {
   calculateRowTotal,
   calculatePricingSummary,
   round2 as pricingRound2,
-} from '../../pricing/utils/pricingCalculations'
+} from '../../pricing/utils/pricingCalculations.js'
 
 export const CURRENCY_CONFIG = {
   INR: { symbol: '₹', code: 'INR', name: 'Indian Rupee', locale: 'en-IN' },
@@ -551,20 +551,43 @@ export function createNewProposalModel(existingList = []) {
 export function convertProposalToDocumentCanvasProps(proposal) {
   if (!proposal) return { content: [], company: {}, proposal: {} }
 
-  const totals = calculateProposalTotals(proposal.pricing || {})
-  const currency = proposal.pricing?.currency || proposal.currency || 'INR'
+  // Extract all available line items safely
+  const rawItems = Array.isArray(proposal.items) && proposal.items.length > 0
+    ? proposal.items
+    : Array.isArray(proposal.pricing?.items) && proposal.pricing.items.length > 0
+    ? proposal.pricing.items
+    : Array.isArray(proposal.pricing_items) && proposal.pricing_items.length > 0
+    ? proposal.pricing_items
+    : []
+
+  const currency = proposal.pricing?.currency || proposal.currency || 'USD'
+
+  const totals = calculateProposalTotals({
+    items: rawItems,
+    currency,
+    globalDiscount: proposal.pricing?.globalDiscount ?? proposal.discount_value ?? 0,
+    globalDiscountType: proposal.pricing?.globalDiscountType ?? proposal.discount_type ?? 'percentage',
+    additionalCharges: proposal.pricing?.additionalCharges ?? proposal.additional_charges ?? 0,
+    ...(proposal.pricing || {}),
+  })
 
   // Build pricing table blocks
   const pricingHeaders = ['#', 'Description', 'Qty', 'Unit Price', 'Tax', 'Total']
-  const pricingRows = (proposal.pricing?.items || []).map((item, idx) => {
+  const pricingRows = rawItems.map((item, idx) => {
     const calc = calculateLineItemTotal(item)
+    const qty = Number(item.quantity ?? 1)
+    const unit = item.unit || ''
+    const unitPrice = Number(item.unitPrice !== undefined ? item.unitPrice : (item.unit_price ?? 0))
+    const taxRate = Number(item.taxRate !== undefined ? item.taxRate : (item.tax_rate !== undefined ? item.tax_rate : (item.tax ?? 0)))
+    const lineTotal = Number(calc.total !== undefined ? calc.total : (item.total ?? (qty * unitPrice)))
+
     return [
       String(idx + 1).padStart(2, '0'),
       item.description || 'Deliverable Item',
-      `${item.quantity || 1} ${item.unit || ''}`.trim(),
-      formatCurrency(item.unitPrice || 0, currency),
-      `${item.tax || 0}%`,
-      formatCurrency(calc.total, currency),
+      `${qty} ${unit}`.trim(),
+      formatCurrency(unitPrice, currency),
+      `${taxRate}%`,
+      formatCurrency(lineTotal, currency),
     ]
   })
 
@@ -598,54 +621,113 @@ export function convertProposalToDocumentCanvasProps(proposal) {
   contentBlocks.push({
     id: 'blk-proposal-meta',
     type: 'proposalMeta',
-    clientName: proposal.client?.name || proposal.clientName || '',
-    companyName: proposal.client?.companyName || proposal.companyName || '',
-    projectTotalCost: formatCurrency(totals.grandTotal, currency),
+    clientName: proposal.client?.name || proposal.clientName || proposal.client?.client_name || '',
+    companyName: proposal.client?.companyName || proposal.companyName || proposal.client?.company_name || '',
+    projectTotalCost: formatCurrency(totals.grandTotal || proposal.grandTotal || 0, currency),
     serviceType: serviceTypeString,
     technology: technologyString,
     technologies: technologyString,
   })
 
-  // Parse TipTap content nodes
-  if (proposal.content?.content && Array.isArray(proposal.content.content)) {
-    proposal.content.content.forEach((node, i) => {
-      const id = `tt-node-${i}`
-      if (node.type === 'heading') {
-        const text = (node.content || []).map((c) => c.text || '').join('')
-        contentBlocks.push({
-          id,
-          type: 'heading',
-          level: node.attrs?.level || 2,
-          text,
-        })
-      } else if (node.type === 'paragraph') {
-        const text = (node.content || []).map((c) => c.text || '').join('')
-        if (text.trim()) {
+  // Safely extract TipTap AST nodes
+  let tipTapNodes = []
+  if (proposal.content) {
+    if (Array.isArray(proposal.content.content)) {
+      tipTapNodes = proposal.content.content
+    } else if (typeof proposal.content === 'object' && Array.isArray(proposal.content)) {
+      tipTapNodes = proposal.content
+    } else if (typeof proposal.content === 'string') {
+      try {
+        const parsed = JSON.parse(proposal.content)
+        if (Array.isArray(parsed?.content)) {
+          tipTapNodes = parsed.content
+        } else if (Array.isArray(parsed)) {
+          tipTapNodes = parsed
+        } else if (typeof parsed === 'string') {
           contentBlocks.push({
-            id,
-            type: 'paragraph',
-            text,
+            id: 'blk-html-content',
+            type: 'html',
+            html: parsed,
           })
         }
-      } else if (node.type === 'bulletList') {
-        const items = (node.content || []).map((li) => {
-          const p = li.content?.[0]
-          return (p?.content || []).map((c) => c.text || '').join('')
-        })
+      } catch {
         contentBlocks.push({
-          id,
-          type: 'bulletList',
-          items,
-        })
-      } else if (node.type === 'pageBreak') {
-        contentBlocks.push({
-          id,
-          type: 'pageBreak',
-          label: 'Page Break',
+          id: 'blk-html-content',
+          type: 'html',
+          html: proposal.content,
         })
       }
-    })
+    }
   }
+
+  // Parse TipTap content nodes including tables, lists, headings, paragraphs, and page breaks
+  tipTapNodes.forEach((node, i) => {
+    const id = `tt-node-${i}`
+    if (node.type === 'heading') {
+      const text = (node.content || []).map((c) => c.text || '').join('')
+      contentBlocks.push({
+        id,
+        type: 'heading',
+        level: node.attrs?.level || 2,
+        text,
+      })
+    } else if (node.type === 'paragraph') {
+      const text = (node.content || []).map((c) => c.text || '').join('')
+      if (text.trim()) {
+        contentBlocks.push({
+          id,
+          type: 'paragraph',
+          text,
+        })
+      }
+    } else if (node.type === 'bulletList' || node.type === 'orderedList') {
+      const items = (node.content || []).map((li) => {
+        const p = li.content?.[0]
+        return (p?.content || []).map((c) => c.text || '').join('')
+      })
+      contentBlocks.push({
+        id,
+        type: node.type,
+        items,
+      })
+    } else if (node.type === 'table') {
+      // Parse TipTap editor table
+      const rows = node.content || []
+      let headers = []
+      const dataRows = []
+      rows.forEach((rowNode, rIdx) => {
+        const extractCellText = (cell) => {
+          if (!cell) return ''
+          if (cell.text) return cell.text
+          if (Array.isArray(cell.content)) {
+            return cell.content.map(extractCellText).join('')
+          }
+          return ''
+        }
+        const cells = (rowNode.content || []).map((cellNode) => ({
+          text: extractCellText(cellNode),
+          isHeader: cellNode.type === 'tableHeader',
+        }))
+        if (rIdx === 0 && cells.some((c) => c.isHeader)) {
+          headers = cells.map((c) => c.text)
+        } else {
+          dataRows.push(cells.map((c) => c.text))
+        }
+      })
+      contentBlocks.push({
+        id,
+        type: 'table',
+        headers,
+        rows: dataRows,
+      })
+    } else if (node.type === 'pageBreak') {
+      contentBlocks.push({
+        id,
+        type: 'pageBreak',
+        label: 'Page Break',
+      })
+    }
+  })
 
   // Add Commercial Investment / Pricing Table
   if (pricingRows.length > 0) {
@@ -655,6 +737,8 @@ export function convertProposalToDocumentCanvasProps(proposal) {
       level: 2,
       text: 'Commercial Investment & Pricing Summary',
     })
+
+    const finalGrandTotal = totals.grandTotal || proposal.grandTotal || proposal.pricing?.grandTotal || 0
 
     contentBlocks.push({
       id: 'blk-pricing-table',
@@ -668,13 +752,20 @@ export function convertProposalToDocumentCanvasProps(proposal) {
         '',
         '',
         '',
-        formatCurrency(totals.grandTotal, currency),
+        formatCurrency(finalGrandTotal, currency),
       ],
     })
   }
 
   // Add Payment Milestones Schedule if present
-  const milestones = proposal.pricing?.paymentMilestones || []
+  const milestones = Array.isArray(proposal.paymentMilestones) && proposal.paymentMilestones.length > 0
+    ? proposal.paymentMilestones
+    : Array.isArray(proposal.payment_milestones) && proposal.payment_milestones.length > 0
+    ? proposal.payment_milestones
+    : Array.isArray(proposal.pricing?.paymentMilestones)
+    ? proposal.pricing.paymentMilestones
+    : []
+
   if (milestones.length > 0) {
     contentBlocks.push({
       id: 'blk-milestones-title',
@@ -683,16 +774,18 @@ export function convertProposalToDocumentCanvasProps(proposal) {
       text: 'Billing & Payment Milestones',
     })
 
+    const finalGrandTotal = totals.grandTotal || proposal.grandTotal || proposal.pricing?.grandTotal || 0
     const milestoneHeaders = ['#', 'Milestone Phase', 'Billing Term', 'Scheduled Amount']
     const milestoneRows = milestones.map((ms, idx) => {
-      const calculatedAmt =
-        ms.type === 'percentage'
-          ? (totals.grandTotal * (ms.value || 0)) / 100
-          : ms.value || 0
+      const isPercent = ms.percentage !== undefined || ms.type === 'percentage'
+      const pct = Number(ms.percentage ?? ms.value ?? 0)
+      const calculatedAmt = Number(ms.amount ?? (isPercent ? (finalGrandTotal * pct) / 100 : ms.value || 0))
+      const billingTerm = isPercent ? `${pct}% of Total` : 'Fixed Fee'
+
       return [
         String(idx + 1),
-        ms.name || `Phase ${idx + 1}`,
-        ms.type === 'percentage' ? `${ms.value}% of Total` : 'Fixed Fee',
+        ms.title || ms.name || `Phase ${idx + 1}`,
+        billingTerm,
         formatCurrency(calculatedAmt, currency),
       ]
     })

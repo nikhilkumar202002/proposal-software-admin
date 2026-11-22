@@ -23,14 +23,23 @@ export function round2(num) {
  */
 export function calculateRowTotal(item = {}) {
   const quantity = Math.max(0, parseFloat(item.quantity) || 0)
-  const unitPrice = Math.max(0, parseFloat(item.unitPrice) || 0)
+  const unitPrice = Math.max(
+    0,
+    parseFloat(item.unitPrice !== undefined ? item.unitPrice : item.unit_price) || 0
+  )
   const baseSubtotal = round2(quantity * unitPrice)
 
   // Support both discountType/discountValue and legacy discount percent
-  const discountType = item.discountType || 'percentage'
+  const discountType = item.discountType || item.discount_type || 'percentage'
   const discountVal = Math.max(
     0,
-    parseFloat(item.discountValue !== undefined ? item.discountValue : item.discount) || 0
+    parseFloat(
+      item.discountValue !== undefined
+        ? item.discountValue
+        : item.discount_value !== undefined
+        ? item.discount_value
+        : item.discount
+    ) || 0
   )
 
   const discountAmount =
@@ -43,7 +52,13 @@ export function calculateRowTotal(item = {}) {
   // Support both taxRate and legacy tax
   const taxRate = Math.max(
     0,
-    parseFloat(item.taxRate !== undefined ? item.taxRate : item.tax) || 0
+    parseFloat(
+      item.taxRate !== undefined
+        ? item.taxRate
+        : item.tax_rate !== undefined
+        ? item.tax_rate
+        : item.tax
+    ) || 0
   )
   const taxAmount = round2(taxableAmount * (taxRate / 100))
   const total = round2(taxableAmount + taxAmount)
@@ -75,7 +90,11 @@ export function calculateRowTotal(item = {}) {
  */
 export function calculatePricingSummary(pricing = {}) {
   const safePricing = pricing || {}
-  const rawItems = Array.isArray(safePricing.items) ? safePricing.items : []
+  const rawItems = Array.isArray(safePricing.items)
+    ? safePricing.items
+    : Array.isArray(safePricing.pricing?.items)
+    ? safePricing.pricing.items
+    : []
   const taxMode = safePricing.taxMode || 'per_item'
   const overallTaxRate = Math.max(0, parseFloat(safePricing.overallTaxRate) || 0)
 
