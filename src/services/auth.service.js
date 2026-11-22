@@ -2,8 +2,74 @@ import { api } from './api'
 
 const TOKEN_KEY = 'proposalos_token'
 const USER_KEY = 'proposalos_user'
+const LOGIN_TIME_KEY = 'proposalos_login_at'
 
 export const authService = {
+  /**
+   * Check if current session was created on or after today's 12:00 AM (midnight).
+   * Daily login is required after 12:00 AM every day.
+   * @returns {boolean}
+   */
+  isSessionValid() {
+    const token = authService.getToken()
+    if (!token) return false
+
+    const loginAt = localStorage.getItem(LOGIN_TIME_KEY)
+    if (!loginAt) return false
+
+    const loginTimestamp = new Date(loginAt).getTime()
+    if (isNaN(loginTimestamp)) return false
+
+    // Start of the current calendar day in local time (12:00:00.000 AM / 00:00:00)
+    const todayMidnight = new Date()
+    todayMidnight.setHours(0, 0, 0, 0)
+
+    // Valid only if login occurred on or after today's 12:00 AM
+    return loginTimestamp >= todayMidnight.getTime()
+  },
+
+  /**
+   * Check if daily session has expired (passed 12:00 AM since last login).
+   * If expired, purges the stale session and returns true.
+   * @returns {boolean}
+   */
+  checkDailyExpiry() {
+    if (!authService.isSessionValid()) {
+      if (
+        localStorage.getItem(TOKEN_KEY) ||
+        localStorage.getItem(LOGIN_TIME_KEY)
+      ) {
+        authService.purgeSession()
+        return true
+      }
+    }
+    return false
+  },
+
+  /**
+   * Calculate milliseconds until the next upcoming 12:00 AM (midnight).
+   * Used to schedule automatic expiration when the app is actively open.
+   * @returns {number}
+   */
+  getMsUntilNextMidnight() {
+    const now = new Date()
+    const nextMidnight = new Date(now)
+    nextMidnight.setHours(24, 0, 0, 0) // Next day at 00:00:00.000
+    return Math.max(0, nextMidnight.getTime() - now.getTime())
+  },
+
+  /**
+   * Purge all tokens, timestamps, and cached user data from localStorage
+   */
+  purgeSession() {
+    localStorage.removeItem(TOKEN_KEY)
+    localStorage.removeItem('token')
+    localStorage.removeItem('access_token')
+    localStorage.removeItem(USER_KEY)
+    localStorage.removeItem(LOGIN_TIME_KEY)
+    localStorage.removeItem('proposalos_session')
+  },
+
   /**
    * Login user
    * POST /auth/login
@@ -28,6 +94,8 @@ export const authService = {
 
     if (token) {
       authService.setToken(token)
+      // Timestamp this login for daily 12:00 AM expiration tracking
+      localStorage.setItem(LOGIN_TIME_KEY, new Date().toISOString())
     }
     if (user) {
       authService.setUser(user)
@@ -43,9 +111,10 @@ export const authService = {
   async logout() {
     try {
       await api.post('/auth/logout')
+    } catch {
+      // Ignore network errors during logout
     } finally {
-      authService.removeToken()
-      authService.removeUser()
+      authService.purgeSession()
     }
   },
 
@@ -54,6 +123,12 @@ export const authService = {
    * GET /user
    */
   async getCurrentUser() {
+    // If daily session expired, don't attempt call
+    if (!authService.isSessionValid()) {
+      authService.purgeSession()
+      return null
+    }
+
     const response = await api.get('/user')
     const resData = response.data || {}
     const user =
@@ -161,8 +236,15 @@ export const authService = {
     localStorage.removeItem(USER_KEY)
   },
 
+  /**
+   * Checks if user is authenticated and session was started after today's 12:00 AM
+   */
   isAuthenticated() {
-    return Boolean(authService.getToken())
+    const valid = authService.isSessionValid()
+    if (!valid && (localStorage.getItem(TOKEN_KEY) || localStorage.getItem(LOGIN_TIME_KEY))) {
+      authService.purgeSession()
+    }
+    return valid
   },
 }
 
@@ -182,6 +264,10 @@ export const {
   getUser,
   removeUser,
   isAuthenticated,
+  isSessionValid,
+  checkDailyExpiry,
+  getMsUntilNextMidnight,
+  purgeSession,
 } = authService
 
 export default authService

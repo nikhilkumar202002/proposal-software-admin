@@ -1,11 +1,32 @@
 import { useState, useEffect } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import Header from './Header'
 import AIButton from '../common/AIButton'
+import authService from '../../services/auth.service'
 
 export const AdminLayout = ({ children }) => {
   const location = useLocation()
+  const navigate = useNavigate()
+
+  // Enforce daily login after 12:00 AM (midnight)
+  useEffect(() => {
+    // If not authenticated or login session was before today's 12:00 AM
+    if (!authService.isAuthenticated()) {
+      authService.purgeSession()
+      navigate('/login?reason=daily_expired', { replace: true })
+      return
+    }
+
+    // Schedule automatic logout at next 12:00 AM midnight
+    const msUntilMidnight = authService.getMsUntilNextMidnight()
+    const midnightTimer = setTimeout(() => {
+      authService.purgeSession()
+      navigate('/login?reason=daily_expired', { replace: true })
+    }, msUntilMidnight)
+
+    return () => clearTimeout(midnightTimer)
+  }, [navigate, location.pathname])
 
   // Sidebar collapse state with localStorage persistence
   const [isCollapsed, setIsCollapsed] = useState(() => {
