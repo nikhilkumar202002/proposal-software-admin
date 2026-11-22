@@ -13,6 +13,7 @@ import {
     Sparkles,
     UserCog,
     Layers,
+    Bot,
 } from 'lucide-react'
 import useAuthStore, { getInitials } from '../../store/authStore'
 import { RiChatAiFill } from 'react-icons/ri'
@@ -47,16 +48,24 @@ const workspaceLinks = [
         to: '/services-technologies',
         icon: Layers,
     },
+]
+
+const aiLinks = [
     {
         name: 'AI Chat',
         to: '/ai',
         icon: RiChatAiFill,
-        badge: 'New',
+        badge: 'Live',
     },
     {
         name: 'AI Generator',
         to: '/ai/generator',
         icon: Sparkles,
+    },
+    {
+        name: 'AI Settings',
+        to: '/ai/settings',
+        icon: Bot,
     },
 ]
 
@@ -288,6 +297,21 @@ export const Sidebar = ({
                             )}
                             <nav className="flex flex-col">
                                 {workspaceLinks.map((item) => renderNavItem(item))}
+                            </nav>
+                        </div>
+
+                        {/* AI Copilot & Chat Section */}
+                        <div>
+                            {(!isCollapsed || isMobileOpen) ? (
+                                <div className="px-3 mb-1.5 flex items-center justify-between text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                                    <span>AI & Copilot</span>
+                                    <span className="flex h-1.5 w-1.5 rounded-full bg-[#0055FF] animate-pulse" />
+                                </div>
+                            ) : (
+                                <div className="h-px bg-gray-100 my-2 mx-1" />
+                            )}
+                            <nav className="flex flex-col">
+                                {aiLinks.map((item) => renderNavItem(item))}
                             </nav>
                         </div>
 

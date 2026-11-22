@@ -17,7 +17,9 @@ import {
   Keyboard,
   LifeBuoy,
   X,
+  Sparkles,
 } from 'lucide-react'
+import { RiChatAiFill } from 'react-icons/ri'
 import useAuthStore, { getInitials } from '../../store/authStore'
 
 // Route title & breadcrumb mapping
@@ -163,12 +165,14 @@ export const Header = ({
 
   // State
   const [searchQuery, setSearchQuery] = useState('')
+  const [isAIMenuOpen, setIsAIMenuOpen] = useState(false)
   const [isNotificationOpen, setIsNotificationOpen] = useState(false)
   const [isHelpOpen, setIsHelpOpen] = useState(false)
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
 
   // Refs for outside click detection
   const searchInputRef = useRef(null)
+  const aiMenuRef = useRef(null)
   const notificationRef = useRef(null)
   const helpRef = useRef(null)
   const userMenuRef = useRef(null)
@@ -212,6 +216,7 @@ export const Header = ({
           searchInputRef.current.focus()
         }
       } else if (e.key === 'Escape') {
+        setIsAIMenuOpen(false)
         setIsNotificationOpen(false)
         setIsHelpOpen(false)
         setIsUserMenuOpen(false)
@@ -228,6 +233,12 @@ export const Header = ({
   // Close dropdowns on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
+      if (
+        aiMenuRef.current &&
+        !aiMenuRef.current.contains(event.target)
+      ) {
+        setIsAIMenuOpen(false)
+      }
       if (
         notificationRef.current &&
         !notificationRef.current.contains(event.target)
@@ -344,6 +355,86 @@ export const Header = ({
               </div>
             )}
           </div>
+        </div>
+
+        {/* AI Chat Quick Trigger & Dropdown Menu */}
+        <div className="relative" ref={aiMenuRef}>
+          <button
+            type="button"
+            onClick={() => {
+              setIsAIMenuOpen(!isAIMenuOpen)
+              setIsNotificationOpen(false)
+              setIsHelpOpen(false)
+              setIsUserMenuOpen(false)
+            }}
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50/70 hover:from-blue-100/80 hover:to-indigo-100/80 border border-blue-200/80 text-[#0055FF] text-xs font-semibold shadow-2xs transition-all cursor-pointer group"
+            title="Open ProposalOS AI Menu"
+          >
+            <RiChatAiFill className="w-4 h-4 text-[#0055FF] group-hover:scale-110 transition-transform" />
+            <span className="hidden sm:inline">AI Chat</span>
+            <ChevronDown className="w-3 h-3 text-[#0055FF]/70" />
+          </button>
+
+          {isAIMenuOpen && (
+            <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-200/90 py-1.5 z-50 animate-in fade-in-50 zoom-in-95">
+              <div className="px-3 py-2 border-b border-gray-100 flex items-center justify-between">
+                <span className="text-xs font-bold text-gray-900 flex items-center gap-1.5">
+                  <RiChatAiFill className="w-3.5 h-3.5 text-[#0055FF]" />
+                  ProposalOS AI Copilot
+                </span>
+                <span className="px-1.5 py-0.5 text-[10px] font-semibold bg-emerald-50 text-emerald-600 rounded-full">
+                  Online
+                </span>
+              </div>
+
+              <div className="py-1 text-xs">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsAIMenuOpen(false)
+                    navigate('/ai')
+                  }}
+                  className="w-full px-3 py-2 text-left hover:bg-blue-50/60 flex items-center gap-2.5 text-gray-700 hover:text-[#0055FF] transition-colors cursor-pointer"
+                >
+                  <RiChatAiFill className="w-4 h-4 text-[#0055FF] shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-gray-900 text-xs">AI Chat & Assistant</p>
+                    <p className="text-[10px] text-gray-500">Interactive conversational copilot</p>
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsAIMenuOpen(false)
+                    navigate('/ai/generator')
+                  }}
+                  className="w-full px-3 py-2 text-left hover:bg-blue-50/60 flex items-center gap-2.5 text-gray-700 hover:text-[#0055FF] transition-colors cursor-pointer"
+                >
+                  <Sparkles className="w-4 h-4 text-purple-600 shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-gray-900 text-xs">Proposal Generator</p>
+                    <p className="text-[10px] text-gray-500">Synthesize 50-page enterprise proposals</p>
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsAIMenuOpen(false)
+                    navigate('/ai/settings')
+                  }}
+                  className="w-full px-3 py-2 text-left hover:bg-blue-50/60 flex items-center gap-2.5 text-gray-700 hover:text-[#0055FF] transition-colors cursor-pointer"
+                >
+                  <Settings className="w-4 h-4 text-gray-500 shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-gray-900 text-xs">Model & Provider Settings</p>
+                    <p className="text-[10px] text-gray-500">Configure GPT-4o, Claude, or Gemini</p>
+                  </div>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Notifications Icon with Popover */}
