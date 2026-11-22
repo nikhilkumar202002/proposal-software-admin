@@ -108,8 +108,8 @@ export const useChatStore = create((set, get) => ({
     }
   },
 
-  // Send a message & trigger AI generation
-  sendMessage: async ({ text, context = null, modelId = 'gpt-4o' }) => {
+  // Send a message & trigger AI generation (with real-time streaming)
+  sendMessage: async ({ text, context = null, modelId = 'gpt-4o', provider = 'openai' }) => {
     if (!text || !text.trim()) return
 
     const trimmed = text.trim()
@@ -117,7 +117,12 @@ export const useChatStore = create((set, get) => ({
 
     // Ensure we have an active conversation
     if (!convId) {
-      const newConv = await get().createNewConversation(generateConversationTitle(trimmed), modelId)
+      const newConv = await get().createNewConversation(
+        generateConversationTitle(trimmed),
+        modelId,
+        provider,
+        context
+      )
       convId = newConv.id
     }
 
@@ -125,6 +130,7 @@ export const useChatStore = create((set, get) => ({
       id: `msg-${Date.now()}`,
       sender: 'user',
       text: trimmed,
+      modelId,
       createdAt: new Date().toISOString(),
     }
 
@@ -151,43 +157,75 @@ export const useChatStore = create((set, get) => ({
     set({ abortController: controller })
 
     try {
-      const response = await chatService.sendMessage({
+      await chatService.streamChat({
         conversationId: convId,
         message: trimmed,
         context,
         modelId,
-      })
-
-      const aiMessage = {
-        id: `msg-${Date.now() + 1}`,
-        sender: 'assistant',
-        text: response.reply,
-        modelId: response.modelId || modelId,
-        createdAt: new Date().toISOString(),
-      }
-
-      set((state) => {
-        const convList = state.conversations.map((c) => {
-          if (c.id === convId) {
-            return {
-              ...c,
-              messages: [...(c.messages || []), aiMessage],
-              updatedAt: new Date().toISOString(),
-            }
+        provider,
+        signal: controller.signal,
+        onChunk: (accumulated) => {
+          set({ streamedText: accumulated })
+        },
+        onComplete: (fullText) => {
+          const aiMessage = {
+            id: `msg-${Date.now() + 1}`,
+            sender: 'assistant',
+            text: fullText,
+            modelId,
+            createdAt: new Date().toISOString(),
           }
-          return c
-        })
-        return {
-          conversations: convList,
-          isGenerating: false,
-          abortController: null,
-        }
+
+          set((state) => {
+            const convList = state.conversations.map((c) => {
+              if (c.id === convId) {
+                return {
+                  ...c,
+                  messages: [...(c.messages || []), aiMessage],
+                  updatedAt: new Date().toISOString(),
+                }
+              }
+              return c
+            })
+            return {
+              conversations: convList,
+              isGenerating: false,
+              streamedText: '',
+              abortController: null,
+            }
+          })
+        },
+        onError: (streamErr) => {
+          console.warn('Stream failed, handling error:', streamErr.message)
+        },
       })
     } catch (err) {
       if (err.name === 'AbortError') {
-        set({ isGenerating: false, abortController: null })
+        // If aborted while streaming, keep what was generated so far
+        const partial = get().streamedText
+        if (partial) {
+          const partialMessage = {
+            id: `msg-${Date.now() + 1}`,
+            sender: 'assistant',
+            text: partial,
+            modelId,
+            createdAt: new Date().toISOString(),
+          }
+          set((state) => ({
+            conversations: state.conversations.map((c) =>
+              c.id === convId
+                ? { ...c, messages: [...(c.messages || []), partialMessage] }
+                : c
+            ),
+            isGenerating: false,
+            streamedText: '',
+            abortController: null,
+          }))
+        } else {
+          set({ isGenerating: false, streamedText: '', abortController: null })
+        }
       } else {
-        set({ error: err.message, isGenerating: false, abortController: null })
+        set({ error: err.message, isGenerating: false, streamedText: '', abortController: null })
       }
     }
   },

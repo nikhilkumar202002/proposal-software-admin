@@ -3,7 +3,7 @@
  * Manages full proposal synthesis, content transformation, and proposal reviews.
  */
 
-import api from '../../../services/api'
+import { aiService as centralAIService } from '../../../services/ai.service'
 import aiService from './aiService'
 import { convertAIResponseToProposalModel } from '../utils/proposalConverter'
 
@@ -25,7 +25,7 @@ export const proposalAIService = {
     existingProposals = [],
   }) => {
     try {
-      const response = await api.post('/ai/generate-proposal', {
+      let data = await centralAIService.generateProposal({
         title,
         client,
         serviceType,
@@ -36,11 +36,18 @@ export const proposalAIService = {
         modelId,
         prompt,
       })
-      const validatedProposal = convertAIResponseToProposalModel(response.data, existingProposals)
+
+      // If backend returns an async job UUID, poll until completion
+      if (data?.job_uuid || data?.jobId) {
+        const finishedJob = await centralAIService.pollJob(data.job_uuid || data.jobId)
+        data = finishedJob.result || finishedJob.data || finishedJob
+      }
+
+      const validatedProposal = convertAIResponseToProposalModel(data, existingProposals)
       await aiService.logUsage({
         modelId,
         prompt: `Generate proposal: ${title}`,
-        responseText: JSON.stringify(response.data),
+        responseText: JSON.stringify(data),
         actionType: 'generate_complete_proposal',
       })
       return validatedProposal
@@ -125,14 +132,14 @@ Our proposed architecture eliminates operational bottlenecks, ensures multi-regi
    */
   regenerateSection: async ({ section, context, prompt, proposalTitle, modelId = 'gpt-4o' }) => {
     try {
-      const response = await api.post('/ai/regenerate-section', {
+      const response = await centralAIService.regenerateSection({
         section,
         context,
         prompt,
         proposal_title: proposalTitle,
         modelId,
       })
-      return response.data?.data?.content || response.data?.content || ''
+      return response.content || response.data?.content || ''
     } catch (err) {
       console.warn('Backend regenerateSection failed, using local fallback:', err)
       return `${context}\n\n*Updated with AI enhancement for ${section} focusing on executive impact and operational velocity.*`
@@ -145,24 +152,12 @@ Our proposed architecture eliminates operational bottlenecks, ensures multi-regi
    */
   calculatePricing: async ({ items, discountType, discountValue, additionalCharges }) => {
     try {
-      const formattedItems = (items || []).map((it) => ({
-        description: it.description || '',
-        quantity: Number(it.quantity || 1),
-        unit: it.unit || 'Milestone',
-        unit_price: Number(it.unitPrice ?? it.unit_price ?? 0),
-        discount_type: it.discountType || it.discount_type || null,
-        discount_value: Number(it.discountValue ?? it.discount_value ?? 0),
-        tax_rate: Number(it.taxRate ?? it.tax_rate ?? it.tax ?? 18),
-      }))
-
-      const response = await api.post('/proposals/calculate-pricing', {
-        items: formattedItems,
-        discount_type: discountType || null,
-        discount_value: Number(discountValue || 0),
-        additional_charges: Number(additionalCharges || 0),
+      return await centralAIService.calculatePricing({
+        items,
+        discount_type: discountType,
+        discount_value: discountValue,
+        additional_charges: additionalCharges,
       })
-
-      return response.data?.data || response.data
     } catch (err) {
       console.warn('Failed to calculate pricing on backend, using local fallback:', err)
       return null
@@ -173,16 +168,34 @@ Our proposed architecture eliminates operational bottlenecks, ensures multi-regi
    * Improve or rewrite proposal text
    * POST /api/ai/improve-content
    */
-  improveContent: async ({ content, goal = 'professional', modelId = 'gpt-4o' }) => {
+  improveContent: async ({ content, goal = 'professional', tone, modelId = 'gpt-4o' }) => {
     try {
-      const response = await api.post('/ai/improve-content', { content, goal, modelId })
+      let res = await centralAIService.improveContent({
+        content,
+        tone: tone || goal || 'executive',
+      })
+
+      // If backend returns async job, poll job status
+      if (res?.job_uuid || res?.jobId) {
+        const finishedJob = await centralAIService.pollJob(res.job_uuid || res.jobId)
+        res = finishedJob.result || finishedJob.data || finishedJob
+      }
+
+      const improvedText =
+        res.improvedText ||
+        res.data?.improvedText ||
+        res.data?.content ||
+        res.content ||
+        res.text ||
+        content
+
       await aiService.logUsage({
         modelId,
-        prompt: `Improve (${goal}): ${content.slice(0, 50)}`,
-        responseText: response.data.improvedText,
+        prompt: `Improve (${tone || goal}): ${content.slice(0, 50)}`,
+        responseText: improvedText,
         actionType: 'improve_proposal_content',
       })
-      return response.data.improvedText
+      return improvedText
     } catch {
       await new Promise((r) => setTimeout(r, 600))
       let result = content
@@ -197,7 +210,7 @@ Our proposed architecture eliminates operational bottlenecks, ensures multi-regi
 
       await aiService.logUsage({
         modelId,
-        prompt: `Improve (${goal}): ${content.slice(0, 50)}`,
+        prompt: `Improve (${tone || goal}): ${content.slice(0, 50)}`,
         responseText: result,
         actionType: 'improve_proposal_content',
       })

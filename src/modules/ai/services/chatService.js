@@ -1,9 +1,9 @@
 /**
  * ProposalOS AI Module - Chat & Conversation Service
- * Manages conversation CRUD and chat message generation with Laravel endpoints or mock storage.
+ * Manages conversation CRUD and chat message generation with backend endpoints or mock storage fallback.
  */
 
-import api from '../../../services/api'
+import { aiService as centralAIService } from '../../../services/ai.service'
 import aiService from './aiService'
 import { SYSTEM_PROMPT } from '../utils/promptBuilder'
 
@@ -11,16 +11,22 @@ const CHAT_STORAGE_KEY = 'proposalos_ai_conversations'
 
 const DEFAULT_CONVERSATIONS = [
   {
-    id: 'conv-init-1',
-    title: 'Enterprise Digital Modernization',
+    id: 'conv-01M81YM71EPFS5P8HCVE1KETSJ',
+    db_id: 5,
+    title: 'Enterprise E-Commerce Modernization',
     modelId: 'gpt-4o',
+    provider: 'openai',
+    context: {
+      clientName: 'Apex Global',
+    },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     messages: [
       {
-        id: 'msg-init-1',
+        id: 'msg-01M81YM71GXHWQ71BCEK5WGWN7',
         sender: 'user',
-        text: 'Draft an executive summary and 3 key milestones for an enterprise digital modernization proposal.',
+        text: 'We need an e-commerce proposal. The stack is Next.js, Laravel, and MySQL with Stripe checkout and 8 weeks delivery.',
+        modelId: 'gpt-4o',
         createdAt: new Date().toISOString(),
       },
       {
@@ -46,6 +52,7 @@ In today’s accelerating competitive landscape, legacy monoliths introduce late
 | **Milestone 03** | **Production Rollout, Client Dashboard & 24/7 SLA**<br/>Real-time telemetry, user acceptance signoff, staff training & handover. | 4 Weeks | ₹ 2,80,000 |
 
 *All milestone items can be directly itemized into the ProposalOS pricing engine with automatic tax calculation and PDF publishing.*`,
+        modelId: 'gpt-4o',
         createdAt: new Date().toISOString(),
       },
     ],
@@ -59,8 +66,15 @@ export const chatService = {
    */
   getConversations: async () => {
     try {
-      const response = await api.get('/ai/conversations')
-      return response.data
+      const list = await centralAIService.getConversations()
+      if (Array.isArray(list) && list.length > 0) {
+        localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(list))
+        return list
+      }
+      // If backend returned empty list, check local storage
+      const raw = localStorage.getItem(CHAT_STORAGE_KEY)
+      if (raw) return JSON.parse(raw)
+      return list
     } catch {
       const raw = localStorage.getItem(CHAT_STORAGE_KEY)
       if (!raw) {
@@ -75,16 +89,32 @@ export const chatService = {
    * Create a new conversation
    * POST /api/ai/conversations
    */
-  createConversation: async ({ title = 'New Proposal Chat', modelId = 'gpt-4o' }) => {
+  createConversation: async ({
+    title = 'New Proposal Chat',
+    modelId = 'gpt-4o',
+    provider = 'openai',
+    context = {},
+  }) => {
     try {
-      const response = await api.post('/ai/conversations', { title, modelId })
-      return response.data
+      const response = await centralAIService.createConversation({
+        title,
+        modelId,
+        provider,
+        context,
+      })
+      if (response?.id) {
+        return response
+      }
+      throw new Error('Invalid conversation response')
     } catch {
       const convos = await chatService.getConversations()
       const newConv = {
         id: `conv-${Date.now()}`,
+        db_id: Date.now(),
         title,
         modelId,
+        provider,
+        context,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         messages: [],
@@ -96,28 +126,35 @@ export const chatService = {
   },
 
   /**
-   * Rename a conversation
+   * Rename or update a conversation
    * PATCH /api/ai/conversations/{id}
    */
-  updateConversation: async (id, { title, modelId }) => {
+  updateConversation: async (id, { title, modelId, context }) => {
     try {
-      const response = await api.patch(`/ai/conversations/${id}`, { title, modelId })
-      return response.data
-    } catch {
-      const convos = await chatService.getConversations()
-      const index = convos.findIndex((c) => c.id === id)
-      if (index !== -1) {
-        convos[index] = {
-          ...convos[index],
-          ...(title ? { title } : {}),
-          ...(modelId ? { modelId } : {}),
-          updatedAt: new Date().toISOString(),
-        }
-        localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(convos))
-        return convos[index]
-      }
-      throw new Error('Conversation not found')
+      const response = await centralAIService.updateConversation(id, {
+        title,
+        modelId,
+        context,
+      })
+      if (response?.id) return response
+    } catch (err) {
+      console.warn('Backend updateConversation fallback:', err.message)
     }
+
+    const convos = await chatService.getConversations()
+    const index = convos.findIndex((c) => c.id === id || c.db_id === id)
+    if (index !== -1) {
+      convos[index] = {
+        ...convos[index],
+        ...(title !== undefined ? { title } : {}),
+        ...(modelId !== undefined ? { modelId } : {}),
+        ...(context !== undefined ? { context } : {}),
+        updatedAt: new Date().toISOString(),
+      }
+      localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(convos))
+      return convos[index]
+    }
+    throw new Error('Conversation not found')
   },
 
   /**
@@ -126,36 +163,45 @@ export const chatService = {
    */
   deleteConversation: async (id) => {
     try {
-      await api.delete(`/ai/conversations/${id}`)
-      return { success: true }
-    } catch {
-      const convos = await chatService.getConversations()
-      const filtered = convos.filter((c) => c.id !== id)
-      localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(filtered))
-      return { success: true }
+      await centralAIService.deleteConversation(id)
+    } catch (err) {
+      console.warn('Backend deleteConversation fallback:', err.message)
     }
+
+    const convos = await chatService.getConversations()
+    const filtered = convos.filter((c) => c.id !== id && c.db_id !== id)
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(filtered))
+    return { success: true }
   },
 
   /**
-   * Send a chat message
+   * Send a chat message (Synchronous)
    * POST /api/ai/chat
    */
-  sendMessage: async ({ conversationId, message, context = null, modelId = 'gpt-4o' }) => {
+  sendMessage: async ({
+    conversationId,
+    message,
+    context = null,
+    modelId = 'gpt-4o',
+    provider = 'openai',
+  }) => {
     try {
-      const response = await api.post('/ai/chat', {
+      const response = await centralAIService.sendMessage({
         conversationId,
         message,
         context,
         modelId,
-        systemPrompt: SYSTEM_PROMPT,
+        provider,
       })
+
       await aiService.logUsage({
         modelId,
         prompt: message,
-        responseText: response.data.reply,
+        responseText: response.reply,
         actionType: 'chat',
       })
-      return response.data
+
+      return response
     } catch {
       // Realistic simulated AI response generator
       await new Promise((r) => setTimeout(r, 650))
@@ -220,10 +266,52 @@ Would you like me to:
 
       return {
         reply,
+        text: reply,
         modelId,
+        provider,
         timestamp: new Date().toISOString(),
       }
     }
+  },
+
+  /**
+   * Stream interactive AI response
+   * POST /api/ai/chat/stream
+   */
+  streamChat: async ({
+    conversationId,
+    message,
+    context = null,
+    modelId = 'gpt-4o',
+    provider = 'openai',
+    onChunk = () => {},
+    onComplete = () => {},
+    onError = () => {},
+    signal,
+  }) => {
+    return centralAIService.streamChat(
+      {
+        conversationId,
+        message,
+        context,
+        modelId,
+        provider,
+      },
+      {
+        onChunk,
+        onComplete: async (fullText) => {
+          await aiService.logUsage({
+            modelId,
+            prompt: message,
+            responseText: fullText,
+            actionType: 'chat_stream',
+          })
+          onComplete(fullText)
+        },
+        onError,
+        signal,
+      }
+    )
   },
 }
 

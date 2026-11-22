@@ -32,11 +32,13 @@ export function useAIChat() {
     setEditingMessageId,
   } = useChatStore()
 
-  const { selectedModelId, context } = useAIStore()
+  const { selectedModelId, activeProvider, context, fetchModels, fetchProviders } = useAIStore()
 
   useEffect(() => {
     loadConversations()
-  }, [loadConversations])
+    if (fetchModels) fetchModels()
+    if (fetchProviders) fetchProviders()
+  }, [loadConversations, fetchModels, fetchProviders])
 
   // Filter conversations by search query
   const filteredConversations = useMemo(() => {
@@ -55,17 +57,22 @@ export function useAIChat() {
 
   const handleSend = (text) => {
     const contextPayload = formatContextPayload(context)
-    sendMessage({ text, context: contextPayload, modelId: selectedModelId })
+    sendMessage({
+      text,
+      context: contextPayload,
+      modelId: selectedModelId,
+      provider: activeProvider || 'openai',
+    })
   }
 
   const handleRegenerate = () => {
     const contextPayload = formatContextPayload(context)
-    regenerateResponse(contextPayload, selectedModelId)
+    regenerateResponse(contextPayload, selectedModelId, activeProvider || 'openai')
   }
 
   const handleEditAndResend = (messageId, newText) => {
     const contextPayload = formatContextPayload(context)
-    editAndResendMessage(messageId, newText, contextPayload, selectedModelId)
+    editAndResendMessage(messageId, newText, contextPayload, selectedModelId, activeProvider || 'openai')
   }
 
   return {
