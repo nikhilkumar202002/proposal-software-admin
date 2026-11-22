@@ -1,4 +1,8 @@
 import DocumentPageBreak from './DocumentPageBreak'
+import signatureAsset from '@/assets/signature.png'
+import { SIGNATURE_BASE64 } from '@/assets/signatureData'
+
+const DEFAULT_SIGNATURE_SRC = SIGNATURE_BASE64 || signatureAsset || '/signature.png'
 
 export const DocumentContent = ({
   blocks = [],
@@ -266,9 +270,16 @@ function renderBlock(block) {
               <p className="font-semibold text-gray-900 mb-1.5">{block.partyA.title}</p>
               <div className="h-12 flex items-end pb-1">
                 <img
-                  src={block.partyA.signatureImage || '/signature.png'}
+                  src={block.partyA.signatureImage || DEFAULT_SIGNATURE_SRC}
                   alt="Authorized Signature"
                   className="max-h-11 w-auto object-contain pointer-events-none"
+                  style={{ maxHeight: '44px', width: 'auto', display: 'block' }}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null
+                    if (e.currentTarget.src !== SIGNATURE_BASE64) {
+                      e.currentTarget.src = SIGNATURE_BASE64
+                    }
+                  }}
                 />
               </div>
               <div className="w-36 h-px bg-gray-400 mb-1.5" />
@@ -287,6 +298,7 @@ function renderBlock(block) {
                     src={block.partyB.signatureImage}
                     alt="Client Signature"
                     className="max-h-11 w-auto object-contain pointer-events-none"
+                    style={{ maxHeight: '44px', width: 'auto', display: 'block' }}
                   />
                 ) : null}
               </div>

@@ -4,6 +4,7 @@ import {
   calculatePricingSummary,
   round2 as pricingRound2,
 } from '../../pricing/utils/pricingCalculations.js'
+import { SIGNATURE_BASE64 } from '@/assets/signatureData.js'
 
 export const CURRENCY_CONFIG = {
   INR: { symbol: '₹', code: 'INR', name: 'Indian Rupee', locale: 'en-IN' },
@@ -808,7 +809,7 @@ export function convertProposalToDocumentCanvasProps(proposal) {
       name: 'Authorized Signatory',
       role: 'Enterprise Solutions Director',
       date: proposal.date || new Date().toISOString().split('T')[0],
-      signatureImage: '/signature.png',
+      signatureImage: SIGNATURE_BASE64,
     },
     partyB: {
       title: `For ${proposal.client?.companyName || proposal.companyName || 'Client Organization'}`,

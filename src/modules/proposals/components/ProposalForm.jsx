@@ -2,7 +2,6 @@ import { useState } from 'react'
 import {
   FileText,
   Users,
-  Building,
   BookOpen,
   Calculator,
   Eye,
@@ -11,10 +10,8 @@ import {
 } from 'lucide-react'
 import ProposalInformation from './ProposalInformation'
 import ClientDetailsForm from './ClientDetailsForm'
-import CompanyDetailsForm from './CompanyDetailsForm'
 import ProposalEditorPanel from './ProposalEditorPanel'
 import ProposalPricing from './ProposalPricing'
-import ProposalSummary from './ProposalSummary'
 import ProposalActions from './ProposalActions'
 import { DocumentCanvas } from '../../../components/document'
 import { convertProposalToDocumentCanvasProps } from '../utils/proposalHelpers'
@@ -29,13 +26,10 @@ const STEPS = [
 
 export const ProposalForm = ({
   proposal,
-  totals,
   activeStep = 1,
   onStepChange = () => {},
   onUpdateMetadata = () => {},
   onUpdateClient = () => {},
-  onUpdateCompany = () => {},
-  onResetCompany = () => {},
   onUpdateDocumentContent = () => {},
   onAddPricingItem = () => {},
   onUpdatePricingItem = () => {},
