@@ -17,7 +17,10 @@ function renderBlock(block) {
   const { id, type } = block
 
   switch (type) {
-    case 'proposalMeta':
+    case 'proposalMeta': {
+      const serviceDisplay = block.serviceType || ''
+      const techDisplay = block.technology || block.technologies || ''
+
       return (
         <div
           key={id}
@@ -44,10 +47,18 @@ function renderBlock(block) {
               </tr>
               <tr>
                 <td className="py-1 pr-4 font-semibold text-gray-700 whitespace-nowrap">
-                  Contact Number :
+                  Service Type & Technology :
                 </td>
                 <td className="py-1 text-gray-900 font-medium">
-                  {block.contactNumber || '—'}
+                  {serviceDisplay && techDisplay ? (
+                    <span>
+                      <span>{serviceDisplay}</span>
+                      <span className="mx-2 text-gray-400 font-normal">•</span>
+                      <span className="text-gray-700 font-medium">{techDisplay}</span>
+                    </span>
+                  ) : (
+                    <span>{serviceDisplay || techDisplay || '—'}</span>
+                  )}
                 </td>
               </tr>
               <tr>
@@ -58,18 +69,11 @@ function renderBlock(block) {
                   {block.projectTotalCost || '—'}
                 </td>
               </tr>
-              <tr>
-                <td className="py-1 pr-4 font-semibold text-gray-700 whitespace-nowrap">
-                  Service Type :
-                </td>
-                <td className="py-1 text-gray-900 font-medium">
-                  {block.serviceType || '—'}
-                </td>
-              </tr>
             </tbody>
           </table>
         </div>
       )
+    }
 
     case 'hero':
       return (
