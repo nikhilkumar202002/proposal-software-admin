@@ -34,8 +34,11 @@ export const ClientSearch = ({
       <div className="w-full md:w-80">
         <SearchInput
           placeholder="Search by client, company, email, city..."
-          value={filters.search || ''}
-          onChange={(val) => onChange({ search: val })}
+          value={typeof filters.search === 'string' ? filters.search : ''}
+          onChange={(e) => {
+            const val = typeof e === 'string' ? e : e?.target?.value ?? ''
+            onChange({ search: val })
+          }}
         />
       </div>
 

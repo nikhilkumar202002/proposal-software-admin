@@ -9,9 +9,18 @@ export function useClients() {
     let list = [...store.clients]
     const { search, status, country, sortBy, sortDirection } = store.filters
 
-    // Search query
-    if (search && search.trim()) {
-      const q = search.toLowerCase().trim()
+    // Safely parse search query string (handles string, DOM event, or undefined)
+    const searchStr =
+      typeof search === 'string'
+        ? search
+        : typeof search?.target?.value === 'string'
+        ? search.target.value
+        : typeof search === 'number'
+        ? String(search)
+        : ''
+
+    if (searchStr.trim()) {
+      const q = searchStr.toLowerCase().trim()
       list = list.filter(
         (c) =>
           c.name?.toLowerCase().includes(q) ||

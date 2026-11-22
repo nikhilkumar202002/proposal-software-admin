@@ -182,8 +182,11 @@ export const ProposalList = () => {
         <div className="w-full md:w-80">
           <SearchInput
             placeholder="Search proposals, numbers, clients..."
-            value={filters.search}
-            onChange={(val) => setFilters({ search: val })}
+            value={typeof filters.search === 'string' ? filters.search : ''}
+            onChange={(e) => {
+              const val = typeof e === 'string' ? e : e?.target?.value ?? ''
+              setFilters({ search: val })
+            }}
           />
         </div>
 
