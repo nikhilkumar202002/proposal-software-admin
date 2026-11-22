@@ -1,2 +1,2 @@
-export * from '../modules/proposals/services/proposalService'
-export { default } from '../modules/proposals/services/proposalService'
+export * from './proposal.service'
+export { default } from './proposal.service'
