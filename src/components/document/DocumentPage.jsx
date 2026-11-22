@@ -67,7 +67,7 @@ export const DocumentPage = ({
               company={company}
               proposal={proposal}
               template={headerSettings.template}
-              showDivider={headerSettings.showDivider ?? true}
+              showDivider={headerSettings.showDivider ?? false}
               height={headerHeightMm}
             />
           )}

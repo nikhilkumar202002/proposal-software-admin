@@ -263,17 +263,17 @@ function renderBlock(block) {
         <div
           key={id}
           data-block-id={id}
-          className="mt-5 grid grid-cols-2 gap-8 text-xs select-none"
+          className="mt-3.5 grid grid-cols-2 gap-8 text-xs select-none"
         >
           {block.partyA && (
             <div>
-              <p className="font-semibold text-gray-900 mb-1.5">{block.partyA.title}</p>
-              <div className="h-12 flex items-end pb-1">
+              <p className="font-semibold text-gray-900 mb-1">{block.partyA.title}</p>
+              <div className="h-11 flex items-end pb-1">
                 <img
                   src={block.partyA.signatureImage || DEFAULT_SIGNATURE_SRC}
                   alt="Authorized Signature"
-                  className="max-h-11 w-auto object-contain pointer-events-none"
-                  style={{ maxHeight: '44px', width: 'auto', display: 'block' }}
+                  className="max-h-10 w-auto object-contain pointer-events-none"
+                  style={{ maxHeight: '40px', width: 'auto', display: 'block' }}
                   onError={(e) => {
                     e.currentTarget.onerror = null
                     if (e.currentTarget.src !== SIGNATURE_BASE64) {
@@ -282,7 +282,7 @@ function renderBlock(block) {
                   }}
                 />
               </div>
-              <div className="w-36 h-px bg-gray-400 mb-1.5" />
+              <div className="w-36 h-px bg-gray-400 mb-1" />
               <p className="font-bold text-gray-800">{block.partyA.name}</p>
               <p className="text-[11px] text-gray-500">{block.partyA.role}</p>
               <p className="text-[10px] text-gray-400 mt-0.5">Date: {block.partyA.date}</p>
@@ -291,18 +291,18 @@ function renderBlock(block) {
 
           {block.partyB && (
             <div>
-              <p className="font-semibold text-gray-900 mb-1.5">{block.partyB.title}</p>
-              <div className="h-12 flex items-end pb-1">
+              <p className="font-semibold text-gray-900 mb-1">{block.partyB.title}</p>
+              <div className="h-11 flex items-end pb-1">
                 {block.partyB.signatureImage ? (
                   <img
                     src={block.partyB.signatureImage}
                     alt="Client Signature"
-                    className="max-h-11 w-auto object-contain pointer-events-none"
-                    style={{ maxHeight: '44px', width: 'auto', display: 'block' }}
+                    className="max-h-10 w-auto object-contain pointer-events-none"
+                    style={{ maxHeight: '40px', width: 'auto', display: 'block' }}
                   />
                 ) : null}
               </div>
-              <div className="w-36 h-px bg-gray-400 mb-1.5" />
+              <div className="w-36 h-px bg-gray-400 mb-1" />
               <p className="font-bold text-gray-800">{block.partyB.name}</p>
               <p className="text-[11px] text-gray-500">{block.partyB.role}</p>
               <p className="text-[10px] text-gray-400 mt-0.5">Date: {block.partyB.date}</p>

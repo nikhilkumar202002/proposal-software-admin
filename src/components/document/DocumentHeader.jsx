@@ -3,7 +3,7 @@ import logoImg from '../../assets/Domine-Dude_black.png'
 export const DocumentHeader = ({
   company = {},
   proposal = {},
-  showDivider = true,
+  showDivider = false,
   height = 22, // in mm
   className = '',
 }) => {

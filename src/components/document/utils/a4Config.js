@@ -24,7 +24,7 @@ export const A4_CONFIG = {
   header: {
     height: 22, // mm
     visible: true,
-    showDivider: true,
+    showDivider: false,
   },
   footer: {
     height: 16, // mm

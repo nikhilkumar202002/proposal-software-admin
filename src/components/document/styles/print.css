@@ -88,7 +88,9 @@
   }
 
   /* 5. A4 Physical Document Page Boundaries */
-  .document-page {
+  .document-page,
+  .document-page.portrait {
+    display: block !important;
     position: relative !important;
     margin: 0 auto !important;
     box-shadow: none !important;
@@ -96,10 +98,10 @@
     width: 210mm !important;
     min-width: 210mm !important;
     max-width: 210mm !important;
-    /* Use 296.5mm to prevent Chromium subpixel blank page overflow */
-    height: 296.5mm !important;
-    min-height: 296.5mm !important;
-    max-height: 296.5mm !important;
+    /* Use 296mm to ensure clean A4 fit without Chromium subpixel roundoff overflow */
+    height: 296mm !important;
+    min-height: 296mm !important;
+    max-height: 296mm !important;
     overflow: hidden !important;
     page-break-before: auto !important;
     break-before: auto !important;
@@ -127,36 +129,54 @@
 
   /* Landscape Orientation */
   .document-page.landscape {
+    display: block !important;
+    position: relative !important;
     width: 297mm !important;
     min-width: 297mm !important;
     max-width: 297mm !important;
-    height: 209.8mm !important;
-    min-height: 209.8mm !important;
-    max-height: 209.8mm !important;
+    height: 209mm !important;
+    min-height: 209mm !important;
+    max-height: 209mm !important;
+    overflow: hidden !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    box-sizing: border-box !important;
+    background: #FFFFFF !important;
   }
 
   /* Fixed Header Area */
   .document-header-area {
     position: absolute !important;
+    top: 11mm !important;
     left: 18mm !important;
     right: 18mm !important;
+    height: 22mm !important;
     z-index: 10 !important;
   }
 
   /* Fixed Footer Area */
   .document-footer-area {
     position: absolute !important;
+    bottom: 7mm !important;
     left: 18mm !important;
     right: 18mm !important;
+    height: 16mm !important;
     z-index: 10 !important;
   }
 
-  /* Content Container */
+  /* Content Container: fit comfortably in available height without flex overflow */
   .document-content-area {
+    display: block !important;
     position: relative !important;
     width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
+    max-height: 236mm !important;
     overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
   }
 
   /* Table print optimization */

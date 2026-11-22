@@ -68,7 +68,9 @@ export function calculatePages(blocks = [], settings = {}, measurements = {}) {
     }
 
     // 3. Block fits comfortably on current page
-    if (blockHeightPx <= remainingSpacePx) {
+    // Allow small tolerance for signatures so they appear naturally after content without creating an orphan next page
+    const signatureTolerancePx = block.type === 'signatures' ? 50 : 0
+    if (blockHeightPx <= remainingSpacePx + signatureTolerancePx) {
       currentPageBlocks.push(block)
       currentUsedHeightPx += blockHeightPx
       continue
