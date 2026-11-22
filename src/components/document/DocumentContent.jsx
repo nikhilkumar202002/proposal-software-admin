@@ -263,7 +263,14 @@ function renderBlock(block) {
         >
           {block.partyA && (
             <div>
-              <p className="font-semibold text-gray-900 mb-8">{block.partyA.title}</p>
+              <p className="font-semibold text-gray-900 mb-1.5">{block.partyA.title}</p>
+              <div className="h-12 flex items-end pb-1">
+                <img
+                  src={block.partyA.signatureImage || '/signature.png'}
+                  alt="Authorized Signature"
+                  className="max-h-11 w-auto object-contain pointer-events-none"
+                />
+              </div>
               <div className="w-36 h-px bg-gray-400 mb-1.5" />
               <p className="font-bold text-gray-800">{block.partyA.name}</p>
               <p className="text-[11px] text-gray-500">{block.partyA.role}</p>
@@ -273,7 +280,16 @@ function renderBlock(block) {
 
           {block.partyB && (
             <div>
-              <p className="font-semibold text-gray-900 mb-8">{block.partyB.title}</p>
+              <p className="font-semibold text-gray-900 mb-1.5">{block.partyB.title}</p>
+              <div className="h-12 flex items-end pb-1">
+                {block.partyB.signatureImage ? (
+                  <img
+                    src={block.partyB.signatureImage}
+                    alt="Client Signature"
+                    className="max-h-11 w-auto object-contain pointer-events-none"
+                  />
+                ) : null}
+              </div>
               <div className="w-36 h-px bg-gray-400 mb-1.5" />
               <p className="font-bold text-gray-800">{block.partyB.name}</p>
               <p className="text-[11px] text-gray-500">{block.partyB.role}</p>

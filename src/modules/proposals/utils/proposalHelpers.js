@@ -808,10 +808,11 @@ export function convertProposalToDocumentCanvasProps(proposal) {
       name: 'Authorized Signatory',
       role: 'Enterprise Solutions Director',
       date: proposal.date || new Date().toISOString().split('T')[0],
+      signatureImage: '/signature.png',
     },
     partyB: {
-      title: `For ${proposal.client?.companyName || 'Client Organization'}`,
-      name: proposal.client?.name || 'Authorized Client Representative',
+      title: `For ${proposal.client?.companyName || proposal.companyName || 'Client Organization'}`,
+      name: proposal.client?.name || proposal.clientName || 'Authorized Client Representative',
       role: 'Project Sponsor / Decision Maker',
       date: '_______________',
     },
