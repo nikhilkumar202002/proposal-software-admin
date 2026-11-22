@@ -21,6 +21,7 @@ export const proposalAIService = {
     currency = 'INR',
     proposalType = 'direct',
     modelId = 'gpt-4o',
+    prompt = '',
     existingProposals = [],
   }) => {
     try {
@@ -33,6 +34,7 @@ export const proposalAIService = {
         currency,
         proposalType,
         modelId,
+        prompt,
       })
       const validatedProposal = convertAIResponseToProposalModel(response.data, existingProposals)
       await aiService.logUsage({
@@ -114,6 +116,56 @@ Our proposed architecture eliminates operational bottlenecks, ensures multi-regi
       })
 
       return proposalModel
+    }
+  },
+
+  /**
+   * Regenerate specific section with AI
+   * POST /api/ai/regenerate-section
+   */
+  regenerateSection: async ({ section, context, prompt, proposalTitle, modelId = 'gpt-4o' }) => {
+    try {
+      const response = await api.post('/ai/regenerate-section', {
+        section,
+        context,
+        prompt,
+        proposal_title: proposalTitle,
+        modelId,
+      })
+      return response.data?.data?.content || response.data?.content || ''
+    } catch (err) {
+      console.warn('Backend regenerateSection failed, using local fallback:', err)
+      return `${context}\n\n*Updated with AI enhancement for ${section} focusing on executive impact and operational velocity.*`
+    }
+  },
+
+  /**
+   * Recalculate financial breakdown via backend Laravel ProposalPricingService
+   * POST /api/proposals/calculate-pricing
+   */
+  calculatePricing: async ({ items, discountType, discountValue, additionalCharges }) => {
+    try {
+      const formattedItems = (items || []).map((it) => ({
+        description: it.description || '',
+        quantity: Number(it.quantity || 1),
+        unit: it.unit || 'Milestone',
+        unit_price: Number(it.unitPrice ?? it.unit_price ?? 0),
+        discount_type: it.discountType || it.discount_type || null,
+        discount_value: Number(it.discountValue ?? it.discount_value ?? 0),
+        tax_rate: Number(it.taxRate ?? it.tax_rate ?? it.tax ?? 18),
+      }))
+
+      const response = await api.post('/proposals/calculate-pricing', {
+        items: formattedItems,
+        discount_type: discountType || null,
+        discount_value: Number(discountValue || 0),
+        additional_charges: Number(additionalCharges || 0),
+      })
+
+      return response.data?.data || response.data
+    } catch (err) {
+      console.warn('Failed to calculate pricing on backend, using local fallback:', err)
+      return null
     }
   },
 

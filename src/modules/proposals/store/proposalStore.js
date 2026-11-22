@@ -92,6 +92,25 @@ export const useProposalStore = create((set, get) => ({
     }
   },
 
+  setCurrentProposal: (proposal) => {
+    const totals = calculateProposalTotals(proposal?.pricing || {})
+    set({
+      currentProposal: proposal,
+      totals,
+      error: null,
+    })
+  },
+
+  addProposal: (proposal) => {
+    const totals = calculateProposalTotals(proposal?.pricing || {})
+    set((state) => ({
+      proposals: [proposal, ...state.proposals.filter((p) => p.id !== proposal.id)],
+      currentProposal: proposal,
+      totals,
+      error: null,
+    }))
+  },
+
   setActiveStep: (step) => {
     set({ activeStep: step })
   },

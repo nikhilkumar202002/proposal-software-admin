@@ -125,32 +125,83 @@ export function convertAIResponseToProposalModel(aiData = {}, existingProposals 
   const validUntil = validDate.toISOString().split('T')[0]
 
   const proposalNumber = generateProposalNumber(existingProposals)
-  const title = aiData.title || 'Enterprise Commercial Offer'
+  const title = aiData.proposal_title || aiData.title || 'Enterprise Commercial Offer'
   const projectName = aiData.projectName || title
-  const serviceType = aiData.serviceType || 'Digital Modernization & Enterprise Architecture'
-  const proposalType = aiData.proposalType === 'b2b' ? 'b2b' : 'direct'
+  const serviceType = aiData.serviceType || aiData.service_type || 'Digital Modernization & Enterprise Architecture'
+  const proposalType = (aiData.proposalType || aiData.proposal_type) === 'b2b' ? 'b2b' : 'direct'
+
+  // Extract structured canonical sections
+  const execSummary = aiData.executive_summary || aiData.executiveSummary || ''
+  const projectOverview = aiData.project_overview || aiData.projectOverview || ''
+  const objectives = Array.isArray(aiData.objectives)
+    ? aiData.objectives
+    : typeof aiData.objectives === 'string'
+    ? aiData.objectives.split('\n').filter(Boolean)
+    : []
+  const scopeOfWork = Array.isArray(aiData.scope_of_work || aiData.scopeOfWork)
+    ? (aiData.scope_of_work || aiData.scopeOfWork)
+    : typeof (aiData.scope_of_work || aiData.scopeOfWork) === 'string'
+    ? (aiData.scope_of_work || aiData.scopeOfWork).split('\n').filter(Boolean)
+    : []
+  const deliverables = Array.isArray(aiData.deliverables)
+    ? aiData.deliverables
+    : typeof aiData.deliverables === 'string'
+    ? aiData.deliverables.split('\n').filter(Boolean)
+    : []
+  const techStack = Array.isArray(aiData.technology_stack || aiData.technologyStack)
+    ? (aiData.technology_stack || aiData.technologyStack)
+    : typeof (aiData.technology_stack || aiData.technologyStack) === 'string'
+    ? (aiData.technology_stack || aiData.technologyStack).split(',').map((t) => t.trim()).filter(Boolean)
+    : []
+  const timeline = Array.isArray(aiData.timeline)
+    ? aiData.timeline
+    : typeof aiData.timeline === 'string'
+    ? [{ phase: 'Phase 1', duration: 'Full Project', description: aiData.timeline }]
+    : []
+  const maintenance = aiData.maintenance_support || aiData.maintenanceSupport || ''
+  const termsConditions = Array.isArray(aiData.terms_conditions || aiData.termsConditions)
+    ? (aiData.terms_conditions || aiData.termsConditions)
+    : typeof (aiData.terms_conditions || aiData.termsConditions) === 'string'
+    ? (aiData.terms_conditions || aiData.termsConditions).split('\n').filter(Boolean)
+    : []
+  const conclusion = aiData.conclusion || ''
+  const assumptions = Array.isArray(aiData.assumptions)
+    ? aiData.assumptions
+    : typeof aiData.assumptions === 'string'
+    ? aiData.assumptions.split('\n').filter(Boolean)
+    : []
 
   // Convert markdown content into TipTap ProseMirror document
   const rawContentText = [
-    aiData.executiveSummary ? `### 1. Executive Summary\n\n${aiData.executiveSummary}` : '',
-    aiData.scopeOfWork ? `\n\n### 2. Project Scope & Approach\n\n${aiData.scopeOfWork}` : '',
-    aiData.deliverables ? `\n\n### 3. Key Milestones & Deliverables\n\n${aiData.deliverables}` : '',
-    aiData.termsAndConditions ? `\n\n### 4. Commercial Terms & SLA Commitment\n\n${aiData.termsAndConditions}` : '',
+    execSummary ? `### 1. Executive Summary\n\n${execSummary}` : '',
+    projectOverview ? `\n\n### 2. Project Overview\n\n${projectOverview}` : '',
+    objectives.length > 0 ? `\n\n### 3. Project Objectives\n\n${objectives.map((o) => `• ${o}`).join('\n')}` : '',
+    scopeOfWork.length > 0 ? `\n\n### 4. Scope of Work\n\n${scopeOfWork.map((s) => `• ${s}`).join('\n')}` : '',
+    deliverables.length > 0 ? `\n\n### 5. Deliverables\n\n${deliverables.map((d) => `• ${d}`).join('\n')}` : '',
+    techStack.length > 0 ? `\n\n### 6. Technology Stack\n\n${techStack.join(', ')}` : '',
+    timeline.length > 0 ? `\n\n### 7. Timeline\n\n${timeline.map((t) => `${t.phase || 'Phase'} (${t.duration || 'TBD'}): ${t.description || ''}`).join('\n')}` : '',
+    maintenance ? `\n\n### 8. Maintenance & SLA Support\n\n${maintenance}` : '',
+    termsConditions.length > 0 ? `\n\n### 9. Commercial Terms & SLA\n\n${termsConditions.map((t) => `• ${t}`).join('\n')}` : '',
+    conclusion ? `\n\n### 10. Conclusion\n\n${conclusion}` : '',
+    assumptions.length > 0 ? `\n\n### Assumptions\n\n${assumptions.map((a) => `• ${a}`).join('\n')}` : '',
   ].filter(Boolean).join('\n\n')
 
-  const docContent = markdownToTipTapDoc(rawContentText || aiData.content || '', title)
+  const docContent = aiData.content && aiData.content.type === 'doc'
+    ? aiData.content
+    : markdownToTipTapDoc(rawContentText || '', title)
 
   // Standardize pricing items to match pricingStore & calculateProposalTotals schema
-  const rawItems = aiData.pricing?.items || []
+  const rawItems = aiData.pricing_items || aiData.pricing?.items || []
   const standardizedItems = rawItems.length > 0
     ? rawItems.map((item, index) => ({
         id: `item-ai-${Date.now()}-${index + 1}`,
         description: item.description || `Deliverable Milestone ${index + 1}`,
         quantity: Number(item.quantity) || 1,
         unit: item.unit || 'Milestone',
-        unitPrice: Number(item.unitPrice) || 0,
-        discount: Number(item.discount) || 0,
-        tax: Number(item.tax !== undefined ? item.tax : 18),
+        unitPrice: Number(item.unit_price ?? item.unitPrice ?? 0),
+        discount: Number(item.discount_value ?? item.discount ?? 0),
+        tax: Number(item.tax_rate ?? item.tax ?? 18),
+        approved: true,
       }))
     : [
         {
@@ -161,6 +212,7 @@ export function convertAIResponseToProposalModel(aiData = {}, existingProposals 
           unitPrice: 150000,
           discount: 0,
           tax: 18,
+          approved: true,
         },
         {
           id: `item-ai-2`,
@@ -170,6 +222,7 @@ export function convertAIResponseToProposalModel(aiData = {}, existingProposals 
           unitPrice: 350000,
           discount: 0,
           tax: 18,
+          approved: true,
         },
         {
           id: `item-ai-3`,
@@ -179,8 +232,43 @@ export function convertAIResponseToProposalModel(aiData = {}, existingProposals 
           unitPrice: 250000,
           discount: 0,
           tax: 18,
+          approved: true,
         },
       ]
+
+  const paymentTerms = Array.isArray(aiData.payment_terms || aiData.paymentMilestones)
+    ? (aiData.payment_terms || aiData.paymentMilestones).map((term, idx) => ({
+        id: `term-${idx + 1}`,
+        title: term.title || `Milestone ${idx + 1}`,
+        percentage: Number(term.percentage || 0),
+        due_description: term.due_description || term.dueDescription || '',
+        dueDescription: term.due_description || term.dueDescription || '',
+      }))
+    : []
+
+  const sections = {
+    executiveSummary: execSummary,
+    projectOverview,
+    objectives: objectives.join('\n'),
+    scopeOfWork: scopeOfWork.join('\n'),
+    deliverables: deliverables.join('\n'),
+    technologyStack: techStack.join(', '),
+    timeline: timeline.map((t) => `${t.phase || 'Phase'} (${t.duration || 'TBD'}): ${t.description || ''}`).join('\n'),
+    maintenanceSupport: maintenance,
+    termsConditions: termsConditions.join('\n'),
+    conclusion,
+    assumptions: assumptions.join('\n'),
+  }
+
+  const sectionsRaw = {
+    objectives,
+    scopeOfWork,
+    deliverables,
+    technologyStack: techStack,
+    timeline,
+    termsConditions,
+    assumptions,
+  }
 
   return {
     id: `prop-${Date.now()}`,
@@ -190,13 +278,13 @@ export function convertAIResponseToProposalModel(aiData = {}, existingProposals 
     serviceType,
     date: today,
     validUntil,
-    status: 'proposal_sent',
+    status: 'draft',
     proposalType,
     showCompanyLogo: proposalType === 'direct',
     currency: defaultCurrency,
     client: {
-      name: aiData.client?.name || '',
-      companyName: aiData.client?.companyName || '',
+      name: aiData.client?.name || aiData.client?.client_name || '',
+      companyName: aiData.client?.companyName || aiData.client?.company_name || '',
       email: aiData.client?.email || '',
       phone: aiData.client?.phone || '',
       address: aiData.client?.address || '',
@@ -204,6 +292,10 @@ export function convertAIResponseToProposalModel(aiData = {}, existingProposals 
     },
     company: { ...company },
     content: docContent,
+    sections,
+    sectionsRaw,
+    pricingItems: standardizedItems,
+    paymentTerms,
     pricing: {
       currency: defaultCurrency,
       globalDiscount: Number(aiData.pricing?.globalDiscount) || 0,
