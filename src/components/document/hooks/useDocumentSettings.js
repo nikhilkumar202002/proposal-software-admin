@@ -13,7 +13,7 @@ export const DEFAULT_DOCUMENT_SETTINGS = {
     visible: true,
     height: A4_CONFIG.header.height, // 22mm
     template: 'modern', // 'modern' | 'corporate' | 'minimal'
-    showDivider: false,
+    showDivider: true,
   },
   footer: {
     visible: true,

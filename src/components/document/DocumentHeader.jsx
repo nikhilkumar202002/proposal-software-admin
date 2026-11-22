@@ -3,7 +3,7 @@ import logoImg from '../../assets/Domine-Dude_black.png'
 export const DocumentHeader = ({
   company = {},
   proposal = {},
-  showDivider = false,
+  showDivider = true,
   height = 22, // in mm
   className = '',
 }) => {
@@ -61,7 +61,10 @@ export const DocumentHeader = ({
       </div>
 
       {showDivider && (
-        <div className="w-full h-px bg-gray-200 shrink-0" />
+        <div
+          className="w-full border-b border-gray-200 shrink-0"
+          style={{ borderBottom: '1px solid #E5E7EB' }}
+        />
       )}
     </div>
   )

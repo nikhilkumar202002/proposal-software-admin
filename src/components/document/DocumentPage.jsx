@@ -67,7 +67,7 @@ export const DocumentPage = ({
               company={company}
               proposal={proposal}
               template={headerSettings.template}
-              showDivider={headerSettings.showDivider ?? false}
+              showDivider={headerSettings.showDivider ?? true}
               height={headerHeightMm}
             />
           )}
@@ -101,6 +101,7 @@ export const DocumentPage = ({
           {footerContent || (
             <DocumentFooter
               company={company}
+              footerSettings={footerSettings}
               pageNumber={pageNumber}
               totalPages={totalPages}
               showDivider={footerSettings.showDivider ?? true}

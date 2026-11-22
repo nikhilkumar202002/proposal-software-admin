@@ -795,7 +795,15 @@ export function convertProposalToDocumentCanvasProps(proposal) {
 
   return {
     content: contentBlocks,
-    company: proposal.company || getStoredCompanyDetails(),
+    company: {
+      ...DEFAULT_COMPANY_DETAILS,
+      ...getStoredCompanyDetails(),
+      ...(proposal.company || {}),
+      address:
+        (proposal.company?.address && String(proposal.company.address).trim()) ||
+        (getStoredCompanyDetails()?.address && String(getStoredCompanyDetails().address).trim()) ||
+        DEFAULT_COMPANY_DETAILS.address,
+    },
     proposal: {
       number: proposal.number,
       title: proposal.title,

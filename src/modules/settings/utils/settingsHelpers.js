@@ -16,7 +16,7 @@ export const DEFAULT_COMPANY_SETTINGS = {
   phone: '+91 77360 16507, +91 90480 06320',
   website: 'www.domaindude.in',
   taxNumber: '07AABCP1234F1Z5',
-  address: 'Tower B, Suite 402, DLF CyberCity',
+  address: 'Tower B, Suite 402, DLF CyberCity, Gurugram, Haryana 122002',
   city: 'Gurugram',
   state: 'Haryana',
   country: 'India',
