@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { toast } from 'react-hot-toast'
 import settingsService from '../services/settingsService'
 import {
   DEFAULT_COMPANY_SETTINGS,
@@ -99,9 +100,11 @@ export const useSettingsStore = create((set, get) => ({
         isSaving: false,
         successMessage: 'Company profile successfully saved',
       })
+      toast.success('Company profile successfully saved')
       setTimeout(() => set({ successMessage: null }), 3500)
       return saved
     } catch (err) {
+      toast.error(err.message || 'Failed to save company profile')
       set({ isSaving: false, error: err.message || 'Failed to save company profile' })
       throw err
     }
@@ -118,9 +121,11 @@ export const useSettingsStore = create((set, get) => ({
         isSaving: false,
         successMessage: 'Document layout settings successfully saved',
       })
+      toast.success('Document layout settings successfully saved')
       setTimeout(() => set({ successMessage: null }), 3500)
       return saved
     } catch (err) {
+      toast.error(err.message || 'Failed to save document settings')
       set({ isSaving: false, error: err.message || 'Failed to save document settings' })
       throw err
     }
@@ -137,9 +142,11 @@ export const useSettingsStore = create((set, get) => ({
         isSaving: false,
         successMessage: 'Currency and default terms successfully saved',
       })
+      toast.success('Currency and default terms successfully saved')
       setTimeout(() => set({ successMessage: null }), 3500)
       return saved
     } catch (err) {
+      toast.error(err.message || 'Failed to save currency settings')
       set({ isSaving: false, error: err.message || 'Failed to save currency settings' })
       throw err
     }
@@ -156,9 +163,11 @@ export const useSettingsStore = create((set, get) => ({
         isSaving: false,
         successMessage: 'Account settings successfully saved',
       })
+      toast.success('Account settings successfully saved')
       setTimeout(() => set({ successMessage: null }), 3500)
       return saved
     } catch (err) {
+      toast.error(err.message || 'Failed to save account settings')
       set({ isSaving: false, error: err.message || 'Failed to save account settings' })
       throw err
     }
@@ -170,6 +179,7 @@ export const useSettingsStore = create((set, get) => ({
     const validation = validateCompanyProfile(s.company)
     if (!validation.isValid) {
       set({ validationErrors: validation.errors })
+      toast.error('Please correct the validation errors in company profile')
       throw new Error('Please correct the validation errors in company profile')
     }
 
@@ -186,8 +196,10 @@ export const useSettingsStore = create((set, get) => ({
         isSaving: false,
         successMessage: 'All workspace settings successfully saved and synced',
       })
+      toast.success('All workspace settings successfully saved and synced')
       setTimeout(() => set({ successMessage: null }), 3500)
     } catch (err) {
+      toast.error(err.message || 'Failed to save settings')
       set({ isSaving: false, error: err.message || 'Failed to save settings' })
       throw err
     }

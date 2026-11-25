@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { toast } from 'react-hot-toast'
 import clientService from '../services/clientService'
 import { createNewClientModel } from '../utils/clientHelpers'
 
@@ -88,9 +89,12 @@ export const useClientStore = create((set, get) => ({
       const created = await clientService.createClient(clientData)
       await get().fetchClients()
       set({ currentClient: created, isSaving: false })
+      toast.success('Client created successfully')
       return created
     } catch (err) {
-      set({ error: err.message, isSaving: false })
+      const errorMsg = err.response?.data?.message || err.message || 'Failed to create client'
+      toast.error(errorMsg)
+      set({ error: errorMsg, isSaving: false })
       throw err
     }
   },
@@ -101,9 +105,12 @@ export const useClientStore = create((set, get) => ({
       const updated = await clientService.updateClient(id, updates)
       await get().fetchClients()
       set({ currentClient: updated, isSaving: false })
+      toast.success('Client updated successfully')
       return updated
     } catch (err) {
-      set({ error: err.message, isSaving: false })
+      const errorMsg = err.response?.data?.message || err.message || 'Failed to update client'
+      toast.error(errorMsg)
+      set({ error: errorMsg, isSaving: false })
       throw err
     }
   },
@@ -117,8 +124,11 @@ export const useClientStore = create((set, get) => ({
         selectedClientIds: get().selectedClientIds.filter((item) => item !== id),
         isLoading: false,
       })
+      toast.success('Client deleted successfully')
     } catch (err) {
-      set({ error: err.message, isLoading: false })
+      const errorMsg = err.response?.data?.message || err.message || 'Failed to delete client'
+      toast.error(errorMsg)
+      set({ error: errorMsg, isLoading: false })
       throw err
     }
   },
@@ -131,8 +141,11 @@ export const useClientStore = create((set, get) => ({
           String(c.id) === String(id) ? { ...c, status } : c
         ),
       }))
+      toast.success(`Client marked as ${status}`)
     } catch (err) {
-      set({ error: err.message })
+      const errorMsg = err.response?.data?.message || err.message || 'Failed to update client status'
+      toast.error(errorMsg)
+      set({ error: errorMsg })
       throw err
     }
   },

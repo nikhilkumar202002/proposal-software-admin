@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useEditor } from '@tiptap/react'
 import { getEditorExtensions } from './extensions/editorExtensions'
 import EditorToolbar from './EditorToolbar'
@@ -38,6 +39,15 @@ export const TipTapEditor = ({
     },
     debounceMs,
   })
+
+  // Synchronize external content prop changes (e.g. async fetch from API or template append)
+  useEffect(() => {
+    if (!editor || !content) return
+    const currentJson = editor.getJSON()
+    if (JSON.stringify(currentJson) !== JSON.stringify(content)) {
+      editor.commands.setContent(content)
+    }
+  }, [editor, content])
 
   const charCount = editor?.storage.characterCount?.characters?.() || 0
   const wordCount = editor?.storage.characterCount?.words?.() || 0

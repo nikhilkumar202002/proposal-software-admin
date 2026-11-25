@@ -18,19 +18,26 @@ function generatePagination(currentPage, totalPages) {
 
 export const Pagination = ({
   page = 1,
+  currentPage,
   pageSize = 10,
   total = 0,
+  totalCount,
+  totalPages: propTotalPages,
   pageSizeOptions = [10, 25, 50, 100],
   onPageChange = () => {},
   onPageSizeChange,
   showPageSizeSelector = true,
   className = '',
 }) => {
-  const totalPages = Math.max(1, Math.ceil(total / pageSize))
-  const safePage = Math.min(Math.max(1, page), totalPages)
+  const activePage = currentPage !== undefined ? currentPage : page
+  const resolvedTotal = totalCount !== undefined ? totalCount : (total !== undefined ? total : 0)
+  const totalPages = propTotalPages !== undefined
+    ? propTotalPages
+    : Math.max(1, Math.ceil(resolvedTotal / pageSize))
+  const safePage = Math.min(Math.max(1, activePage), totalPages)
 
-  const startRecord = total === 0 ? 0 : (safePage - 1) * pageSize + 1
-  const endRecord = Math.min(safePage * pageSize, total)
+  const startRecord = resolvedTotal === 0 ? 0 : (safePage - 1) * pageSize + 1
+  const endRecord = Math.min(safePage * pageSize, resolvedTotal)
 
   const pages = generatePagination(safePage, totalPages)
 

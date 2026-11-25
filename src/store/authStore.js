@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { toast } from 'react-hot-toast'
 import authService from '../services/auth.service'
 
 // Helper to get initials from name
@@ -71,6 +72,7 @@ export const useAuthStore = create((set, get) => ({
       localStorage.removeItem('proposalos_session')
     } catch { }
     set({ user: null })
+    toast.success('Signed out successfully')
   },
 }))
 

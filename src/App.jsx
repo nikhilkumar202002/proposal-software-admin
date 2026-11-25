@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 import AdminLayout from './components/layout/AdminLayout'
 import { Dashboard } from './modules/Dashboard'
 import { Login } from './modules/auth'
@@ -54,6 +55,34 @@ const PagePlaceholder = ({ title, description }) => (
 export function App() {
   return (
     <BrowserRouter>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 3500,
+          style: {
+            background: '#ffffff',
+            color: '#0f172a',
+            fontSize: '13px',
+            fontWeight: '500',
+            borderRadius: '12px',
+            boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04)',
+            border: '1px solid #e2e8f0',
+            padding: '10px 16px',
+          },
+          success: {
+            iconTheme: {
+              primary: '#0055FF',
+              secondary: '#ffffff',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: '#ffffff',
+            },
+          },
+        }}
+      />
       <Routes>
         {/* Authentication Route with Split Screen Layout */}
         <Route path="/login" element={<Login />} />

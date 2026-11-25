@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { toast } from 'react-hot-toast'
 import proposalService from '../../../services/proposal.service'
 import {
   createNewProposalModel,
@@ -456,8 +457,10 @@ export const useProposalStore = create((set, get) => ({
       const existing = get().proposals.find((p) => p.id === current.id)
       if (existing) {
         saved = await proposalService.updateProposal(current.id, payload)
+        toast.success('Proposal updated successfully')
       } else {
         saved = await proposalService.createProposal(payload)
+        toast.success('Proposal created successfully')
       }
 
       // Refresh proposals list
@@ -465,7 +468,9 @@ export const useProposalStore = create((set, get) => ({
       set({ currentProposal: saved, isSaving: false })
       return saved
     } catch (err) {
-      set({ error: err.message, isSaving: false })
+      const errorMsg = err.response?.data?.message || err.message || 'Failed to save proposal'
+      toast.error(errorMsg)
+      set({ error: errorMsg, isSaving: false })
       throw err
     }
   },
@@ -490,8 +495,10 @@ export const useProposalStore = create((set, get) => ({
         await proposalService.deleteProposal(id)
       }
       await get().fetchProposals({}, { silent: true })
+      toast.success('Proposal deleted successfully')
     } catch (err) {
       console.warn('API deleteProposal encountered an issue:', err)
+      toast.error(err.response?.data?.message || 'Failed to delete proposal')
     } finally {
       // Ensure the deleted proposal stays excluded
       set((state) => ({
@@ -514,9 +521,12 @@ export const useProposalStore = create((set, get) => ({
       const clone = await proposalService.duplicateProposal(id)
       await get().fetchProposals()
       set({ isLoading: false })
+      toast.success('Proposal duplicated successfully')
       return clone
     } catch (err) {
-      set({ error: err.message, isLoading: false })
+      const errorMsg = err.response?.data?.message || err.message || 'Failed to duplicate proposal'
+      toast.error(errorMsg)
+      set({ error: errorMsg, isLoading: false })
       throw err
     }
   },
@@ -534,9 +544,12 @@ export const useProposalStore = create((set, get) => ({
             ? { ...state.currentProposal, status }
             : state.currentProposal,
       }))
+      const formattedStatus = String(status).replace(/_/g, ' ')
+      toast.success(`Proposal status updated to ${formattedStatus.charAt(0).toUpperCase() + formattedStatus.slice(1)}`)
       return updated
     } catch (err) {
       console.error('Failed to update proposal status:', err)
+      toast.error(err.response?.data?.message || 'Failed to update proposal status')
       throw err
     }
   },
@@ -547,6 +560,7 @@ export const useProposalStore = create((set, get) => ({
     if (!targetId) return
 
     set({ isGeneratingPdf: true })
+    const toastId = toast.loading('Generating proposal PDF...')
     try {
       try {
         await proposalService.generatePdf(targetId)
@@ -557,8 +571,10 @@ export const useProposalStore = create((set, get) => ({
       const proposalNumber = current?.number || current?.proposal_number || targetId
       const filename = `proposal-${proposalNumber}.pdf`
       await proposalService.downloadPdfFile(targetId, filename)
+      toast.success('Proposal PDF downloaded', { id: toastId })
     } catch (err) {
       console.error('Failed to download proposal PDF from API, invoking print preview:', err)
+      toast.error('Direct download failed, opening print preview', { id: toastId })
       window.print()
     } finally {
       set({ isGeneratingPdf: false })

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { toast } from 'react-hot-toast'
 import {
   Layers,
   Cpu,
@@ -149,25 +150,30 @@ export const TechServicesPage = () => {
     setItemError('')
 
     try {
+      const typeLabel = activeTab === 'technologies' ? 'Technology' : 'Service type'
       if (activeTab === 'technologies') {
         if (modalMode === 'create') {
           const created = await technologyService.createTechnology({ name: trimmed })
           setTechnologies((prev) => [created, ...prev])
+          toast.success(`${typeLabel} added successfully`)
         } else if (editingItem) {
           const updated = await technologyService.updateTechnology(editingItem.id, { name: trimmed })
           setTechnologies((prev) =>
             prev.map((t) => (t.id === editingItem.id ? updated : t))
           )
+          toast.success(`${typeLabel} updated successfully`)
         }
       } else {
         if (modalMode === 'create') {
           const created = await serviceTypeService.createServiceType({ name: trimmed })
           setServiceTypes((prev) => [created, ...prev])
+          toast.success(`${typeLabel} added successfully`)
         } else if (editingItem) {
           const updated = await serviceTypeService.updateServiceType(editingItem.id, { name: trimmed })
           setServiceTypes((prev) =>
             prev.map((s) => (s.id === editingItem.id ? updated : s))
           )
+          toast.success(`${typeLabel} updated successfully`)
         }
       }
 
@@ -178,6 +184,7 @@ export const TechServicesPage = () => {
       console.error('Failed to save item:', err)
       const msg = err.response?.data?.message || err.message || 'Operation failed. Please try again.'
       setItemError(msg)
+      toast.error(msg)
     } finally {
       setIsSaving(false)
     }
@@ -187,6 +194,7 @@ export const TechServicesPage = () => {
   const handleDeleteConfirm = async () => {
     if (!deleteTarget) return
     setIsDeleting(true)
+    const typeLabel = activeTab === 'technologies' ? 'Technology' : 'Service type'
     try {
       if (activeTab === 'technologies') {
         await technologyService.deleteTechnology(deleteTarget.id)
@@ -195,10 +203,12 @@ export const TechServicesPage = () => {
         await serviceTypeService.deleteServiceType(deleteTarget.id)
         setServiceTypes((prev) => prev.filter((s) => s.id !== deleteTarget.id))
       }
+      toast.success(`${typeLabel} deleted successfully`)
       setDeleteTarget(null)
     } catch (err) {
       console.error('Failed to delete item:', err)
-      alert(err.response?.data?.message || 'Failed to delete. Please verify no active proposals depend on this.')
+      const errorMsg = err.response?.data?.message || 'Failed to delete. Please verify no active proposals depend on this.'
+      toast.error(errorMsg)
     } finally {
       setIsDeleting(false)
     }

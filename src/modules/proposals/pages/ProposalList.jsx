@@ -69,12 +69,19 @@ export const ProposalList = () => {
 
     safeProposals.forEach((p) => {
       if (!p || typeof p !== 'object' || p.deleted_at || p.deletedAt) return
-      const totals = calculateProposalTotals(p.pricing || {})
-      totalVal += totals.grandTotal
-      if (['accepted', 'signed'].includes(p.status)) {
-        acceptedVal += totals.grandTotal
+      const val = Number(
+        p.grand_total ??
+        p.grandTotal ??
+        p.pricing?.grandTotal ??
+        p.pricing?.grand_total ??
+        calculateProposalTotals(p.pricing || p).grandTotal
+      ) || 0
+      totalVal += val
+      const st = String(p.status || 'draft').toLowerCase().trim()
+      if (['accepted', 'signed', 'approved'].includes(st)) {
+        acceptedVal += val
         acceptedCount += 1
-      } else if (['draft', 'sent', 'proposal_sent', 'viewed', 'under_review', 'need_time'].includes(p.status)) {
+      } else if (['draft', 'sent', 'proposal_sent', 'viewed', 'under_review', 'need_time', 'new'].includes(st)) {
         pendingCount += 1
       }
     })
@@ -101,16 +108,38 @@ export const ProposalList = () => {
       !q ||
       p.title?.toLowerCase().includes(q) ||
       p.number?.toLowerCase().includes(q) ||
+      p.proposal_number?.toLowerCase().includes(q) ||
       p.client?.name?.toLowerCase().includes(q) ||
-      p.client?.companyName?.toLowerCase().includes(q)
+      p.client?.client_name?.toLowerCase().includes(q) ||
+      p.client?.companyName?.toLowerCase().includes(q) ||
+      p.client?.company_name?.toLowerCase().includes(q)
 
+    const targetStatus = (filters?.status || 'all').toLowerCase().trim()
+    const pStatus = String(p.status || 'draft').toLowerCase().trim()
     const matchesStatus =
-      !filters?.status || filters.status === 'all' || p.status === filters.status
+      !filters?.status ||
+      targetStatus === 'all' ||
+      pStatus === targetStatus ||
+      (targetStatus === 'draft' && (pStatus === 'draft' || pStatus === 'new')) ||
+      (targetStatus === 'sent' && (pStatus === 'sent' || pStatus === 'proposal_sent' || pStatus === 'proposal_send')) ||
+      (targetStatus === 'proposal_sent' && (pStatus === 'sent' || pStatus === 'proposal_sent' || pStatus === 'proposal_send')) ||
+      (targetStatus === 'viewed' && (pStatus === 'viewed' || pStatus === 'need_time' || pStatus === 'under_review')) ||
+      (targetStatus === 'need_time' && (pStatus === 'viewed' || pStatus === 'need_time' || pStatus === 'under_review')) ||
+      (targetStatus === 'accepted' && (pStatus === 'accepted' || pStatus === 'signed' || pStatus === 'approved')) ||
+      (targetStatus === 'signed' && (pStatus === 'accepted' || pStatus === 'signed' || pStatus === 'approved')) ||
+      (targetStatus === 'rejected' && (pStatus === 'rejected' || pStatus === 'declined' || pStatus === 'expired'))
 
     return matchesSearch && matchesStatus
   })
 
   // Paginate filtered items
+  const maxPage = Math.max(1, Math.ceil(filteredProposals.length / pageSize))
+  useEffect(() => {
+    if (currentPage > maxPage) {
+      setCurrentPage(maxPage)
+    }
+  }, [currentPage, maxPage])
+
   const paginatedProposals = filteredProposals.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize
@@ -239,12 +268,14 @@ export const ProposalList = () => {
       />
 
       {/* Pagination */}
-      {filteredProposals.length > pageSize && (
-        <div className="flex justify-center pt-2">
+      {filteredProposals.length > 0 && (
+        <div className="pt-2">
           <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(filteredProposals.length / pageSize)}
+            page={currentPage}
+            pageSize={pageSize}
+            total={filteredProposals.length}
             onPageChange={setCurrentPage}
+            showPageSizeSelector={false}
           />
         </div>
       )}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import {
   Mail,
   Lock,
@@ -110,12 +111,14 @@ export const Login = () => {
         // Fallback for private mode
       }
 
+      toast.success('Signed in successfully!')
       navigate('/')
     } catch (err) {
       // If backend API returned error or connection failed
       console.warn('Backend login attempt returned:', err)
       const errorMsg = extractErrorMessage(err, 'Invalid credentials. Please verify your email and password.')
       setError(errorMsg)
+      toast.error(errorMsg)
     } finally {
       setIsLoading(false)
     }
@@ -139,10 +142,12 @@ export const Login = () => {
         email: forgotEmail.trim(),
       })
       setForgotSuccess(true)
+      toast.success('Reset link sent to your email!')
     } catch (err) {
       console.warn('Forgot password request error:', err)
       const errorMsg = extractErrorMessage(err, 'Unable to send reset instructions. Please check your email and try again.')
       setError(errorMsg)
+      toast.error(errorMsg)
     } finally {
       setIsLoading(false)
     }
@@ -174,6 +179,7 @@ export const Login = () => {
         password_confirmation: confirmPassword,
       })
       setResetSuccess(true)
+      toast.success('Password successfully reset!')
       setTimeout(() => {
         setView('login')
         setSuccessNotice('Password successfully reset! You can now sign in with your new credentials.')
@@ -183,6 +189,7 @@ export const Login = () => {
       console.warn('Reset password error:', err)
       const errorMsg = extractErrorMessage(err, 'Invalid or expired password reset token.')
       setError(errorMsg)
+      toast.error(errorMsg)
     } finally {
       setIsLoading(false)
     }

@@ -63,8 +63,8 @@ export const Dashboard = () => {
     let b2bCount = 0
 
     list.forEach((p) => {
-      const totals = calculateProposalTotals(p.pricing || {})
-      const grandTotal = totals.grandTotal || 0
+      const totals = calculateProposalTotals(p.pricing || p)
+      const grandTotal = Number(p.grand_total ?? p.grandTotal ?? totals.grandTotal) || 0
 
       if (p.status === 'signed' || p.status === 'approved' || p.status === 'accepted') {
         wonRevenue += grandTotal
@@ -370,10 +370,11 @@ export const Dashboard = () => {
             <tbody className="divide-y divide-gray-100 bg-white">
               {filteredProposals.length > 0 ? (
                 filteredProposals.slice(0, 7).map((item) => {
-                  const totals = calculateProposalTotals(item.pricing || {})
+                  const totals = calculateProposalTotals(item.pricing || item)
                   const isB2B =
                     item.proposalType === 'b2b' || item.showCompanyLogo === false
                   const currency = item.currency || item.pricing?.currency || 'INR'
+                  const displayAmount = Number(item.grand_total ?? item.grandTotal ?? totals.grandTotal) || 0
 
                   return (
                     <tr
@@ -438,7 +439,7 @@ export const Dashboard = () => {
                       {/* 4. Grand Total */}
                       <td className="py-3 px-3 text-right">
                         <span className="font-mono text-xs font-bold text-gray-900">
-                          {formatCurrency(totals.grandTotal, currency)}
+                          {formatCurrency(displayAmount, currency)}
                         </span>
                       </td>
 

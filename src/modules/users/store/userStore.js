@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { toast } from 'react-hot-toast'
 import { INITIAL_USERS, ROLES } from '../constants'
 import userService, { ROLE_DISPLAY_NAMES } from '../../../services/user.service'
 
@@ -105,6 +106,7 @@ export const useUserStore = create((set, get) => ({
           users: [createdUser, ...state.users.filter((u) => String(u.id) !== String(createdUser.id))],
           isLoading: false,
         }))
+        toast.success('Team member added successfully')
         return createdUser
       }
     } catch (err) {
@@ -140,7 +142,7 @@ export const useUserStore = create((set, get) => ({
       users: [newUser, ...state.users],
       isLoading: false,
     }))
-
+    toast.success('Team member added successfully')
     return newUser
   },
 
@@ -154,6 +156,7 @@ export const useUserStore = create((set, get) => ({
           users: state.users.map((u) => (String(u.id) === String(id) ? updatedUser : u)),
           isLoading: false,
         }))
+        toast.success('User updated successfully')
         return updatedUser
       }
     } catch (err) {
@@ -196,6 +199,8 @@ export const useUserStore = create((set, get) => ({
       }),
       isLoading: false,
     }))
+    toast.success('User updated successfully')
+    return get().getUserById(id)
   },
 
   // --- Update Status (PATCH /admin/users/:id/status) ---
@@ -207,9 +212,11 @@ export const useUserStore = create((set, get) => ({
           String(u.id) === String(id) ? { ...u, status } : u
         ),
       }))
+      toast.success(`User status changed to ${status}`)
       return response
     } catch (err) {
       console.warn(`Backend PATCH /admin/users/${id}/status failed:`, err.message)
+      toast.error('Failed to update user status')
       throw err
     }
   },
@@ -234,6 +241,7 @@ export const useUserStore = create((set, get) => ({
           : u
       ),
     }))
+    toast.success('User roles updated successfully')
   },
 
   // --- Update Permissions (PUT /admin/users/:id/permissions) ---
@@ -249,6 +257,7 @@ export const useUserStore = create((set, get) => ({
         String(u.id) === String(id) ? { ...u, permissions } : u
       ),
     }))
+    toast.success('User permissions updated successfully')
   },
 
   // --- Delete User (DELETE /admin/users/:id) ---
@@ -263,6 +272,7 @@ export const useUserStore = create((set, get) => ({
       users: state.users.filter((u) => String(u.id) !== String(id)),
       selectedUserIds: state.selectedUserIds.filter((uid) => String(uid) !== String(id)),
     }))
+    toast.success('User deleted successfully')
   },
 
   // --- Bulk Delete ---
@@ -273,6 +283,7 @@ export const useUserStore = create((set, get) => ({
       users: state.users.filter((u) => !idSet.has(String(u.id))),
       selectedUserIds: state.selectedUserIds.filter((uid) => !idSet.has(String(uid))),
     }))
+    toast.success(`${ids.length} users deleted successfully`)
   },
 
   // --- Bulk Update Status ---
@@ -301,6 +312,7 @@ export const useUserStore = create((set, get) => ({
       }),
       selectedUserIds: [],
     }))
+    toast.success(`Updated ${ids.length} users to ${newStatus}`)
   },
 
   // Selection

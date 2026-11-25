@@ -98,6 +98,65 @@ export function calculatePricingSummary(pricing = {}) {
   const taxMode = safePricing.taxMode || 'per_item'
   const overallTaxRate = Math.max(0, parseFloat(safePricing.overallTaxRate) || 0)
 
+  // If no line items are provided, but top-level totals exist (e.g. from a list API endpoint):
+  const fallbackGrandTotal = Number(
+    safePricing.grandTotal ??
+    safePricing.grand_total ??
+    safePricing.pricing?.grandTotal ??
+    safePricing.pricing?.grand_total ??
+    0
+  )
+  const fallbackSubtotal = Number(
+    safePricing.subtotal ??
+    safePricing.pricing?.subtotal ??
+    fallbackGrandTotal
+  )
+  if (rawItems.length === 0 && (fallbackGrandTotal > 0 || fallbackSubtotal > 0)) {
+    const totalTax = Number(
+      safePricing.taxAmount ??
+      safePricing.tax_amount ??
+      safePricing.totalTax ??
+      safePricing.pricing?.taxAmount ??
+      safePricing.pricing?.tax_amount ??
+      0
+    )
+    const totalDiscount = Number(
+      safePricing.discountAmount ??
+      safePricing.discount_amount ??
+      safePricing.totalDiscount ??
+      safePricing.pricing?.discountAmount ??
+      safePricing.pricing?.discount_amount ??
+      0
+    )
+    const additionalChargesTotal = Number(
+      safePricing.additionalCharges ??
+      safePricing.additional_charges ??
+      safePricing.pricing?.additionalCharges ??
+      safePricing.pricing?.additional_charges ??
+      0
+    )
+    return {
+      items: [],
+      itemCount: 0,
+      subtotal: fallbackSubtotal,
+      totalLineDiscounts: 0,
+      globalDiscountType: safePricing.globalDiscountType || 'percentage',
+      globalDiscountValue: 0,
+      globalDiscountAmount: totalDiscount,
+      totalDiscount,
+      taxableAmount: Math.max(0, fallbackSubtotal - totalDiscount),
+      taxMode,
+      overallTaxRate,
+      totalTax,
+      additionalCharges: [],
+      additionalChargesTotal,
+      grandTotal: fallbackGrandTotal,
+      paymentMilestones: Array.isArray(safePricing.paymentMilestones) ? safePricing.paymentMilestones : [],
+      milestonesTotal: 0,
+      remainingBalance: fallbackGrandTotal,
+    }
+  }
+
   let subtotal = 0
   let totalLineDiscounts = 0
 

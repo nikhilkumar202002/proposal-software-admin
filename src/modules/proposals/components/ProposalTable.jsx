@@ -102,11 +102,18 @@ export const ProposalTable = ({
       sortable: true,
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
-        const totals = calculateProposalTotals(r.pricing || {})
-        const currency = r.pricing?.currency || r.currency || 'INR'
+        const totals = calculateProposalTotals(r.pricing || r)
+        const currency = r.currency || r.pricing?.currency || 'INR'
+        const amount = Number(
+          r.grand_total ??
+          r.grandTotal ??
+          r.pricing?.grandTotal ??
+          r.pricing?.grand_total ??
+          totals.grandTotal
+        ) || 0
         return (
           <span className="font-bold text-xs text-gray-900">
-            {formatCurrency(totals.grandTotal, currency)}
+            {formatCurrency(amount, currency)}
           </span>
         )
       },
@@ -120,7 +127,7 @@ export const ProposalTable = ({
         const r = row && typeof row === 'object' ? row : {}
         return (
           <ProposalStatusDropdown
-            status={r.status || 'proposal_sent'}
+            status={r.status || 'draft'}
             onChange={(newStatus) => onStatusChange(r.id, newStatus)}
           />
         )

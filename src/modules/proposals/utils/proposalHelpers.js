@@ -5,6 +5,7 @@ import {
   round2 as pricingRound2,
 } from '../../pricing/utils/pricingCalculations.js'
 import { SIGNATURE_BASE64 } from '@/assets/signatureData.js'
+import { SAMPLE_PROPOSAL_DOC_JSON } from '../../../components/editor/utils/sampleDocJson.js'
 
 export const CURRENCY_CONFIG = {
   INR: { symbol: '₹', code: 'INR', name: 'Indian Rupee', locale: 'en-IN' },
@@ -16,19 +17,25 @@ export const CURRENCY_CONFIG = {
 
 export const PROPOSAL_STATUSES = [
   {
-    value: 'proposal_sent',
+    value: 'draft',
+    label: 'Draft',
+    color: 'neutral',
+    bg: 'bg-gray-100 text-gray-700 border-gray-200/90',
+  },
+  {
+    value: 'sent',
     label: 'Proposal Sent',
     color: 'info',
     bg: 'bg-blue-50 text-blue-700 border-blue-200/90',
   },
   {
-    value: 'need_time',
+    value: 'viewed',
     label: 'Need Time',
     color: 'warning',
     bg: 'bg-amber-50 text-amber-700 border-amber-200/90',
   },
   {
-    value: 'signed',
+    value: 'accepted',
     label: 'Signed',
     color: 'success',
     bg: 'bg-emerald-50 text-emerald-800 border-emerald-200/90',
@@ -42,19 +49,22 @@ export const PROPOSAL_STATUSES = [
 ]
 
 export function getProposalStatusConfig(status) {
-  const norm = String(status || 'proposal_sent').toLowerCase().trim().replace(/\s+/g, '_')
+  const norm = String(status || 'draft').toLowerCase().trim().replace(/\s+/g, '_')
   
-  if (['proposal_sent', 'sent', 'proposal_send', 'draft', 'viewed'].includes(norm)) {
-    return PROPOSAL_STATUSES[0] // Proposal Sent
+  if (['draft', 'new'].includes(norm)) {
+    return PROPOSAL_STATUSES[0] // Draft
   }
-  if (['need_time', 'under_review', 'pending', 'needtime'].includes(norm)) {
-    return PROPOSAL_STATUSES[1] // Need Time
+  if (['proposal_sent', 'sent', 'proposal_send'].includes(norm)) {
+    return PROPOSAL_STATUSES[1] // Proposal Sent
+  }
+  if (['need_time', 'under_review', 'pending', 'needtime', 'viewed'].includes(norm)) {
+    return PROPOSAL_STATUSES[2] // Need Time
   }
   if (['signed', 'accepted', 'approved'].includes(norm)) {
-    return PROPOSAL_STATUSES[2] // Signed
+    return PROPOSAL_STATUSES[3] // Signed
   }
-  if (['rejected', 'declined', 'expired'].includes(norm)) {
-    return PROPOSAL_STATUSES[3] // Rejected
+  if (['rejected', 'declined', 'expired', 'cancelled'].includes(norm)) {
+    return PROPOSAL_STATUSES[4] // Rejected
   }
   return PROPOSAL_STATUSES[0]
 }
@@ -102,7 +112,64 @@ export function calculateLineItemTotal(item) {
  * Calculate overall proposal pricing totals
  */
 export function calculateProposalTotals(pricing) {
-  const summary = calculatePricingSummary(pricing || {})
+  const safe = pricing || {}
+  const rawItems = Array.isArray(safe.items)
+    ? safe.items
+    : Array.isArray(safe.pricing?.items)
+    ? safe.pricing.items
+    : []
+
+  if (rawItems.length === 0) {
+    const fallbackGrandTotal = Number(
+      safe.grandTotal ??
+      safe.grand_total ??
+      safe.pricing?.grandTotal ??
+      safe.pricing?.grand_total ??
+      0
+    )
+    const fallbackSubtotal = Number(
+      safe.subtotal ??
+      safe.pricing?.subtotal ??
+      fallbackGrandTotal
+    )
+    if (fallbackGrandTotal > 0 || fallbackSubtotal > 0) {
+      const totalTax = Number(
+        safe.taxAmount ??
+        safe.tax_amount ??
+        safe.totalTax ??
+        safe.pricing?.taxAmount ??
+        safe.pricing?.tax_amount ??
+        0
+      )
+      const totalDiscount = Number(
+        safe.discountAmount ??
+        safe.discount_amount ??
+        safe.totalDiscount ??
+        safe.pricing?.discountAmount ??
+        safe.pricing?.discount_amount ??
+        0
+      )
+      const additionalChargesTotal = Number(
+        safe.additionalCharges ??
+        safe.additional_charges ??
+        safe.pricing?.additionalCharges ??
+        safe.pricing?.additional_charges ??
+        0
+      )
+      return {
+        subtotal: fallbackSubtotal,
+        lineDiscounts: 0,
+        globalDiscountAmount: totalDiscount,
+        totalDiscount,
+        totalTax,
+        additionalChargesTotal,
+        grandTotal: fallbackGrandTotal,
+        itemCount: 0,
+      }
+    }
+  }
+
+  const summary = calculatePricingSummary(safe)
   return {
     subtotal: summary.subtotal,
     lineDiscounts: summary.totalLineDiscounts,
@@ -559,6 +626,7 @@ export function createNewProposalModel(existingList = []) {
       typography: { baseSize: 12, heading1Size: 16, heading2Size: 14, heading3Size: 14 },
     },
     notes: 'Thank you for considering our proposal. Please review the deliverables and feel free to contact us with any questions.',
+    content: SAMPLE_PROPOSAL_DOC_JSON,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   }
