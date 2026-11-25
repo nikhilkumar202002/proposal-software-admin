@@ -1,6 +1,4 @@
 import StarterKit from '@tiptap/starter-kit'
-import Underline from '@tiptap/extension-underline'
-import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
 import { Table, TableRow, TableHeader, TableCell } from '@tiptap/extension-table'
 import TextAlign from '@tiptap/extension-text-align'
@@ -33,15 +31,15 @@ export function getEditorExtensions(options = {}) {
         keepMarks: true,
         keepAttributes: false,
       },
-    }),
-    Underline,
-    Link.configure({
-      openOnClick: false,
-      HTMLAttributes: {
-        class: 'text-[#0055FF] underline font-medium hover:text-[#0044CC] cursor-pointer',
-        rel: 'noopener noreferrer',
-        target: '_blank',
+      link: {
+        openOnClick: false,
+        HTMLAttributes: {
+          class: 'text-[#0055FF] underline font-medium hover:text-[#0044CC] cursor-pointer',
+          rel: 'noopener noreferrer',
+          target: '_blank',
+        },
       },
+      underline: {},
     }),
     Image.configure({
       inline: false,

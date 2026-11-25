@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import DocumentPage from './DocumentPage'
 import DocumentContent from './DocumentContent'
 import { useDocumentPagination } from './hooks/useDocumentPagination'
@@ -25,8 +25,8 @@ export const DocumentPagination = ({
     settings
   )
 
-  // Notify parent of total pages change if requested
-  useMemo(() => {
+  // Notify parent of total pages change if requested (in effect to avoid setState during render)
+  useEffect(() => {
     if (onPagesChange) {
       onPagesChange({ pages, totalPages, isCalculating })
     }

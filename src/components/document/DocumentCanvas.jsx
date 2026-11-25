@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import DocumentPagination from './DocumentPagination'
 import DocumentSettings from './DocumentSettings'
 import DocumentFontResizer from './DocumentFontResizer'
@@ -30,6 +30,16 @@ export const DocumentCanvas = ({
   const [currentPage, setCurrentPage] = useState(1)
   const [pageStats, setPageStats] = useState({ totalPages: 1 })
   const scrollContainerRef = useRef(null)
+
+  const handlePagesChange = useCallback((stats) => {
+    if (!stats) return
+    setPageStats((prev) => {
+      if (prev.totalPages === stats.totalPages && prev.isCalculating === stats.isCalculating) {
+        return prev
+      }
+      return stats
+    })
+  }, [])
 
   const zoom = settings.zoom || 1.0
 
@@ -223,7 +233,7 @@ export const DocumentCanvas = ({
             settings={settings}
             company={company}
             proposal={proposal}
-            onPagesChange={setPageStats}
+            onPagesChange={handlePagesChange}
           />
         </div>
       </div>
