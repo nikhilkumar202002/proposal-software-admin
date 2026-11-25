@@ -83,6 +83,8 @@ export const DocumentFooter = ({
 
   // Extract full address into 2 or 3 lines without truncation
   const addressLines = formatAddressLines(resolvedAddress)
+  const finalAddressLines =
+    addressLines && addressLines.length > 0 ? addressLines : DEFAULT_ADDRESS_LINES
 
   return (
     <div
@@ -118,8 +120,8 @@ export const DocumentFooter = ({
         </div>
 
         {/* Right Column (1/3): Full Address across 2-3 lines */}
-        <div className="flex flex-col text-right font-medium text-gray-700 leading-snug ml-auto">
-          {addressLines.map((line, idx) => (
+        <div className="flex flex-col items-end text-right font-medium text-gray-700 leading-snug w-full">
+          {finalAddressLines.map((line, idx) => (
             <span key={idx} className="block whitespace-nowrap">
               {line}
             </span>

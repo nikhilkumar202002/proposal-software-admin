@@ -196,6 +196,7 @@
     left: 18mm !important;
     right: 18mm !important;
     height: 16mm !important;
+    overflow: visible !important;
     z-index: 10 !important;
   }
 
