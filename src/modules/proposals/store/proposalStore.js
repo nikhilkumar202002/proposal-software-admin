@@ -489,10 +489,24 @@ export const useProposalStore = create((set, get) => ({
   },
 
   downloadPdf: async (id) => {
-    const proposal = get().currentProposal?.id === id ? get().currentProposal : null
+    const current = get().currentProposal
+    const targetId = id || current?.id
+    if (!targetId) return
+
     set({ isGeneratingPdf: true })
     try {
-      await proposalService.downloadPdf(id, proposal)
+      try {
+        await proposalService.generatePdf(targetId)
+      } catch (genErr) {
+        console.warn('Backend generatePdf returned:', genErr)
+      }
+
+      const proposalNumber = current?.number || current?.proposal_number || targetId
+      const filename = `proposal-${proposalNumber}.pdf`
+      await proposalService.downloadPdfFile(targetId, filename)
+    } catch (err) {
+      console.error('Failed to download proposal PDF from API, invoking print preview:', err)
+      window.print()
     } finally {
       set({ isGeneratingPdf: false })
     }

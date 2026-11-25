@@ -24,7 +24,10 @@ export const DocumentHeader = ({
       style={{ minHeight: `${height}mm` }}
       className={`w-full flex flex-col justify-between select-none ${className}`}
     >
-      <div className="flex items-center justify-between gap-4 pb-2">
+      <div
+        className="flex items-center justify-between gap-4 pb-2.5 w-full border-b border-gray-200"
+        style={{ borderBottom: showDivider ? '1px solid #E5E7EB' : 'none' }}
+      >
         {/* Left Side: Logo (Preserves exact dimensions and alignment in both modes) */}
         <div className="flex items-center gap-3 min-w-0 h-9">
           {showLogo && companyLogo ? (
@@ -59,13 +62,6 @@ export const DocumentHeader = ({
           </a>
         </div>
       </div>
-
-      {showDivider && (
-        <div
-          className="w-full border-b border-gray-200 shrink-0"
-          style={{ borderBottom: '1px solid #E5E7EB' }}
-        />
-      )}
     </div>
   )
 }

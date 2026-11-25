@@ -99,18 +99,26 @@ export const DocumentFooter = ({
       )}
 
       {/* 3 Equal Columns Footer Layout */}
-      <div className="grid grid-cols-3 items-center text-[10px] text-gray-600 w-full gap-2">
-        {/* Left Column (1/3): 2-line Phone Numbers */}
-        <div className="flex flex-col text-left font-semibold text-gray-800 leading-snug">
+      <div
+        className="w-full text-[10px] text-gray-600"
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+        }}
+      >
+        {/* Left Column (Phone Numbers) */}
+        <div className="text-left font-semibold text-gray-800 leading-snug shrink-0">
           {finalPhoneList.map((phone, idx) => (
-            <span key={idx} className="block whitespace-nowrap">
+            <div key={idx} style={{ whiteSpace: 'nowrap' }}>
               {phone}
-            </span>
+            </div>
           ))}
         </div>
 
-        {/* Center Column (1/3): Centered Page Number (Counts Only) */}
-        <div className="text-center">
+        {/* Center Column (Centered Page Number) */}
+        <div className="text-center shrink-0">
           <DocumentPageNumber
             pageNumber={pageNumber}
             totalPages={totalPages}
@@ -119,12 +127,12 @@ export const DocumentFooter = ({
           />
         </div>
 
-        {/* Right Column (1/3): Full Address across 2-3 lines */}
-        <div className="flex flex-col items-end text-right font-medium text-gray-700 leading-snug w-full">
+        {/* Right Column (Full Legal Address across 2-3 lines) */}
+        <div className="text-right font-medium text-gray-700 leading-snug shrink-0 flex flex-col items-end">
           {finalAddressLines.map((line, idx) => (
-            <span key={idx} className="block whitespace-nowrap">
+            <div key={idx} style={{ whiteSpace: 'nowrap' }}>
               {line}
-            </span>
+            </div>
           ))}
         </div>
       </div>
