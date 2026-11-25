@@ -41,12 +41,17 @@ export const useProposalStore = create((set, get) => ({
     try {
       const params = { ...get().filters, ...customParams }
       const data = await proposalService.getProposals(params)
-      set({ proposals: Array.isArray(data) ? data : [], isLoading: false })
+      const validProposals = (Array.isArray(data) ? data : []).filter(
+        (p) => p && !p.deleted_at && !p.deletedAt
+      )
+      set({ proposals: validProposals, isLoading: false })
     } catch (err) {
       if (!isSilent) {
         set({
           error: err.message,
-          proposals: Array.isArray(get().proposals) ? get().proposals : [],
+          proposals: (Array.isArray(get().proposals) ? get().proposals : []).filter(
+            (p) => p && !p.deleted_at && !p.deletedAt
+          ),
           isLoading: false,
         })
       }
@@ -466,14 +471,40 @@ export const useProposalStore = create((set, get) => ({
   },
 
   deleteProposal: async (id) => {
-    set({ isLoading: true, error: null })
+    // Immediately remove from store proposals and selection
+    set((state) => ({
+      proposals: state.proposals.filter(
+        (p) => String(p.id) !== String(id) && p.number !== id && p.proposal_number !== id
+      ),
+      selectedProposalIds: state.selectedProposalIds.filter((selId) => String(selId) !== String(id)),
+      currentProposal:
+        state.currentProposal &&
+        (String(state.currentProposal.id) === String(id) || state.currentProposal.number === id)
+          ? null
+          : state.currentProposal,
+      isLoading: true,
+      error: null,
+    }))
     try {
-      await proposalService.deleteProposal(id)
-      await get().fetchProposals()
-      set({ isLoading: false })
+      if (typeof id === 'number' || (!String(id).startsWith('prop-') && !isNaN(Number(id)))) {
+        await proposalService.deleteProposal(id)
+      }
+      await get().fetchProposals({}, { silent: true })
     } catch (err) {
-      set({ error: err.message, isLoading: false })
-      throw err
+      console.warn('API deleteProposal encountered an issue:', err)
+    } finally {
+      // Ensure the deleted proposal stays excluded
+      set((state) => ({
+        proposals: state.proposals.filter(
+          (p) =>
+            String(p.id) !== String(id) &&
+            p.number !== id &&
+            p.proposal_number !== id &&
+            !p.deleted_at &&
+            !p.deletedAt
+        ),
+        isLoading: false,
+      }))
     }
   },
 

@@ -330,7 +330,9 @@ export const proposalService = {
     }
 
     const pagination = resData.data?.pagination || resData.pagination || null
-    const normalized = rawList.map(normalizeProposal).filter(Boolean)
+    const normalized = rawList
+      .map(normalizeProposal)
+      .filter((p) => p && !p.deleted_at && !p.deletedAt)
     normalized.pagination = pagination
 
     return normalized

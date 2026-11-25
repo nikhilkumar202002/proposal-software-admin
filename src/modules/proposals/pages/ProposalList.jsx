@@ -55,8 +55,10 @@ export const ProposalList = () => {
     return () => clearInterval(interval)
   }, [fetchProposals])
 
-  // Ensure proposals is safely an array
-  const safeProposals = Array.isArray(proposals) ? proposals : []
+  // Ensure proposals is safely an array excluding any deleted records
+  const safeProposals = (Array.isArray(proposals) ? proposals : []).filter(
+    (p) => p && typeof p === 'object' && !p.deleted_at && !p.deletedAt
+  )
 
   // Aggregate stats across proposals
   const stats = (() => {
@@ -66,7 +68,7 @@ export const ProposalList = () => {
     let acceptedCount = 0
 
     safeProposals.forEach((p) => {
-      if (!p || typeof p !== 'object') return
+      if (!p || typeof p !== 'object' || p.deleted_at || p.deletedAt) return
       const totals = calculateProposalTotals(p.pricing || {})
       totalVal += totals.grandTotal
       if (['accepted', 'signed'].includes(p.status)) {
@@ -93,7 +95,7 @@ export const ProposalList = () => {
 
   // Filter proposals by search and status
   const filteredProposals = safeProposals.filter((p) => {
-    if (!p || typeof p !== 'object') return false
+    if (!p || typeof p !== 'object' || p.deleted_at || p.deletedAt) return false
     const q = (filters?.search || '').toLowerCase().trim()
     const matchesSearch =
       !q ||
