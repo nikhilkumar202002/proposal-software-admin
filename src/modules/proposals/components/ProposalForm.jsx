@@ -180,6 +180,7 @@ export const ProposalForm = ({
               content={canvasProps.content}
               company={canvasProps.company}
               proposal={canvasProps.proposal}
+              initialSettings={canvasProps.settings}
               showToolbar={true}
               onPrint={() => window.print()}
             />

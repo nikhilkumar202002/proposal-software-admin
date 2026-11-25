@@ -96,22 +96,49 @@ export function normalizeProposal(raw) {
       additionalCharges,
       grandTotal,
       items,
+      paymentMilestones,
+      globalDiscount: Number(raw.discount_value ?? 0),
+      globalDiscountValue: Number(raw.discount_value ?? 0),
+      globalDiscountType: raw.discount_type || 'percentage',
     },
 
     // Relational fields
     clientId: raw.client_id || raw.clientId || raw.client?.id || null,
     client_id: raw.client_id || raw.clientId || raw.client?.id || null,
-    client: raw.client || null,
+    client: raw.client
+      ? {
+          id: raw.client.id,
+          name: raw.client.client_name || raw.client.name || '',
+          clientName: raw.client.client_name || raw.client.name || '',
+          companyName: raw.client.company_name || raw.client.companyName || '',
+          email: raw.client.email || '',
+          phone: raw.client.phone || '',
+          address: raw.client.address || '',
+          country: raw.client.country || '',
+          taxNumber: raw.client.tax_number || raw.client.taxNumber || '',
+        }
+      : null,
     technologies: Array.isArray(raw.technologies) ? raw.technologies : [],
+    technology_ids: Array.isArray(raw.technologies)
+      ? raw.technologies.map((t) => (typeof t === 'object' ? t.id : t)).filter(Boolean)
+      : Array.isArray(raw.technology_ids)
+        ? raw.technology_ids
+        : [],
     serviceTypes: Array.isArray(raw.service_types || raw.serviceTypes)
       ? raw.service_types || raw.serviceTypes
       : [],
     service_types: Array.isArray(raw.service_types || raw.serviceTypes)
       ? raw.service_types || raw.serviceTypes
       : [],
+    service_type_ids: Array.isArray(raw.service_types || raw.serviceTypes)
+      ? (raw.service_types || raw.serviceTypes).map((s) => (typeof s === 'object' ? s.id : s)).filter(Boolean)
+      : Array.isArray(raw.service_type_ids)
+        ? raw.service_type_ids
+        : [],
     items,
     paymentMilestones,
     payment_milestones: paymentMilestones,
+    notes: raw.notes || raw.internal_notes || '',
 
     createdBy: raw.created_by || raw.createdBy || null,
     created_by: raw.created_by || raw.createdBy || null,
@@ -130,15 +157,51 @@ export function normalizeProposal(raw) {
  * @returns {Object}
  */
 export function formatProposalPayload(data) {
-  const discountType = data.discount_type || data.discountType
+  const discountType = data.discount_type || data.discountType || data.pricing?.globalDiscountType
+  const discountValue =
+    data.discount_value ??
+    data.discountValue ??
+    data.pricing?.globalDiscountValue ??
+    data.pricing?.globalDiscount ??
+    0
+  const additionalCharges =
+    data.additional_charges ??
+    data.additionalCharges ??
+    data.pricing?.additionalCharges ??
+    0
+
+  const statusRaw = String(data.status || 'draft').toLowerCase().trim().replace(/\s+/g, '_')
+  const statusMap = {
+    proposal_sent: 'sent',
+    proposal_send: 'sent',
+    signed: 'accepted',
+    approved: 'accepted',
+  }
+  const status = statusMap[statusRaw] || statusRaw
+
   const payload = {
     title: (data.title || '').trim() || 'Untitled Proposal',
     proposal_type: data.proposal_type || data.proposalType || 'direct',
-    client_id: Math.max(1, Number(data.client_id ?? data.clientId ?? data.client?.id ?? 1)),
-    currency: data.currency || 'USD',
+    status: status,
+    currency: data.currency || data.pricing?.currency || 'USD',
     discount_type: ['percentage', 'fixed'].includes(discountType) ? discountType : 'percentage',
-    discount_value: Math.max(0, Number(data.discount_value ?? data.discountValue ?? 0)),
-    additional_charges: Math.max(0, Number(data.additional_charges ?? data.additionalCharges ?? 0)),
+    discount_value: Math.max(0, Number(discountValue)),
+    additional_charges: Math.max(0, Number(additionalCharges)),
+  }
+
+  const clientId = data.client_id ?? data.clientId ?? data.client?.id ?? null
+  if (clientId && Number(clientId) > 0) {
+    payload.client_id = Number(clientId)
+  }
+  if (data.client && typeof data.client === 'object') {
+    payload.client = {
+      name: data.client.name || data.client.client_name || '',
+      company_name: data.client.companyName || data.client.company_name || '',
+      email: data.client.email || '',
+      phone: data.client.phone || '',
+      address: data.client.address || '',
+      tax_number: data.client.taxNumber || data.client.tax_number || '',
+    }
   }
 
   if (data.proposal_date || data.proposalDate || data.date) {
@@ -153,8 +216,10 @@ export function formatProposalPayload(data) {
   if (data.document_settings !== undefined || data.documentSettings !== undefined) {
     payload.document_settings = data.document_settings ?? data.documentSettings
   }
-  if (data.internal_notes !== undefined || data.internalNotes !== undefined) {
-    payload.internal_notes = data.internal_notes ?? data.internalNotes
+  const notes = data.notes || data.internal_notes || data.internalNotes || ''
+  if (notes) {
+    payload.notes = notes
+    payload.internal_notes = notes
   }
 
   // Relations
@@ -190,14 +255,26 @@ export function formatProposalPayload(data) {
   }
 
   // Payment Milestones
-  const milestones = data.payment_milestones || data.paymentMilestones
-  if (Array.isArray(milestones) && milestones.length > 0) {
-    payload.payment_milestones = milestones.map((m) => ({
-      title: (m.title || '').trim() || 'Milestone Phase',
-      description: m.description || null,
-      percentage: Math.min(100, Math.max(0, Number(m.percentage || 0))),
-      due_description: m.due_description || m.dueDescription || null,
-    }))
+  const rawMilestones =
+    data.payment_milestones ||
+    data.paymentMilestones ||
+    data.pricing?.paymentMilestones ||
+    data.pricing?.payment_milestones
+  if (Array.isArray(rawMilestones) && rawMilestones.length > 0) {
+    const totalPct = rawMilestones.reduce((acc, m) => acc + Number(m.percentage || 0), 0)
+    payload.payment_milestones = rawMilestones.map((m, idx) => {
+      let pct = Number(m.percentage || 0)
+      if (totalPct > 0 && Math.abs(totalPct - 100) > 0.01) {
+        pct = Math.round((pct / totalPct) * 100 * 100) / 100
+      }
+      return {
+        title: (m.title || m.name || `Phase ${idx + 1}`).trim(),
+        description: m.description || null,
+        percentage: pct,
+        due_description: m.due_description || m.dueDescription || null,
+        sort_order: m.sort_order ?? m.sortOrder ?? idx,
+      }
+    })
   }
 
   return payload

@@ -536,6 +536,27 @@ export function createNewProposalModel(existingList = []) {
           tax: 18,
         },
       ],
+      paymentMilestones: [
+        { id: 'ms-1', name: 'Milestone 1: Discovery & Architecture', percentage: 30, dueDescription: 'Upon project initiation' },
+        { id: 'ms-2', name: 'Milestone 2: Core Development & Implementation', percentage: 40, dueDescription: 'Midway development milestone' },
+        { id: 'ms-3', name: 'Milestone 3: QA, Deployment & Hypercare', percentage: 30, dueDescription: 'Final delivery and signoff' },
+      ],
+    },
+    document_settings: {
+      orientation: 'portrait',
+      margins: { top: 26, bottom: 25, left: 18, right: 18 },
+      header: { visible: true, height: 14, template: 'modern', showDivider: true },
+      footer: { visible: true, height: 16, template: 'standard', showDivider: true, pageNumberFormat: 'counts' },
+      watermark: { enabled: false, text: '', type: 'text', opacity: 0.08, angle: -45, preset: 'draft' },
+      typography: { baseSize: 12, heading1Size: 16, heading2Size: 14, heading3Size: 14 },
+    },
+    documentSettings: {
+      orientation: 'portrait',
+      margins: { top: 26, bottom: 25, left: 18, right: 18 },
+      header: { visible: true, height: 14, template: 'modern', showDivider: true },
+      footer: { visible: true, height: 16, template: 'standard', showDivider: true, pageNumberFormat: 'counts' },
+      watermark: { enabled: false, text: '', type: 'text', opacity: 0.08, angle: -45, preset: 'draft' },
+      typography: { baseSize: 12, heading1Size: 16, heading2Size: 14, heading3Size: 14 },
     },
     notes: 'Thank you for considering our proposal. Please review the deliverables and feel free to contact us with any questions.',
     createdAt: new Date().toISOString(),
@@ -795,6 +816,7 @@ export function convertProposalToDocumentCanvasProps(proposal) {
 
   return {
     content: contentBlocks,
+    settings: proposal.document_settings || proposal.documentSettings || undefined,
     company: {
       ...DEFAULT_COMPANY_DETAILS,
       ...getStoredCompanyDetails(),

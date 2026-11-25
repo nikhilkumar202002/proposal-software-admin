@@ -130,8 +130,11 @@ export const useProposalStore = create((set, get) => ({
   updateClient: (fields) => {
     set((state) => {
       if (!state.currentProposal) return state
+      const resolvedClientId = fields.id || fields.clientId || fields.client_id || state.currentProposal.client_id || state.currentProposal.clientId
       const updated = {
         ...state.currentProposal,
+        client_id: resolvedClientId,
+        clientId: resolvedClientId,
         client: {
           ...state.currentProposal.client,
           ...fields,
@@ -139,6 +142,25 @@ export const useProposalStore = create((set, get) => ({
         updatedAt: new Date().toISOString(),
       }
       return { currentProposal: updated }
+    })
+  },
+
+  updateDocumentSettings: (settings) => {
+    set((state) => {
+      if (!state.currentProposal) return state
+      const currentDocSettings = state.currentProposal.document_settings || state.currentProposal.documentSettings || {}
+      const merged = {
+        ...currentDocSettings,
+        ...settings,
+      }
+      return {
+        currentProposal: {
+          ...state.currentProposal,
+          document_settings: merged,
+          documentSettings: merged,
+          updatedAt: new Date().toISOString(),
+        },
+      }
     })
   },
 
