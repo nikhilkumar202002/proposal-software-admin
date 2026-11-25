@@ -203,7 +203,7 @@ api.interceptors.response.use(
         typeof window !== 'undefined' &&
         !window.location.pathname.includes('/login')
       ) {
-        window.location.href = '/login?reason=daily_expired'
+        window.location.href = '/login'
       }
     }
 

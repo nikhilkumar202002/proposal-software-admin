@@ -46,18 +46,15 @@ export const Login = () => {
   const [error, setError] = useState(null)
   const [successNotice, setSuccessNotice] = useState(null)
 
-  // Check if URL has reset token (?token=...&email=...) or daily expiration
+  // Check if URL has reset token (?token=...&email=...)
   useEffect(() => {
     const token = searchParams.get('token')
     const emailParam = searchParams.get('email')
-    const reason = searchParams.get('reason')
 
     if (token) {
       setResetToken(token)
       if (emailParam) setResetEmail(emailParam)
       setView('reset')
-    } else if (reason === 'daily_expired') {
-      setError('Your session expired after 12:00 AM. Daily login is required to continue.')
     }
   }, [searchParams])
 

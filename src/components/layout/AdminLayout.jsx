@@ -13,7 +13,7 @@ export const AdminLayout = ({ children }) => {
     // If not authenticated or login session was before today's 12:00 AM
     if (!authService.isAuthenticated()) {
       authService.purgeSession()
-      navigate('/login?reason=daily_expired', { replace: true })
+      navigate('/login', { replace: true })
       return
     }
 
@@ -21,7 +21,7 @@ export const AdminLayout = ({ children }) => {
     const msUntilMidnight = authService.getMsUntilNextMidnight()
     const midnightTimer = setTimeout(() => {
       authService.purgeSession()
-      navigate('/login?reason=daily_expired', { replace: true })
+      navigate('/login', { replace: true })
     }, msUntilMidnight)
 
     return () => clearTimeout(midnightTimer)
