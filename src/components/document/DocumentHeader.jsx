@@ -4,7 +4,7 @@ export const DocumentHeader = ({
   company = {},
   proposal = {},
   showDivider = true,
-  height = 22, // in mm
+  height = 14, // in mm (compact header height)
   className = '',
 }) => {
   const companyName = company.name || 'Domain Dude'
@@ -22,19 +22,19 @@ export const DocumentHeader = ({
   return (
     <div
       style={{ minHeight: `${height}mm` }}
-      className={`w-full flex flex-col justify-between select-none ${className}`}
+      className={`w-full flex flex-col justify-end select-none ${className}`}
     >
       <div
-        className="flex items-center justify-between gap-4 pb-2.5 w-full border-b border-gray-200"
+        className="flex items-center justify-between gap-4 pb-1.5 w-full border-b border-gray-200"
         style={{ borderBottom: showDivider ? '1px solid #E5E7EB' : 'none' }}
       >
         {/* Left Side: Logo (Preserves exact dimensions and alignment in both modes) */}
-        <div className="flex items-center gap-3 min-w-0 h-9">
+        <div className="flex items-center gap-3 min-w-0">
           {showLogo && companyLogo ? (
             <img
               src={companyLogo}
               alt={companyName}
-              className="h-8 max-h-9 w-auto object-contain shrink-0"
+              className="h-8 max-h-8.5 w-auto object-contain shrink-0"
             />
           ) : (
             <div className="h-8 w-1 opacity-0 pointer-events-none" aria-hidden="true" />
@@ -56,7 +56,7 @@ export const DocumentHeader = ({
             href={website.startsWith('http') ? website : `https://${website}`}
             target="_blank"
             rel="noreferrer"
-            className="text-[11px] font-semibold text-gray-900 hover:text-[#0055FF] transition-colors mt-0.5 tracking-tight"
+            className="text-[11px] font-semibold text-gray-900 hover:text-[#0055FF] transition-colors tracking-tight"
           >
             {website}
           </a>

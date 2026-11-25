@@ -182,10 +182,10 @@
   /* Fixed Header Area */
   .document-header-area {
     position: absolute !important;
-    top: 11mm !important;
+    top: 10mm !important;
     left: 18mm !important;
     right: 18mm !important;
-    height: 22mm !important;
+    height: 14mm !important;
     z-index: 10 !important;
   }
 

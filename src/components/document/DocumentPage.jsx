@@ -15,8 +15,8 @@ export const DocumentPage = ({
   id,
 }) => {
   const orientation = settings.orientation || 'portrait'
-  const margins = settings.margins || { top: 35, bottom: 25, left: 18, right: 18 }
-  const headerSettings = settings.header || { visible: true, height: 22 }
+  const margins = settings.margins || { top: 26, bottom: 25, left: 18, right: 18 }
+  const headerSettings = settings.header || { visible: true, height: 14 }
   const footerSettings = settings.footer || { visible: true, height: 16 }
   const watermark = settings.watermark || { enabled: false }
   const typography = settings.typography || { baseSize: 12, heading1Size: 16, heading2Size: 14, heading3Size: 14 }
@@ -24,7 +24,7 @@ export const DocumentPage = ({
   const showHeader = headerSettings.visible !== false
   const showFooter = footerSettings.visible !== false
 
-  const headerHeightMm = showHeader ? (headerSettings.height || 22) : 0
+  const headerHeightMm = showHeader ? (headerSettings.height || 14) : 0
   const footerHeightMm = showFooter ? (footerSettings.height || 16) : 0
 
   return (

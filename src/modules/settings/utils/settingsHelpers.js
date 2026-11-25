@@ -32,14 +32,14 @@ export const DEFAULT_DOCUMENT_CONFIG = {
   orientation: 'portrait', // 'portrait' | 'landscape'
   marginPreset: 'normal', // 'normal' | 'compact' | 'relaxed'
   margins: {
-    top: 35, // mm
+    top: 26, // mm
     bottom: 25, // mm
     left: 18, // mm
     right: 18, // mm
   },
   header: {
     visible: true,
-    height: 22, // mm
+    height: 14, // mm
     showDivider: true,
     website: 'www.domaindude.in',
     showDate: true,

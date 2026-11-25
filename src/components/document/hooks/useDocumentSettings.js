@@ -4,14 +4,14 @@ import { A4_CONFIG } from '../utils/a4Config'
 export const DEFAULT_DOCUMENT_SETTINGS = {
   orientation: 'portrait', // 'portrait' | 'landscape'
   margins: {
-    top: A4_CONFIG.margins.top, // 35mm
+    top: A4_CONFIG.margins.top, // 26mm
     bottom: A4_CONFIG.margins.bottom, // 25mm
     left: A4_CONFIG.margins.left, // 18mm
     right: A4_CONFIG.margins.right, // 18mm
   },
   header: {
     visible: true,
-    height: A4_CONFIG.header.height, // 22mm
+    height: A4_CONFIG.header.height, // 14mm
     template: 'modern', // 'modern' | 'corporate' | 'minimal'
     showDivider: true,
   },

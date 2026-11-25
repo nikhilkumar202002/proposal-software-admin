@@ -16,13 +16,13 @@ export const A4_CONFIG = {
     heightPx: Math.round(210 * MM_TO_PX), // ~794px
   },
   margins: {
-    top: 35, // mm
+    top: 26, // mm
     bottom: 25, // mm
     left: 18, // mm
     right: 18, // mm
   },
   header: {
-    height: 22, // mm
+    height: 14, // mm
     visible: true,
     showDivider: true,
   },
