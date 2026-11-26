@@ -10,8 +10,18 @@ export const DocumentHeader = ({
   const companyName = company.name || 'Domain Dude'
   const companyLogo = company.logoUrl || logoImg
   const website = company.website || 'www.domaindude.in'
-  const proposalDate = proposal.date || new Date().toISOString().split('T')[0]
-  const validUntilDate = proposal.validUntil
+  const proposalDate = proposal.date || proposal.proposalDate || proposal.proposal_date || new Date().toISOString().split('T')[0]
+  const validUntilDate = proposal.validUntil || proposal.valid_until || (() => {
+    if (!proposalDate) return null
+    try {
+      const d = new Date(proposalDate)
+      if (!isNaN(d.getTime())) {
+        d.setDate(d.getDate() + 30)
+        return d.toISOString().split('T')[0]
+      }
+    } catch {}
+    return null
+  })()
 
   // Proposal Type logic:
   // "direct" (default) -> With Company Logo

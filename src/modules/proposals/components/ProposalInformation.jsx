@@ -377,8 +377,21 @@ export const ProposalInformation = ({
                 Issue Date <span className="text-red-500">*</span>
               </label>
               <DatePicker
-                value={proposal.date}
-                onChange={(d) => onChange({ date: d })}
+                value={proposal.date || proposal.proposalDate || proposal.proposal_date}
+                onChange={(d) => {
+                  const updates = { date: d, proposal_date: d }
+                  if (!proposal.validUntil && !proposal.valid_until && d) {
+                    try {
+                      const dt = new Date(d)
+                      if (!isNaN(dt.getTime())) {
+                        dt.setDate(dt.getDate() + 30)
+                        updates.validUntil = dt.toISOString().split('T')[0]
+                        updates.valid_until = updates.validUntil
+                      }
+                    } catch {}
+                  }
+                  onChange(updates)
+                }}
                 placeholder="Select date"
                 required
               />
@@ -396,8 +409,8 @@ export const ProposalInformation = ({
                 </span>
               </div>
               <DatePicker
-                value={proposal.validUntil}
-                onChange={(d) => onChange({ validUntil: d })}
+                value={proposal.validUntil || proposal.valid_until}
+                onChange={(d) => onChange({ validUntil: d, valid_until: d })}
                 placeholder="Select expiration"
                 required
               />

@@ -242,5 +242,6 @@
   [data-block-id*="acceptance"] {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
+    padding-top: 50px !important;
   }
 }

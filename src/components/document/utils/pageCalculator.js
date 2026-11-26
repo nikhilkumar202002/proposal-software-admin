@@ -58,7 +58,7 @@ export function calculatePages(blocks = [], settings = {}, measurements = {}) {
     // Prevent orphan headings at the bottom of a page
     if (block.type === 'heading' && currentPageBlocks.length > 0) {
       const nextBlock = blocks[i + 1]
-      const minFollowUpPx = nextBlock?.type === 'table' ? 120 : nextBlock?.type === 'signatures' ? 100 : 60
+      const minFollowUpPx = nextBlock?.type === 'table' ? 120 : nextBlock?.type === 'signatures' ? 150 : 60
       if (remainingSpacePx < blockHeightPx + minFollowUpPx) {
         pushCurrentPage()
         currentPageBlocks.push(block)

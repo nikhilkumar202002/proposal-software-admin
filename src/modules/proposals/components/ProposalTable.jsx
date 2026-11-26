@@ -140,9 +140,21 @@ export const ProposalTable = ({
       sortable: true,
       render: (row) => {
         const r = row && typeof row === 'object' ? row : {}
+        const valid = r.validUntil || r.valid_until || (() => {
+          const base = r.proposalDate || r.proposal_date || r.date
+          if (!base) return '—'
+          try {
+            const d = new Date(base)
+            if (!isNaN(d.getTime())) {
+              d.setDate(d.getDate() + 30)
+              return d.toISOString().split('T')[0]
+            }
+          } catch {}
+          return '—'
+        })()
         return (
-          <span className="text-xs text-gray-600">
-            {r.validUntil || '—'}
+          <span className="text-xs text-gray-600 font-medium">
+            {valid || '—'}
           </span>
         )
       },

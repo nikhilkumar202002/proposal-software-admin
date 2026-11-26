@@ -52,6 +52,18 @@ export function normalizeProposal(raw) {
   const additionalCharges = Number(raw.additional_charges ?? raw.additionalCharges ?? 0)
   const grandTotal = Number(raw.grand_total ?? raw.grandTotal ?? 0)
 
+  const proposalDateVal = raw.proposal_date || raw.proposalDate || raw.date || ''
+  let validUntilVal = raw.valid_until || raw.validUntil || null
+  if (!validUntilVal && proposalDateVal) {
+    try {
+      const d = new Date(proposalDateVal)
+      if (!isNaN(d.getTime())) {
+        d.setDate(d.getDate() + 30)
+        validUntilVal = d.toISOString().split('T')[0]
+      }
+    } catch {}
+  }
+
   return {
     id: raw.id,
     number: raw.proposal_number || raw.number || '',
@@ -61,11 +73,11 @@ export function normalizeProposal(raw) {
     proposalType: raw.proposal_type || raw.proposalType || 'direct',
     proposal_type: raw.proposal_type || raw.proposalType || 'direct',
     status: (raw.status || 'draft').toLowerCase(),
-    date: raw.proposal_date || raw.proposalDate || raw.date || '',
-    proposalDate: raw.proposal_date || raw.proposalDate || raw.date || '',
-    proposal_date: raw.proposal_date || raw.proposalDate || raw.date || '',
-    validUntil: raw.valid_until || raw.validUntil || null,
-    valid_until: raw.valid_until || raw.validUntil || null,
+    date: proposalDateVal,
+    proposalDate: proposalDateVal,
+    proposal_date: proposalDateVal,
+    validUntil: validUntilVal,
+    valid_until: validUntilVal,
     currency: raw.currency || 'USD',
     content: raw.content || null,
     documentSettings: raw.document_settings || raw.documentSettings || null,
@@ -204,13 +216,22 @@ export function formatProposalPayload(data) {
     }
   }
 
-  if (data.proposal_date || data.proposalDate || data.date) {
-    payload.proposal_date = data.proposal_date || data.proposalDate || data.date
-  } else {
-    payload.proposal_date = new Date().toISOString().split('T')[0]
+  const proposalDate = data.proposal_date || data.proposalDate || data.date || new Date().toISOString().split('T')[0]
+  payload.proposal_date = proposalDate
+
+  let validUntil = data.valid_until || data.validUntil
+  if (!validUntil && proposalDate) {
+    try {
+      const d = new Date(proposalDate)
+      if (!isNaN(d.getTime())) {
+        d.setDate(d.getDate() + 30)
+        validUntil = d.toISOString().split('T')[0]
+      }
+    } catch {}
   }
-  if (data.valid_until || data.validUntil) {
-    payload.valid_until = data.valid_until || data.validUntil
+  if (validUntil) {
+    payload.valid_until = validUntil
+    payload.validUntil = validUntil
   }
   if (data.content !== undefined) payload.content = data.content
   if (data.document_settings !== undefined || data.documentSettings !== undefined) {

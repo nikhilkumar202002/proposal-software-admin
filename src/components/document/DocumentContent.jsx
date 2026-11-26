@@ -263,7 +263,8 @@ function renderBlock(block) {
         <div
           key={id}
           data-block-id={id}
-          className="mt-3.5 grid grid-cols-2 gap-8 text-xs select-none"
+          className="pt-[50px] grid grid-cols-2 gap-8 text-xs select-none"
+          style={{ paddingTop: '50px' }}
         >
           {block.partyA && (
             <div>
