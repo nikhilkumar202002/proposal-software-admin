@@ -94,9 +94,8 @@ export const useUserStore = create((set, get) => ({
 
   setCurrentPage: (page) => set({ currentPage: page }),
 
-  // --- Create User (POST /admin/users) ---
+  // --- Create User (POST /admin/users or POST /users) ---
   addUser: async (userData) => {
-    const roleConfig = ROLES[userData.role] || ROLES.editor
     set({ isLoading: true, error: null })
 
     try {
@@ -110,40 +109,15 @@ export const useUserStore = create((set, get) => ({
         return createdUser
       }
     } catch (err) {
-      console.warn('Backend POST /admin/users returned error, falling back to local creation:', err.message)
-      set({ isLoading: false, error: err.message })
+      const errorMsg =
+        err.response?.data?.message ||
+        (err.response?.data?.errors ? Object.values(err.response.data.errors).flat().join(', ') : null) ||
+        err.message ||
+        'Failed to create team member'
+      set({ isLoading: false, error: errorMsg })
+      toast.error(errorMsg)
+      throw err
     }
-
-    // Fallback local creation if backend not reachable
-    const newUser = {
-      id: `usr-${Date.now().toString().slice(-4)}`,
-      name: userData.name || 'New Team Member',
-      email: userData.email || '',
-      phone: userData.phone || '',
-      avatar: userData.avatar || '',
-      role: userData.role || 'editor',
-      roles: Array.isArray(userData.roles) ? userData.roles : [ROLE_DISPLAY_NAMES[userData.role] || 'Editor'],
-      status: userData.status || 'active',
-      emailVerified: true,
-      lastLogin: 'Never',
-      createdAt: new Date().toISOString().split('T')[0],
-      permissions: userData.permissions?.length ? userData.permissions : roleConfig.defaultPermissions,
-      activityLog: [
-        {
-          id: `act-${Date.now()}`,
-          event: `Account created with role ${roleConfig.name}`,
-          timestamp: 'Just now',
-          type: 'account',
-        },
-      ],
-    }
-
-    set((state) => ({
-      users: [newUser, ...state.users],
-      isLoading: false,
-    }))
-    toast.success('Team member added successfully')
-    return newUser
   },
 
   // --- Update User (PUT /admin/users/:id) ---
