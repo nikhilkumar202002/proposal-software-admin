@@ -8,6 +8,7 @@ export { default as AccountSettings } from './pages/AccountSettings'
 // Components
 export { default as CompanyProfileForm } from './components/CompanyProfileForm'
 export { default as CompanyLogoUpload } from './components/CompanyLogoUpload'
+export { default as CompanyFaviconUpload } from './components/CompanyFaviconUpload'
 export { default as CompanyContactForm } from './components/CompanyContactForm'
 export { default as AddressForm } from './components/AddressForm'
 export { default as DocumentHeaderSettings } from './components/DocumentHeaderSettings'
