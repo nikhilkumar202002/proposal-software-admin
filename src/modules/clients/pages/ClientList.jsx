@@ -195,7 +195,7 @@ export const ClientList = () => {
         onClose={() => setActiveClientModal(null)}
         title="Client Profile Details"
         description="Comprehensive organization details, contact information, and billing configuration."
-        size="lg"
+        size="4xl"
       >
         {activeClientModal && (
           <ClientDetails
