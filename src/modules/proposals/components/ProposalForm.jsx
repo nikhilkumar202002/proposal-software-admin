@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { toast } from 'react-hot-toast'
 import {
   FileText,
   Users,
@@ -6,13 +7,17 @@ import {
   Eye,
   CheckCircle2,
   AlertCircle,
+  X,
 } from 'lucide-react'
 import ProposalInformation from './ProposalInformation'
 import ClientDetailsForm from './ClientDetailsForm'
 import ProposalEditorPanel from './ProposalEditorPanel'
 import ProposalActions from './ProposalActions'
 import { DocumentCanvas } from '../../../components/document'
-import { convertProposalToDocumentCanvasProps } from '../utils/proposalHelpers'
+import {
+  convertProposalToDocumentCanvasProps,
+  validateProposal,
+} from '../utils/proposalHelpers'
 
 const STEPS = [
   { step: 1, title: 'Proposal Info', icon: FileText, desc: 'Number & Dates' },
@@ -45,14 +50,86 @@ export const ProposalForm = ({
   className = '',
 }) => {
   const [saveFeedback, setSaveFeedback] = useState(null)
+  const [validationErrors, setValidationErrors] = useState({})
 
+  // Clear specific errors when metadata is updated
+  const handleMetadataChange = (fields) => {
+    onUpdateMetadata(fields)
+    if (Object.keys(validationErrors).length > 0) {
+      const updated = { ...validationErrors }
+      if (fields.title) delete updated.title
+      if (fields.serviceType || fields.service_type_ids) delete updated.serviceType
+      if (fields.date || fields.proposal_date) delete updated.proposalDate
+      if (fields.validUntil || fields.valid_until) delete updated.validUntil
+      setValidationErrors(updated)
+    }
+  }
+
+  // Clear client errors when client is updated
+  const handleClientChange = (fields) => {
+    onUpdateClient(fields)
+    if (Object.keys(validationErrors).length > 0) {
+      const updated = { ...validationErrors }
+      delete updated.client
+      delete updated.clientEmail
+      setValidationErrors(updated)
+    }
+  }
+
+  // Step progression validation
+  const handleNext = () => {
+    const check = validateProposal(proposal, { step: activeStep })
+    if (!check.isValid) {
+      setValidationErrors(check.errors)
+      const firstMsg = Object.values(check.errors)[0]
+      toast.error(firstMsg || 'Please complete required fields before proceeding')
+      return
+    }
+    setValidationErrors({})
+    onStepChange(Math.min(STEPS.length, activeStep + 1))
+  }
+
+  // Click on step bar directly
+  const handleStepClick = (targetStep) => {
+    if (targetStep > activeStep) {
+      const check = validateProposal(proposal, { step: activeStep })
+      if (!check.isValid) {
+        setValidationErrors(check.errors)
+        const firstMsg = Object.values(check.errors)[0]
+        toast.error(firstMsg || 'Please complete required fields before proceeding')
+        return
+      }
+    }
+    setValidationErrors({})
+    onStepChange(targetStep)
+  }
+
+  // Comprehensive save & publish validation
   const handleSaveWithFeedback = async (status) => {
+    const isPublish = status === 'sent' || status === 'accepted'
+    const check = validateProposal(proposal, { isPublish })
+    if (!check.isValid) {
+      setValidationErrors(check.errors)
+      if (check.stepWithFirstError) {
+        onStepChange(check.stepWithFirstError)
+      }
+      const firstMsg = Object.values(check.errors)[0]
+      toast.error(firstMsg || 'Please correct the highlighted errors before saving')
+      return
+    }
+
+    setValidationErrors({})
     try {
       await onSave(status)
       setSaveFeedback({ type: 'success', text: `Proposal saved successfully as ${status}!` })
       setTimeout(() => setSaveFeedback(null), 3000)
     } catch (err) {
-      setSaveFeedback({ type: 'error', text: err.message || 'Failed to save proposal' })
+      const errorMsg =
+        err.response?.data?.message ||
+        (err.response?.data?.errors ? Object.values(err.response.data.errors).flat().join(', ') : null) ||
+        err.message ||
+        'Failed to save proposal'
+      setSaveFeedback({ type: 'error', text: errorMsg })
     }
   }
 
@@ -78,6 +155,26 @@ export const ProposalForm = ({
         </div>
       )}
 
+      {/* Validation Errors Summary Alert */}
+      {Object.keys(validationErrors).length > 0 && (
+        <div className="p-3.5 rounded-xl border border-red-200 bg-red-50/90 text-red-800 text-xs flex items-center justify-between gap-3 shadow-2xs no-print print:hidden">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+            <span>
+              <strong>Validation required:</strong> {Object.values(validationErrors)[0]}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setValidationErrors({})}
+            className="text-red-500 hover:text-red-700 p-1 rounded-md hover:bg-red-100/50 cursor-pointer transition-colors"
+            title="Dismiss error notice"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+
       {/* Modern Multi-Step Wizard Progress Bar */}
       <div className="bg-white p-4 rounded-2xl border border-gray-200/80 shadow-2xs overflow-x-auto no-print print:hidden">
         <div className="flex items-center justify-between min-w-[680px]">
@@ -90,7 +187,7 @@ export const ProposalForm = ({
               <div key={s.step} className="flex items-center flex-1 last:flex-none">
                 <button
                   type="button"
-                  onClick={() => onStepChange(s.step)}
+                  onClick={() => handleStepClick(s.step)}
                   className="flex items-center gap-3 text-left group cursor-pointer"
                 >
                   <div
@@ -144,14 +241,16 @@ export const ProposalForm = ({
         {activeStep === 1 && (
           <ProposalInformation
             proposal={proposal}
-            onChange={onUpdateMetadata}
+            onChange={handleMetadataChange}
+            errors={validationErrors}
           />
         )}
 
         {activeStep === 2 && (
           <ClientDetailsForm
             client={proposal?.client}
-            onChange={onUpdateClient}
+            onChange={handleClientChange}
+            errors={validationErrors}
           />
         )}
 
@@ -194,7 +293,7 @@ export const ProposalForm = ({
           currentStep={activeStep}
           totalSteps={STEPS.length}
           onPrev={() => onStepChange(Math.max(1, activeStep - 1))}
-          onNext={() => onStepChange(Math.min(STEPS.length, activeStep + 1))}
+          onNext={handleNext}
           onSaveDraft={() => handleSaveWithFeedback('draft')}
           onPublish={() => handleSaveWithFeedback('sent')}
           onPreview={() => onStepChange(4)}

@@ -22,6 +22,7 @@ import {
 export const ProposalInformation = ({
   proposal,
   onChange = () => {},
+  errors = {},
   className = '',
 }) => {
   if (!proposal) return null
@@ -251,6 +252,7 @@ export const ProposalInformation = ({
                 value={proposal.title || ''}
                 onChange={(e) => onChange({ title: e.target.value })}
                 placeholder="e.g. Enterprise Cloud Infrastructure & DevOps Modernization"
+                error={errors.title}
                 required
               />
             </div>
@@ -287,6 +289,7 @@ export const ProposalInformation = ({
                 value={selectedServiceTypeId}
                 onChange={handleServiceTypeChange}
                 placeholder="Select service type offering..."
+                error={errors.serviceType}
                 searchable
                 clearable
               />
@@ -393,6 +396,7 @@ export const ProposalInformation = ({
                   onChange(updates)
                 }}
                 placeholder="Select date"
+                error={errors.proposalDate}
                 required
               />
             </div>
@@ -412,6 +416,7 @@ export const ProposalInformation = ({
                 value={proposal.validUntil || proposal.valid_until}
                 onChange={(d) => onChange({ validUntil: d, valid_until: d })}
                 placeholder="Select expiration"
+                error={errors.validUntil}
                 required
               />
             </div>

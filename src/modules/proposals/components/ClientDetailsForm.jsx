@@ -12,6 +12,7 @@ import {
   X,
   UserCheck,
   Sparkles,
+  AlertCircle,
 } from 'lucide-react'
 import { Input, Button, Modal, Select } from '../../../components/common'
 import { useClientStore } from '../../clients/store/clientStore'
@@ -20,6 +21,7 @@ import { INITIAL_CLIENTS } from '../../clients/utils/clientHelpers'
 export const ClientDetailsForm = ({
   client = {},
   onChange = () => {},
+  errors = {},
   className = '',
 }) => {
   const { clients, fetchClients, createClient } = useClientStore()
@@ -225,6 +227,13 @@ export const ClientDetailsForm = ({
 
         {/* Selection & Add Action Section */}
         <div className="pt-5 pb-2">
+          {errors.client && (
+            <div className="mb-3.5 p-3 bg-red-50 border border-red-200/80 rounded-xl flex items-center gap-2.5 text-xs text-red-700 font-medium">
+              <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+              <span>{errors.client}</span>
+            </div>
+          )}
+
           <div className="flex flex-col sm:flex-row sm:items-end gap-3">
             <div className="flex-1">
               <Select
@@ -233,6 +242,7 @@ export const ClientDetailsForm = ({
                 options={clientOptions}
                 value={selectedValue}
                 onChange={handleSelectClient}
+                error={errors.client}
                 searchable
                 clearable
               />

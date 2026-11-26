@@ -906,3 +906,129 @@ export function convertProposalToDocumentCanvasProps(proposal) {
     },
   }
 }
+
+/**
+ * Validate proposal fields for step progression or final submission
+ * @param {Object} proposal
+ * @param {Object} [options={}] - { step: number|null, isPublish: boolean }
+ * @returns {{ isValid: boolean, errors: Object, stepWithFirstError: number|null }}
+ */
+export function validateProposal(proposal, options = {}) {
+  const { step = null, isPublish = false } = options
+  const errors = {}
+  let stepWithFirstError = null
+
+  if (!proposal || typeof proposal !== 'object') {
+    return {
+      isValid: false,
+      errors: { general: 'Proposal data is missing' },
+      stepWithFirstError: 1,
+    }
+  }
+
+  // --- Step 1: Proposal Information Validation ---
+  if (step === null || step === 1) {
+    // 1. Title
+    const title = (proposal.title || '').trim()
+    if (!title) {
+      errors.title = 'Proposal title is required'
+      if (!stepWithFirstError) stepWithFirstError = 1
+    } else if (title.length < 3) {
+      errors.title = 'Proposal title must be at least 3 characters'
+      if (!stepWithFirstError) stepWithFirstError = 1
+    } else if (title.length > 255) {
+      errors.title = 'Proposal title cannot exceed 255 characters'
+      if (!stepWithFirstError) stepWithFirstError = 1
+    }
+
+    // 2. Proposal Date
+    const propDateStr = proposal.date || proposal.proposalDate || proposal.proposal_date
+    if (!propDateStr) {
+      errors.proposalDate = 'Proposal issue date is required'
+      if (!stepWithFirstError) stepWithFirstError = 1
+    }
+
+    // 3. Valid Until Date
+    const validUntilStr = proposal.validUntil || proposal.valid_until
+    if (!validUntilStr) {
+      errors.validUntil = 'Validity expiration date is required'
+      if (!stepWithFirstError) stepWithFirstError = 1
+    } else if (propDateStr) {
+      const propDate = new Date(propDateStr)
+      const validDate = new Date(validUntilStr)
+      if (!isNaN(propDate.getTime()) && !isNaN(validDate.getTime())) {
+        if (validDate < propDate) {
+          errors.validUntil = 'Validity date must be on or after proposal issue date'
+          if (!stepWithFirstError) stepWithFirstError = 1
+        }
+      }
+    }
+
+    // 4. Service Type Offering
+    const hasServiceType =
+      Boolean(proposal.serviceType?.trim()) ||
+      (Array.isArray(proposal.service_type_ids) && proposal.service_type_ids.length > 0) ||
+      (Array.isArray(proposal.serviceTypeIds) && proposal.serviceTypeIds.length > 0) ||
+      (Array.isArray(proposal.service_types) && proposal.service_types.length > 0)
+    if (!hasServiceType) {
+      errors.serviceType = 'Please select a service type offering'
+      if (!stepWithFirstError) stepWithFirstError = 1
+    }
+  }
+
+  // --- Step 2: Client Details Validation ---
+  if (step === null || step === 2) {
+    const client = proposal.client || {}
+    const hasClientId = Boolean(
+      proposal.client_id || proposal.clientId || client.id || client.client_id || client.clientId
+    )
+    const company = (client.companyName || client.company_name || '').trim()
+    const name = (client.name || client.client_name || '').trim()
+    const email = (client.email || '').trim()
+
+    if (!hasClientId && !company && !name) {
+      errors.client = 'Please select an existing client or enter recipient details'
+      if (!stepWithFirstError) stepWithFirstError = 2
+    }
+
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.clientEmail = 'Please enter a valid client email address'
+      if (!stepWithFirstError) stepWithFirstError = 2
+    }
+
+    // When publishing, recipient details are required
+    if (isPublish && !company && !name) {
+      errors.client = 'Client recipient is required to publish this proposal'
+      if (!stepWithFirstError) stepWithFirstError = 2
+    }
+  }
+
+  // --- Step 3: Document Content & Pricing Validation ---
+  if (step === null || step === 3) {
+    // Check pricing items if any exist
+    const items = proposal.pricing?.items || proposal.items || []
+    if (Array.isArray(items)) {
+      items.forEach((item, index) => {
+        if (!item.description || !item.description.trim()) {
+          errors[`item_${index}_description`] = `Line item #${index + 1} requires a deliverable description`
+          if (!stepWithFirstError) stepWithFirstError = 3
+        }
+        if (item.quantity === undefined || item.quantity === null || Number(item.quantity) <= 0) {
+          errors[`item_${index}_quantity`] = `Line item #${index + 1} quantity must be greater than 0`
+          if (!stepWithFirstError) stepWithFirstError = 3
+        }
+        if (item.unitPrice !== undefined && Number(item.unitPrice) < 0) {
+          errors[`item_${index}_unitPrice`] = `Line item #${index + 1} unit price cannot be negative`
+          if (!stepWithFirstError) stepWithFirstError = 3
+        }
+      })
+    }
+  }
+
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors,
+    stepWithFirstError: stepWithFirstError || null,
+  }
+}
+

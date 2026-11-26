@@ -5,6 +5,7 @@ import {
   createNewProposalModel,
   getStoredCompanyDetails,
   calculateProposalTotals,
+  validateProposal,
 } from '../utils/proposalHelpers'
 
 export const useProposalStore = create((set, get) => ({
@@ -445,11 +446,23 @@ export const useProposalStore = create((set, get) => ({
     const current = get().currentProposal
     if (!current) return null
 
+    // Run client-side validation
+    const targetStatus = overrideStatus || current.status || 'draft'
+    const isPublish = targetStatus === 'sent' || targetStatus === 'accepted'
+    const validation = validateProposal(current, { isPublish })
+    if (!validation.isValid) {
+      const firstMsg = Object.values(validation.errors)[0] || 'Please complete required proposal fields'
+      toast.error(firstMsg)
+      const err = new Error(firstMsg)
+      err.errors = validation.errors
+      throw err
+    }
+
     set({ isSaving: true, error: null })
     try {
       const payload = {
         ...current,
-        status: overrideStatus || current.status || 'draft',
+        status: targetStatus,
         updatedAt: new Date().toISOString(),
       }
 
@@ -468,7 +481,11 @@ export const useProposalStore = create((set, get) => ({
       set({ currentProposal: saved, isSaving: false })
       return saved
     } catch (err) {
-      const errorMsg = err.response?.data?.message || err.message || 'Failed to save proposal'
+      const errorMsg =
+        err.response?.data?.message ||
+        (err.response?.data?.errors ? Object.values(err.response.data.errors).flat().join(', ') : null) ||
+        err.message ||
+        'Failed to save proposal'
       toast.error(errorMsg)
       set({ error: errorMsg, isSaving: false })
       throw err
