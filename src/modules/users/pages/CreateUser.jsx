@@ -10,10 +10,12 @@ export const CreateUser = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [successMessage, setSuccessMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [apiErrors, setApiErrors] = useState({})
 
   const handleCreateUser = async (formData) => {
     setIsSubmitting(true)
     setErrorMessage(null)
+    setApiErrors({})
     try {
       const newUser = await addUser(formData)
       setIsSubmitting(false)
@@ -23,7 +25,14 @@ export const CreateUser = () => {
       }, 1000)
     } catch (err) {
       setIsSubmitting(false)
-      const errorMsg = err.response?.data?.message || err.message || 'Failed to create user. Please try again.'
+      const fieldErrors = err.response?.data?.errors || {}
+      setApiErrors(fieldErrors)
+      const firstError = Object.values(fieldErrors).flat()[0]
+      const errorMsg =
+        firstError ||
+        err.response?.data?.message ||
+        err.message ||
+        'Failed to create user. Please try again.'
       setErrorMessage(errorMsg)
     }
   }
@@ -71,6 +80,7 @@ export const CreateUser = () => {
         onSubmit={handleCreateUser}
         isSubmitting={isSubmitting}
         isEdit={false}
+        apiErrors={apiErrors}
       />
     </div>
   )

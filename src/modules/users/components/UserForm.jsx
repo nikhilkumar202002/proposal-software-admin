@@ -34,6 +34,7 @@ export const UserForm = ({
   isEdit = false,
   onSubmit = () => {},
   isSubmitting = false,
+  apiErrors = {},
 }) => {
   const navigate = useNavigate()
 
@@ -54,6 +55,17 @@ export const UserForm = ({
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [errors, setErrors] = useState({})
   const [showPermissionsSection, setShowPermissionsSection] = useState(true)
+
+  // Merge external backend API validation errors (e.g. 422 Unprocessable Content)
+  useEffect(() => {
+    if (apiErrors && Object.keys(apiErrors).length > 0) {
+      const flattened = {}
+      for (const [key, val] of Object.entries(apiErrors)) {
+        flattened[key] = Array.isArray(val) ? val[0] : val
+      }
+      setErrors((prev) => ({ ...prev, ...flattened }))
+    }
+  }, [apiErrors])
 
   // Sync state if initialData is loaded asynchronously from API
   useEffect(() => {

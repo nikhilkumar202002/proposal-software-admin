@@ -174,11 +174,11 @@ export const userService = {
       : [roleName]
 
     const payload = {
-      name: data.name,
-      email: data.email,
+      name: data.name?.trim(),
+      email: data.email?.trim()?.toLowerCase(),
       password: data.password,
-      phone: data.phone || null,
-      avatar: data.avatar || null,
+      phone: data.phone?.trim() ? data.phone.trim() : null,
+      avatar: (data.avatar && !data.avatar.startsWith('blob:')) ? data.avatar : null,
       status: data.status || 'active',
       roles: rolesPayload,
       permissions: Array.isArray(data.permissions) ? data.permissions : [],
