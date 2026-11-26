@@ -14,7 +14,7 @@ import { Button, ConfirmDialog } from '../../../components/common'
 
 export const ProposalActions = ({
   currentStep = 1,
-  totalSteps = 4,
+  totalSteps = 3,
   onPrev = () => {},
   onNext = () => {},
   onSaveDraft = () => {},
@@ -69,30 +69,20 @@ export const ProposalActions = ({
 
         {/* Global Proposal Action Buttons */}
         <div className="flex items-center gap-2 flex-wrap justify-end w-full sm:w-auto">
-          {/* Quick Preview Toggle */}
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={onPreview}
-            icon={Eye}
-            className="text-xs text-gray-700"
-          >
-            A4 Preview
-          </Button>
-
-          {/* Download PDF */}
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={onDownloadPdf}
-            disabled={isGeneratingPdf}
-            icon={isGeneratingPdf ? Loader2 : FileDown}
-            className="text-xs text-gray-700"
-          >
-            {isGeneratingPdf ? 'Generating...' : 'Export PDF'}
-          </Button>
+          {/* Download PDF - Only appears after all steps complete (currentStep === totalSteps) */}
+          {currentStep === totalSteps && (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={onDownloadPdf}
+              disabled={isGeneratingPdf || isSaving}
+              icon={isGeneratingPdf ? Loader2 : FileDown}
+              className="text-xs text-gray-700 font-semibold cursor-pointer"
+            >
+              {isGeneratingPdf ? 'Generating...' : 'Export PDF'}
+            </Button>
+          )}
 
           {/* Duplicate (if editing) */}
           {isEditMode && onDuplicate && (

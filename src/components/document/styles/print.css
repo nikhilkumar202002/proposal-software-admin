@@ -27,7 +27,7 @@
     color-adjust: exact !important;
   }
 
-  /* 2. Hide navigation, sidebar, editor headers, toolbars, and action buttons */
+  /* 2. Hide navigation, sidebar, editor headers, toolbars, action buttons, modals, and toasts */
   .no-print,
   .print\:hidden,
   [class*="no-print"],
@@ -38,7 +38,17 @@
   footer:not(.document-footer-area),
   .document-canvas-toolbar,
   .document-measurement-sandbox,
-  button:not(.allow-print) {
+  button:not(.allow-print),
+  /* Hide all toast notifications and floating banners */
+  #toast-container,
+  div[role="status"],
+  div[aria-live],
+  div[data-toaster],
+  .toaster,
+  div:has(> [role="status"]),
+  [class*="toast"],
+  div[style*="position: fixed"][style*="z-index: 9999"],
+  div[style*="position: fixed"][style*="z-index: 99999"] {
     display: none !important;
     visibility: hidden !important;
     height: 0 !important;
@@ -48,6 +58,17 @@
     margin: 0 !important;
     padding: 0 !important;
     border: none !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* Also force toast parent container completely hidden */
+  div:has([role="status"]) {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
     overflow: hidden !important;
   }
 

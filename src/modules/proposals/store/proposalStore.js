@@ -573,26 +573,49 @@ export const useProposalStore = create((set, get) => ({
 
   downloadPdf: async (id) => {
     const current = get().currentProposal
-    const targetId = id || current?.id
-    if (!targetId) return
+    let targetId = id || current?.id
+    if (!targetId && !current) return
 
     set({ isGeneratingPdf: true })
-    const toastId = toast.loading('Generating proposal PDF...')
+
     try {
-      try {
-        await proposalService.generatePdf(targetId)
-      } catch (genErr) {
-        console.warn('Backend generatePdf returned:', genErr)
+      // 1. If proposal has not been saved to database yet, auto-save first
+      if (!targetId || (typeof targetId !== 'number' && !/^\d+$/.test(String(targetId)))) {
+        const saved = await get().saveCurrentProposal(current?.status || 'draft')
+        if (saved?.id) {
+          targetId = saved.id
+        }
       }
 
-      const proposalNumber = current?.number || current?.proposal_number || targetId
-      const filename = `proposal-${proposalNumber}.pdf`
-      await proposalService.downloadPdfFile(targetId, filename)
-      toast.success('Proposal PDF downloaded', { id: toastId })
+      // 2. Attempt direct backend PDF file download
+      let directDownloaded = false
+      if (targetId && (typeof targetId === 'number' || /^\d+$/.test(String(targetId)))) {
+        try {
+          await proposalService.generatePdf(targetId)
+          const proposalNumber = current?.number || current?.proposal_number || targetId
+          const filename = `proposal-${proposalNumber}.pdf`
+          await proposalService.downloadPdfFile(targetId, filename)
+          toast.success('Proposal PDF exported successfully')
+          directDownloaded = true
+        } catch (apiErr) {
+          console.warn('Backend direct PDF stream download error, falling back to clean browser export:', apiErr)
+        }
+      }
+
+      // 3. Fallback: browser print dialog
+      if (!directDownloaded) {
+        // Dismiss all active toasts immediately so they NEVER leak into the exported PDF
+        toast.dismiss()
+        // Wait 150ms for toast removal from DOM before print dialog freezes rendering
+        setTimeout(() => {
+          window.print()
+        }, 150)
+      }
     } catch (err) {
-      console.error('Failed to download proposal PDF from API, invoking print preview:', err)
-      toast.error('Direct download failed, opening print preview', { id: toastId })
-      window.print()
+      console.error('Failed to export proposal PDF:', err)
+      toast.dismiss()
+      const errorMsg = err.response?.data?.message || err.message || 'Failed to export proposal PDF'
+      toast.error(errorMsg)
     } finally {
       set({ isGeneratingPdf: false })
     }

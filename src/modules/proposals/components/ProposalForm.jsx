@@ -23,7 +23,6 @@ const STEPS = [
   { step: 1, title: 'Proposal Info', icon: FileText, desc: 'Number & Dates' },
   { step: 2, title: 'Client Details', icon: Users, desc: 'Recipient Info' },
   { step: 3, title: 'Document Narrative', icon: BookOpen, desc: 'TipTap Editor' },
-  { step: 4, title: 'A4 Document Preview', icon: Eye, desc: 'Print & PDF' },
 ]
 
 export const ProposalForm = ({
@@ -236,8 +235,8 @@ export const ProposalForm = ({
         </div>
       </div>
 
-      {/* Step Content Area */}
-      <div>
+      {/* On-Screen Step Content Area (Hidden during physical print / PDF export) */}
+      <div className="no-print print:hidden">
         {activeStep === 1 && (
           <ProposalInformation
             proposal={proposal}
@@ -261,30 +260,17 @@ export const ProposalForm = ({
             proposalTitle={proposal?.title}
           />
         )}
+      </div>
 
-        {activeStep === 4 && (
-          <div className="space-y-4 print:space-y-0">
-            <div className="bg-white p-4 rounded-2xl border border-gray-200/80 shadow-2xs flex items-center justify-between no-print print:hidden">
-              <div>
-                <h4 className="text-sm font-bold text-gray-900">
-                  A4 Physical Page Rendering & Pagination Preview
-                </h4>
-                <p className="text-xs text-gray-500 mt-0.5">
-                  Accurate document canvas rendered in 210mm × 297mm A4 portrait format with fixed headers, footers, and automatic page breaks.
-                </p>
-              </div>
-            </div>
-
-            <DocumentCanvas
-              content={canvasProps.content}
-              company={canvasProps.company}
-              proposal={canvasProps.proposal}
-              initialSettings={canvasProps.settings}
-              showToolbar={true}
-              onPrint={() => window.print()}
-            />
-          </div>
-        )}
+      {/* Print-Only Proposal Document Pages (Exclusively rendered during print & PDF export; contains ONLY the pristine A4 document) */}
+      <div className="hidden print:block print:w-full print:m-0 print:p-0">
+        <DocumentCanvas
+          content={canvasProps.content}
+          company={canvasProps.company}
+          proposal={canvasProps.proposal}
+          initialSettings={canvasProps.settings}
+          showToolbar={false}
+        />
       </div>
 
       {/* Persistent Bottom Actions Bar */}
@@ -296,7 +282,6 @@ export const ProposalForm = ({
           onNext={handleNext}
           onSaveDraft={() => handleSaveWithFeedback('draft')}
           onPublish={() => handleSaveWithFeedback('sent')}
-          onPreview={() => onStepChange(4)}
           onDownloadPdf={() => onDownloadPdf(proposal?.id)}
           onDuplicate={onDuplicate}
           onDelete={onDelete}
