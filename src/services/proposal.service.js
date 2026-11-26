@@ -461,7 +461,30 @@ export const proposalService = {
     const response = await api.get(`/proposals/${id}/pdf/download`, {
       responseType: 'blob',
     })
-    return response.data
+    const data = response.data
+
+    // If backend returned a JSON error response wrapped in a blob
+    if (data && data.type === 'application/json') {
+      const text = await data.text()
+      try {
+        const json = JSON.parse(text)
+        throw new Error(json.message || 'Failed to download proposal PDF')
+      } catch (err) {
+        throw new Error(err.message || 'Failed to download proposal PDF')
+      }
+    }
+
+    // Verify magic bytes: PDF files MUST start with %PDF
+    if (data instanceof Blob) {
+      const slice = data.slice(0, 5)
+      const headerText = await slice.text()
+      if (!headerText.startsWith('%PDF')) {
+        console.warn('Downloaded blob does not have a valid %PDF header:', headerText)
+        throw new Error('Downloaded file is not a valid PDF document')
+      }
+    }
+
+    return data
   },
 
   /**
@@ -472,14 +495,17 @@ export const proposalService = {
   async downloadPdfFile(id, filename = `proposal-${id}.pdf`) {
     const blob = await this.downloadPdf(id)
     if (typeof window !== 'undefined') {
-      const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }))
+      const finalBlob = blob instanceof Blob ? blob : new Blob([blob], { type: 'application/pdf' })
+      const url = window.URL.createObjectURL(finalBlob)
       const link = document.createElement('a')
       link.href = url
       link.setAttribute('download', filename)
       document.body.appendChild(link)
       link.click()
       link.remove()
-      window.URL.revokeObjectURL(url)
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url)
+      }, 1500)
     }
     return blob
   },
