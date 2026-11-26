@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import AdminLayout from './components/layout/AdminLayout'
 import { Dashboard } from './modules/Dashboard'
-import { Login } from './modules/auth'
+import { Login, Profile } from './modules/auth'
 import {
   ProposalList,
   CreateProposal,
@@ -96,6 +96,9 @@ export function App() {
           <Route path="/ai/generator" element={<AIProposalGenerator />} />
           <Route path="/ai/settings" element={<AISettingsPage />} />
           <Route path="/chat" element={<AIChatPage />} />
+
+          {/* User Profile Route */}
+          <Route path="/profile" element={<Profile />} />
 
           {/* Proposal Management Module Routes */}
           <Route path="/proposals" element={<ProposalList />} />

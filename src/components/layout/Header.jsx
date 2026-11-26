@@ -116,6 +116,12 @@ const getRouteMeta = (pathname) => {
       breadcrumbs: [{ label: 'Management' }, { label: 'Document Settings' }],
     }
   }
+  if (pathname.startsWith('/profile')) {
+    return {
+      title: 'My Profile',
+      breadcrumbs: [{ label: 'Account', to: '/profile' }, { label: 'My Profile' }],
+    }
+  }
   if (pathname.startsWith('/settings/company')) {
     return {
       title: 'Company Profile',
@@ -594,7 +600,7 @@ export const Header = ({
                   type="button"
                   onClick={() => {
                     setIsUserMenuOpen(false)
-                    navigate('/settings/company')
+                    navigate('/profile')
                   }}
                   className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100/70 hover:text-[#0055FF] transition-colors text-left cursor-pointer"
                 >

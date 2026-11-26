@@ -61,6 +61,50 @@ export const useAuthStore = create((set, get) => ({
     set({ user })
   },
 
+  updateProfile: async (data) => {
+    set({ isLoading: true, error: null })
+    try {
+      const response = await authService.updateProfile(data)
+      const updatedUser = response?.data?.user || response?.data || response
+      if (updatedUser && typeof updatedUser === 'object') {
+        authService.setUser(updatedUser)
+        set({ user: updatedUser, isLoading: false })
+      } else {
+        set({ isLoading: false })
+      }
+      toast.success(response?.message || 'Profile updated successfully')
+      return updatedUser
+    } catch (err) {
+      const errorMsg =
+        err.response?.data?.message ||
+        (err.response?.data?.errors ? Object.values(err.response.data.errors).flat().join(', ') : null) ||
+        err.message ||
+        'Failed to update profile'
+      set({ error: errorMsg, isLoading: false })
+      toast.error(errorMsg)
+      throw err
+    }
+  },
+
+  changePassword: async (data) => {
+    set({ isLoading: true, error: null })
+    try {
+      const response = await authService.changePassword(data)
+      set({ isLoading: false })
+      toast.success(response?.message || 'Password changed successfully')
+      return response
+    } catch (err) {
+      const errorMsg =
+        err.response?.data?.message ||
+        (err.response?.data?.errors ? Object.values(err.response.data.errors).flat().join(', ') : null) ||
+        err.message ||
+        'Failed to change password'
+      set({ error: errorMsg, isLoading: false })
+      toast.error(errorMsg)
+      throw err
+    }
+  },
+
   logout: async () => {
     try {
       await authService.logout()
