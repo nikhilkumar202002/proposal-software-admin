@@ -1,4 +1,5 @@
 import api from '../../../services/api'
+import { companyService } from '../../../services/company.service'
 import {
   DEFAULT_COMPANY_SETTINGS,
   DEFAULT_DOCUMENT_CONFIG,
@@ -15,12 +16,11 @@ const STORAGE_KEYS = {
 
 export const settingsService = {
   /**
-   * Fetch company profile settings
+   * Fetch company profile settings via /company-profile
    */
   async getCompanySettings() {
     try {
-      const res = await api.get('/settings/company')
-      if (res.data?.data) return res.data.data
+      return await companyService.getCompanyProfile()
     } catch {
       // Local fallback
     }
@@ -36,7 +36,7 @@ export const settingsService = {
   },
 
   /**
-   * Save company profile settings
+   * Save company profile settings via PUT /company-profile
    */
   async saveCompanySettings(companyData) {
     try {
@@ -46,8 +46,7 @@ export const settingsService = {
     }
 
     try {
-      const res = await api.put('/settings/company', companyData)
-      return res.data?.data || companyData
+      return await companyService.updateCompanyProfile(companyData)
     } catch {
       return companyData
     }
@@ -171,22 +170,30 @@ export const settingsService = {
   },
 
   /**
-   * Convert image file to base64 DataURL
+   * Upload logo file via /company-profile/logo
    */
   async uploadLogoFile(file) {
+    if (file instanceof File || file instanceof Blob) {
+      try {
+        const res = await companyService.uploadLogo(file)
+        return res.logo_url
+      } catch (e) {
+        console.warn('Backend logo upload failed, using FileReader fallback', e)
+      }
+    }
+
     return new Promise((resolve, reject) => {
       if (!file) {
         reject(new Error('No file provided'))
         return
       }
 
-      // Max size: 2MB
-      if (file.size > 2 * 1024 * 1024) {
-        reject(new Error('Logo image must be under 2MB'))
+      if (file.size && file.size > 5 * 1024 * 1024) {
+        reject(new Error('Logo image must be under 5MB'))
         return
       }
 
-      if (!file.type.startsWith('image/')) {
+      if (file.type && !file.type.startsWith('image/')) {
         reject(new Error('File must be an image (PNG, JPG, SVG, or WEBP)'))
         return
       }

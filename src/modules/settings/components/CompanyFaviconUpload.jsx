@@ -1,0 +1,144 @@
+import { useRef, useState } from 'react'
+import { Upload, Trash2, Globe } from 'lucide-react'
+
+export const CompanyFaviconUpload = ({
+  faviconUrl = '',
+  onUpload = () => {},
+  onRemove = () => {},
+  disabled = false,
+  className = '',
+}) => {
+  const fileInputRef = useRef(null)
+  const [dragActive, setDragActive] = useState(false)
+  const [uploadError, setUploadError] = useState(null)
+  const [isUploading, setIsUploading] = useState(false)
+
+  const handleFileChange = async (file) => {
+    if (!file) return
+    setUploadError(null)
+
+    if (file.size > 2 * 1024 * 1024) {
+      setUploadError('Favicon size exceeds 2MB limit.')
+      return
+    }
+
+    const validExtensions = ['image/png', 'image/x-icon', 'image/vnd.microsoft.icon', 'image/svg+xml']
+    const hasValidExt =
+      validExtensions.includes(file.type) ||
+      /\.(ico|png|svg)$/i.test(file.name)
+
+    if (!hasValidExt) {
+      setUploadError('Favicon must be an ICO, PNG, or SVG file.')
+      return
+    }
+
+    try {
+      setIsUploading(true)
+      await onUpload(file)
+    } catch (err) {
+      setUploadError(
+        err.response?.data?.message || err.message || 'Failed to upload favicon'
+      )
+    } finally {
+      setIsUploading(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!disabled && !isUploading) setDragActive(true)
+  }
+
+  const handleDragLeave = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+    if (disabled || isUploading) return
+    const file = e.dataTransfer.files?.[0]
+    if (file) handleFileChange(file)
+  }
+
+  return (
+    <div className={`space-y-4 ${className}`}>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+        {/* Favicon Preview Card */}
+        <div className="relative w-24 h-24 rounded-xl border border-gray-200 bg-gray-50/60 p-3 flex items-center justify-center overflow-hidden shrink-0 shadow-2xs group">
+          {faviconUrl ? (
+            <img
+              src={faviconUrl}
+              alt="Favicon Preview"
+              className="w-12 h-12 object-contain transition-transform group-hover:scale-105"
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center text-gray-400 gap-1 text-center">
+              <Globe className="w-6 h-6 stroke-[1.5]" />
+              <span className="text-[10px] font-medium">No Favicon</span>
+            </div>
+          )}
+        </div>
+
+        {/* Upload Drop Zone & Actions */}
+        <div className="flex-1 w-full space-y-2.5">
+          <div
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            onClick={() => !disabled && !isUploading && fileInputRef.current?.click()}
+            className={`border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition-all ${
+              dragActive
+                ? 'border-[#0055FF] bg-blue-50/50'
+                : 'border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50/50'
+            } ${disabled || isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".ico,.png,.svg,image/x-icon,image/png,image/svg+xml"
+              onChange={(e) => handleFileChange(e.target.files?.[0])}
+              disabled={disabled || isUploading}
+              className="hidden"
+            />
+            <div className="flex items-center justify-center gap-2 text-xs font-semibold text-gray-700">
+              <Upload className="w-4 h-4 text-[#0055FF]" />
+              <span>
+                {isUploading ? 'Uploading Favicon...' : 'Click to upload or drag & drop favicon'}
+              </span>
+            </div>
+            <p className="text-[11px] text-gray-400 mt-1">
+              ICO, PNG, or SVG (32x32 or 64x64 recommended, Max 2MB)
+            </p>
+          </div>
+
+          {/* Action buttons */}
+          {faviconUrl && (
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={onRemove}
+                disabled={disabled || isUploading}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Remove Favicon</span>
+              </button>
+            </div>
+          )}
+
+          {uploadError && (
+            <p className="text-xs text-red-600 font-medium">{uploadError}</p>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default CompanyFaviconUpload

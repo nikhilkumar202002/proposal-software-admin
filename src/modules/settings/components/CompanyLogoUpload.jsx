@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react'
-import { Upload, Trash2, RotateCcw, Image } from 'lucide-react'
-import logoDefault from '../../../assets/Domine-Dude_black.png'
+import { Upload, Trash2, Image } from 'lucide-react'
 
 export const CompanyLogoUpload = ({
   logoUrl = '',
@@ -12,13 +11,14 @@ export const CompanyLogoUpload = ({
   const fileInputRef = useRef(null)
   const [dragActive, setDragActive] = useState(false)
   const [uploadError, setUploadError] = useState(null)
+  const [isUploading, setIsUploading] = useState(false)
 
   const handleFileChange = async (file) => {
     if (!file) return
     setUploadError(null)
 
-    if (file.size > 2 * 1024 * 1024) {
-      setUploadError('Image size exceeds 2MB limit.')
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError('Image size exceeds 5MB limit.')
       return
     }
 
@@ -28,16 +28,22 @@ export const CompanyLogoUpload = ({
     }
 
     try {
+      setIsUploading(true)
       await onUpload(file)
     } catch (err) {
-      setUploadError(err.message || 'Failed to process image')
+      setUploadError(
+        err.response?.data?.message || err.message || 'Failed to process image'
+      )
+    } finally {
+      setIsUploading(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
     }
   }
 
   const handleDragOver = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    if (!disabled) setDragActive(true)
+    if (!disabled && !isUploading) setDragActive(true)
   }
 
   const handleDragLeave = (e) => {
@@ -50,7 +56,7 @@ export const CompanyLogoUpload = ({
     e.preventDefault()
     e.stopPropagation()
     setDragActive(false)
-    if (disabled) return
+    if (disabled || isUploading) return
     const file = e.dataTransfer.files?.[0]
     if (file) handleFileChange(file)
   }
@@ -80,27 +86,29 @@ export const CompanyLogoUpload = ({
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
-            onClick={() => !disabled && fileInputRef.current?.click()}
+            onClick={() => !disabled && !isUploading && fileInputRef.current?.click()}
             className={`border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition-all ${
               dragActive
                 ? 'border-[#0055FF] bg-blue-50/50'
                 : 'border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50/50'
-            } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+            } ${disabled || isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             <input
               ref={fileInputRef}
               type="file"
               accept="image/png,image/jpeg,image/svg+xml,image/webp"
               onChange={(e) => handleFileChange(e.target.files?.[0])}
-              disabled={disabled}
+              disabled={disabled || isUploading}
               className="hidden"
             />
             <div className="flex items-center justify-center gap-2 text-xs font-semibold text-gray-700">
               <Upload className="w-4 h-4 text-[#0055FF]" />
-              <span>Click to upload or drag & drop</span>
+              <span>
+                {isUploading ? 'Uploading Logo...' : 'Click to upload or drag & drop'}
+              </span>
             </div>
             <p className="text-[11px] text-gray-400 mt-1">
-              PNG, JPG, SVG, or WEBP (Transparent background recommended, Max 2MB)
+              PNG, JPG, SVG, or WEBP (Transparent background recommended, Max 5MB)
             </p>
           </div>
 
@@ -109,24 +117,14 @@ export const CompanyLogoUpload = ({
             {logoUrl && (
               <button
                 type="button"
-                onClick={() => onRemove()}
-                disabled={disabled}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors cursor-pointer"
+                onClick={onRemove}
+                disabled={disabled || isUploading}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 <span>Remove Logo</span>
               </button>
             )}
-
-            <button
-              type="button"
-              onClick={() => onUpload(logoDefault)}
-              disabled={disabled}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Reset to Default</span>
-            </button>
           </div>
 
           {uploadError && (
