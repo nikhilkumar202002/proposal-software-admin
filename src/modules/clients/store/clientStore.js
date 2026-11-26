@@ -149,6 +149,20 @@ export const useClientStore = create((set, get) => ({
       throw err
     }
   },
+
+  updateClientStatus: async (id, status) => {
+    try {
+      await clientService.updateClientStatus(id, status)
+      set((state) => ({
+        clients: state.clients.map((c) =>
+          String(c.id) === String(id) ? { ...c, status } : c
+        ),
+      }))
+    } catch (err) {
+      set({ error: err.message })
+      throw err
+    }
+  },
 }))
 
 export default useClientStore

@@ -9,7 +9,9 @@ const sizeStyles = {
   xl: 'max-w-xl',
   '2xl': 'max-w-2xl',
   '3xl': 'max-w-3xl',
-  full: 'max-w-5xl',
+  '4xl': 'max-w-4xl',
+  '5xl': 'max-w-5xl',
+  full: 'max-w-6xl',
 }
 
 export const Modal = ({
@@ -96,7 +98,7 @@ export const Modal = ({
         )}
 
         {/* Modal Content */}
-        <div className="px-6 py-5 overflow-y-auto flex-1 text-sm text-gray-700">
+        <div className="px-6 py-5 overflow-y-auto overflow-x-hidden flex-1 text-sm text-gray-700">
           {children}
         </div>
 
