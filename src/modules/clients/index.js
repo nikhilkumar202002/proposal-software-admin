@@ -2,6 +2,7 @@
 export { default as ClientList } from './pages/ClientList'
 export { default as CreateClient } from './pages/CreateClient'
 export { default as EditClient } from './pages/EditClient'
+export { default as ClientDetailsPage } from './pages/ClientDetailsPage'
 
 // Components
 export { default as ClientTable } from './components/ClientTable'

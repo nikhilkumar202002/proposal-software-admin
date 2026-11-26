@@ -87,6 +87,16 @@ const getRouteMeta = (pathname) => {
       ],
     }
   }
+  if (pathname.match(/^\/clients\/[^/]+$/) && !pathname.includes('/new') && !pathname.includes('/create')) {
+    return {
+      title: 'Client Profile',
+      breadcrumbs: [
+        { label: 'Workspace', to: '/' },
+        { label: 'Clients', to: '/clients' },
+        { label: 'Client Profile' },
+      ],
+    }
+  }
   if (pathname.startsWith('/clients')) {
     return {
       title: 'Client Directory',

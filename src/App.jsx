@@ -13,6 +13,7 @@ import {
   ClientList,
   CreateClient,
   EditClient,
+  ClientDetailsPage,
 } from './modules/clients'
 import {
   UserList,
@@ -112,6 +113,7 @@ export function App() {
           <Route path="/clients" element={<ClientList />} />
           <Route path="/clients/new" element={<CreateClient />} />
           <Route path="/clients/create" element={<CreateClient />} />
+          <Route path="/clients/:id" element={<ClientDetailsPage />} />
           <Route path="/clients/:id/edit" element={<EditClient />} />
 
           {/* User Management Module Routes */}
