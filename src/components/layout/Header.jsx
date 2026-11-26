@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import {
   Search,
@@ -17,8 +17,32 @@ import {
   Keyboard,
   LifeBuoy,
   X,
+  Trash2,
+  Inbox,
+  Loader2,
+  CheckCheck,
 } from 'lucide-react'
 import useAuthStore, { getInitials } from '../../store/authStore'
+import notificationsService from '../../services/notifications.service'
+
+function formatRelativeTime(dateStr) {
+  if (!dateStr) return ''
+  try {
+    const d = new Date(dateStr)
+    const now = new Date()
+    const diffSec = Math.max(0, Math.floor((now.getTime() - d.getTime()) / 1000))
+    if (diffSec < 60) return 'Just now'
+    const diffMin = Math.floor(diffSec / 60)
+    if (diffMin < 60) return `${diffMin}m ago`
+    const diffHours = Math.floor(diffMin / 60)
+    if (diffHours < 24) return `${diffHours}h ago`
+    const diffDays = Math.floor(diffHours / 24)
+    if (diffDays < 7) return `${diffDays}d ago`
+    return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })
+  } catch {
+    return dateStr
+  }
+}
 
 // Route title & breadcrumb mapping
 const getRouteMeta = (pathname) => {
@@ -189,35 +213,107 @@ export const Header = ({
   const helpRef = useRef(null)
   const userMenuRef = useRef(null)
 
-  // Notifications mock data
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      title: 'Apex Systems accepted proposal',
-      description: 'Annual Enterprise SLA agreement was signed by Sarah Connor.',
-      time: '12m ago',
-      unread: true,
-      type: 'success',
-    },
-    {
-      id: 2,
-      title: 'TechNova viewed proposal',
-      description: 'Cloud Infrastructure Upgrade #PR-204 was viewed for 4 mins.',
-      time: '1h ago',
-      unread: true,
-      type: 'info',
-    },
-    {
-      id: 3,
-      title: 'Proposal template updated',
-      description: 'Default Master Service Agreement terms updated by legal.',
-      time: '3h ago',
-      unread: false,
-      type: 'system',
-    },
-  ])
+  // Live Notifications State
+  const [notifications, setNotifications] = useState([])
+  const [unreadCount, setUnreadCount] = useState(0)
+  const [isLoadingNotifications, setIsLoadingNotifications] = useState(false)
 
-  const unreadCount = notifications.filter((n) => n.unread).length
+  // Fetch unread count (GET /notifications/unread-count)
+  const fetchUnreadCount = useCallback(async () => {
+    try {
+      const count = await notificationsService.getUnreadCount()
+      setUnreadCount(typeof count === 'number' ? count : 0)
+    } catch (err) {
+      console.warn('Could not fetch unread notifications count:', err.message)
+    }
+  }, [])
+
+  // Fetch notifications list (GET /notifications)
+  const fetchNotificationsList = useCallback(async () => {
+    setIsLoadingNotifications(true)
+    try {
+      const res = await notificationsService.getNotifications({ per_page: 25 })
+      setNotifications(res.notifications || [])
+      if (typeof res.unreadCount === 'number') {
+        setUnreadCount(res.unreadCount)
+      }
+    } catch (err) {
+      console.warn('Could not fetch notifications list:', err.message)
+    } finally {
+      setIsLoadingNotifications(false)
+    }
+  }, [])
+
+  // Initial fetch on mount & background polling for badge updates
+  useEffect(() => {
+    fetchUnreadCount()
+    const interval = setInterval(fetchUnreadCount, 30000)
+    return () => clearInterval(interval)
+  }, [fetchUnreadCount])
+
+  // Fetch notifications whenever the dropdown opens
+  useEffect(() => {
+    if (isNotificationOpen) {
+      fetchNotificationsList()
+    }
+  }, [isNotificationOpen, fetchNotificationsList])
+
+  // Mark single notification read (PATCH /notifications/:id/read)
+  const handleNotificationClick = async (item) => {
+    if (!item.isRead) {
+      try {
+        await notificationsService.markAsRead(item.id)
+        setNotifications((prev) =>
+          prev.map((n) => (n.id === item.id ? { ...n, isRead: true } : n))
+        )
+        setUnreadCount((c) => Math.max(0, c - 1))
+      } catch (err) {
+        console.error('Failed to mark notification as read:', err)
+      }
+    }
+
+    if (item.actionUrl) {
+      setIsNotificationOpen(false)
+      navigate(item.actionUrl)
+    }
+  }
+
+  // Mark all as read (PATCH /notifications/read-all)
+  const handleMarkAllRead = async () => {
+    try {
+      await notificationsService.markAllAsRead()
+      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })))
+      setUnreadCount(0)
+    } catch (err) {
+      console.error('Failed to mark all notifications as read:', err)
+    }
+  }
+
+  // Delete single notification (DELETE /notifications/:id)
+  const handleDeleteNotification = async (e, id) => {
+    e.stopPropagation()
+    try {
+      await notificationsService.deleteNotification(id)
+      const target = notifications.find((n) => n.id === id)
+      setNotifications((prev) => prev.filter((n) => n.id !== id))
+      if (target && !target.isRead) {
+        setUnreadCount((c) => Math.max(0, c - 1))
+      }
+    } catch (err) {
+      console.error('Failed to delete notification:', err)
+    }
+  }
+
+  // Delete all notifications (DELETE /notifications)
+  const handleClearAll = async () => {
+    try {
+      await notificationsService.deleteAllNotifications()
+      setNotifications([])
+      setUnreadCount(0)
+    } catch (err) {
+      console.error('Failed to clear all notifications:', err)
+    }
+  }
 
   // Global keyboard shortcut (⌘K or Ctrl+K)
   useEffect(() => {
@@ -261,10 +357,6 @@ export const Header = ({
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
-
-  const markAllNotificationsRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })))
-  }
 
   const handleLogout = async () => {
     setIsUserMenuOpen(false)
@@ -405,64 +497,112 @@ export const Header = ({
                 {unreadCount > 0 && (
                   <button
                     type="button"
-                    onClick={markAllNotificationsRead}
-                    className="text-xs text-[#0055FF] hover:text-[#0044CC] font-medium"
+                    onClick={handleMarkAllRead}
+                    className="text-xs text-[#0055FF] hover:text-[#0044CC] font-semibold flex items-center gap-1 cursor-pointer"
                   >
-                    Mark all read
+                    <CheckCheck className="w-3.5 h-3.5" />
+                    <span>Mark all read</span>
                   </button>
                 )}
               </div>
 
               {/* Notification Items List */}
               <div className="max-h-80 overflow-y-auto divide-y divide-gray-50">
-                {notifications.map((item) => (
-                  <div
-                    key={item.id}
-                    className={`px-4 py-3 hover:bg-gray-50/80 transition-colors flex items-start gap-3 cursor-pointer ${
-                      item.unread ? 'bg-blue-50/30' : ''
-                    }`}
-                  >
+                {isLoadingNotifications ? (
+                  <div className="py-8 flex flex-col items-center justify-center text-gray-400 gap-2">
+                    <Loader2 className="w-5 h-5 animate-spin text-[#0055FF]" />
+                    <span className="text-xs font-medium">Loading notifications...</span>
+                  </div>
+                ) : notifications.length === 0 ? (
+                  <div className="py-8 px-4 text-center">
+                    <div className="w-10 h-10 rounded-full bg-blue-50 text-[#0055FF] flex items-center justify-center mx-auto mb-2">
+                      <Inbox className="w-5 h-5" />
+                    </div>
+                    <p className="text-xs font-semibold text-gray-700">No notifications yet</p>
+                    <p className="text-[11px] text-gray-400 mt-0.5">You are completely up to date.</p>
+                  </div>
+                ) : (
+                  notifications.map((item) => (
                     <div
-                      className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
-                        item.type === 'success'
-                          ? 'bg-emerald-50 text-emerald-600'
-                          : item.type === 'info'
-                          ? 'bg-blue-50 text-[#0055FF]'
-                          : 'bg-gray-100 text-gray-600'
+                      key={item.id}
+                      onClick={() => handleNotificationClick(item)}
+                      className={`group px-4 py-3 hover:bg-gray-50/80 transition-colors flex items-start gap-3 cursor-pointer ${
+                        !item.isRead ? 'bg-blue-50/35' : ''
                       }`}
                     >
-                      {item.type === 'success' ? (
-                        <FileCheck className="w-4 h-4" />
-                      ) : item.type === 'info' ? (
-                        <Eye className="w-4 h-4" />
-                      ) : (
-                        <Bell className="w-4 h-4" />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-1">
-                        <p className="text-xs font-semibold text-gray-900 truncate">
-                          {item.title}
-                        </p>
-                        <span className="text-[10px] text-gray-400 shrink-0">
-                          {item.time}
-                        </span>
+                      <div
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
+                          item.category === 'proposals'
+                            ? 'bg-blue-50 text-[#0055FF]'
+                            : item.category === 'users'
+                            ? 'bg-purple-50 text-purple-600'
+                            : item.category === 'clients'
+                            ? 'bg-emerald-50 text-emerald-600'
+                            : 'bg-gray-100 text-gray-600'
+                        }`}
+                      >
+                        {item.category === 'proposals' ? (
+                          <FileCheck className="w-4 h-4" />
+                        ) : item.category === 'users' ? (
+                          <User className="w-4 h-4" />
+                        ) : item.category === 'clients' ? (
+                          <Eye className="w-4 h-4" />
+                        ) : (
+                          <Bell className="w-4 h-4" />
+                        )}
                       </div>
-                      <p className="text-[11px] text-gray-500 mt-0.5 line-clamp-2">
-                        {item.description}
-                      </p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-1">
+                          <p
+                            className={`text-xs truncate ${
+                              !item.isRead ? 'font-bold text-gray-900' : 'font-medium text-gray-700'
+                            }`}
+                          >
+                            {item.title}
+                          </p>
+                          <span className="text-[10px] text-gray-400 shrink-0">
+                            {formatRelativeTime(item.createdAt)}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-gray-500 mt-0.5 line-clamp-2">
+                          {item.message}
+                        </p>
+                      </div>
+
+                      {/* Delete notification button */}
+                      <button
+                        type="button"
+                        onClick={(e) => handleDeleteNotification(e, item.id)}
+                        className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-all shrink-0 mt-0.5"
+                        title="Delete notification"
+                        aria-label="Delete notification"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
 
-              <div className="px-4 py-2 border-t border-gray-100 text-center bg-gray-50/50">
+              <div className="px-4 py-2 border-t border-gray-100 flex items-center justify-between bg-gray-50/50">
+                {notifications.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleClearAll}
+                    className="text-[11px] font-medium text-gray-500 hover:text-red-600 transition-colors cursor-pointer"
+                  >
+                    Clear all
+                  </button>
+                )}
                 <button
                   type="button"
-                  className="text-xs font-medium text-gray-600 hover:text-[#0055FF] transition-colors"
-                  onClick={() => setIsNotificationOpen(false)}
+                  className="text-[11px] font-medium text-[#0055FF] hover:underline ml-auto"
+                  onClick={() => {
+                    setIsNotificationOpen(false)
+                    navigate('/proposals')
+                  }}
                 >
-                  View all activity & logs
+                  View proposals
                 </button>
               </div>
             </div>
