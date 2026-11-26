@@ -16,7 +16,7 @@ import {
 } from 'lucide-react'
 import { Input, Button, Modal, Select } from '../../../components/common'
 import { useClientStore } from '../../clients/store/clientStore'
-import { INITIAL_CLIENTS } from '../../clients/utils/clientHelpers'
+import { INITIAL_CLIENTS, COUNTRY_OPTIONS } from '../../clients/utils/clientHelpers'
 
 export const ClientDetailsForm = ({
   client = {},
@@ -38,6 +38,7 @@ export const ClientDetailsForm = ({
     email: '',
     phone: '',
     address: '',
+    country: 'India',
     taxNumber: '',
   })
   const [newClientErrors, setNewClientErrors] = useState({})
@@ -68,12 +69,14 @@ export const ClientDetailsForm = ({
 
   // Identify selected client in the options
   const selectedOption = useMemo(() => {
-    if (!client?.companyName && !client?.name && !client?.email) return null
+    const targetId = client?.id || client?.clientId || client?.client_id
+    if (!targetId && !client?.companyName && !client?.name && !client?.email) return null
     return (
       allClients.find(
         (c) =>
-          (c.companyName && client.companyName && c.companyName.toLowerCase() === client.companyName.toLowerCase()) ||
-          (c.email && client.email && c.email.toLowerCase() === client.email.toLowerCase())
+          (targetId && String(c.id) === String(targetId)) ||
+          (c.companyName && client?.companyName && c.companyName.toLowerCase() === client.companyName.toLowerCase()) ||
+          (c.email && client?.email && c.email.toLowerCase() === client.email.toLowerCase())
       ) || null
     )
   }, [allClients, client])
@@ -103,6 +106,7 @@ export const ClientDetailsForm = ({
         email: found.email || '',
         phone: found.phone || '',
         address: found.address || '',
+        country: found.country || 'India',
         taxNumber: found.taxNumber || '',
       })
       setIsEditingInline(false)
@@ -117,6 +121,7 @@ export const ClientDetailsForm = ({
       email: '',
       phone: '',
       address: '',
+      country: 'India',
       taxNumber: '',
     })
     setIsEditingInline(false)
@@ -130,6 +135,7 @@ export const ClientDetailsForm = ({
       email: '',
       phone: '',
       address: '',
+      country: 'India',
       taxNumber: '',
     })
     setNewClientErrors({})
@@ -166,6 +172,7 @@ export const ClientDetailsForm = ({
         email: newClientForm.email.trim(),
         phone: newClientForm.phone.trim(),
         address: newClientForm.address.trim(),
+        country: newClientForm.country || 'India',
         taxNumber: newClientForm.taxNumber.trim(),
         status: 'active',
       })
@@ -175,12 +182,13 @@ export const ClientDetailsForm = ({
         id: created.id,
         clientId: created.id,
         client_id: created.id,
-        name: created.name,
-        companyName: created.companyName,
-        email: created.email,
-        phone: created.phone,
-        address: created.address,
-        taxNumber: created.taxNumber,
+        name: created.name || created.client_name || newClientForm.name.trim(),
+        companyName: created.companyName || created.company_name || newClientForm.companyName.trim(),
+        email: created.email || newClientForm.email.trim(),
+        phone: created.phone || newClientForm.phone.trim(),
+        address: created.address || newClientForm.address.trim(),
+        country: created.country || newClientForm.country || 'India',
+        taxNumber: created.taxNumber || created.tax_number || newClientForm.taxNumber.trim(),
       })
 
       setIsModalOpen(false)
@@ -358,7 +366,7 @@ export const ClientDetailsForm = ({
                     <span>Registered Address</span>
                   </div>
                   <p className="text-xs font-medium text-gray-800 line-clamp-2">
-                    {client.address || '—'}
+                    {client.address ? `${client.address}${client.country ? `, ${client.country}` : ''}` : (client.country || '—')}
                   </p>
                 </div>
               </div>
@@ -435,6 +443,18 @@ export const ClientDetailsForm = ({
                     onChange={(e) => onChange({ taxNumber: e.target.value })}
                     placeholder="e.g. 27AAACE5678B1Z2"
                     icon={Receipt}
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-gray-700">
+                    Country Jurisdiction
+                  </label>
+                  <Select
+                    options={COUNTRY_OPTIONS}
+                    value={client.country || 'India'}
+                    onChange={(val) => onChange({ country: val })}
+                    searchable
                   />
                 </div>
               </div>
@@ -602,7 +622,7 @@ export const ClientDetailsForm = ({
             </div>
 
             {/* Tax Number */}
-            <div className="space-y-1.5 md:col-span-2">
+            <div className="space-y-1.5">
               <label className="text-xs font-semibold text-gray-700">
                 Tax ID / GSTIN / VAT Registration
               </label>
@@ -616,6 +636,24 @@ export const ClientDetailsForm = ({
                 }
                 placeholder="e.g. 27AAACE5678B1Z2 or US-EIN-94301928"
                 icon={Receipt}
+              />
+            </div>
+
+            {/* Country Jurisdiction */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-gray-700">
+                Country Jurisdiction <span className="text-red-500">*</span>
+              </label>
+              <Select
+                options={COUNTRY_OPTIONS}
+                value={newClientForm.country || 'India'}
+                onChange={(val) =>
+                  setNewClientForm((prev) => ({
+                    ...prev,
+                    country: val,
+                  }))
+                }
+                searchable
               />
             </div>
           </div>

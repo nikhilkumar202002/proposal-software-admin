@@ -173,15 +173,15 @@ export const clientService = {
    */
   async createClient(data) {
     const payload = {
-      client_name: data.client_name || data.clientName || data.name || '',
-      company_name: data.company_name || data.companyName || '',
+      client_name: data.client_name || data.clientName || data.name || data.company_name || data.companyName || 'Valued Client',
+      company_name: data.company_name || data.companyName || data.client_name || data.name || '',
       email: data.email || '',
       phone: data.phone || null,
       website: data.website || null,
       address: data.address || null,
       city: data.city || null,
       state: data.state || null,
-      country: data.country || null,
+      country: data.country || 'India',
       postal_code: data.postal_code || data.postalCode || null,
       tax_number: data.tax_number || data.taxNumber || null,
       notes: data.notes || null,
