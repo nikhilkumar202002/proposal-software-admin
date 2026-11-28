@@ -1,8 +1,17 @@
 import axios from 'axios'
 
-export const API_BASE_URL =
+const configuredUrl =
   (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_API_BASE_URL) ||
   'https://apiapp.domaindude.in/api'
+
+// In Vite development mode, route API calls through '/api' using Vite's proxy.
+// This prevents cross-origin/CORS preflight failures when Vite runs on alternative
+// local ports (e.g. 5174, 5175) or when developing against the live API.
+// In production builds, use the full configured URL.
+export const API_BASE_URL =
+  typeof import.meta !== 'undefined' && import.meta?.env?.DEV
+    ? '/api'
+    : configuredUrl
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
